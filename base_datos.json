@@ -1,0 +1,65 @@
+{
+    "candidatas": [
+        {
+            "id": 1,
+            "nombre": "Sofía Benítez",
+            "curso": "1er Año",
+            "foto": "1.jpeg"
+        },
+        {
+            "id": 2,
+            "nombre": "Valentina Giménez",
+            "curso": "2do Año",
+            "foto": "2.jpeg"
+        },
+        {
+            "id": 3,
+            "nombre": "Martina Alarcón",
+            "curso": "3er Año",
+            "foto": "3.jpeg"
+        },
+        {
+            "id": 4,
+            "nombre": "Camila Mamani",
+            "curso": "4to Año 1ra",
+            "foto": "4.jpeg"
+        },
+        {
+            "id": 5,
+            "nombre": "Lucía Flores",
+            "curso": "4to Año 2da",
+            "foto": "5.jpeg"
+        },
+        {
+            "id": 6,
+            "nombre": "Antonella Solís",
+            "curso": "5to Año 1ra",
+            "foto": "6.jpeg"
+        },
+        {
+            "id": 7,
+            "nombre": "Zoe Gutiérrez",
+            "curso": "5to Año 2da",
+            "foto": "7.jpeg"
+        },
+        {
+            "id": 8,
+            "nombre": "Agostina Tolaba",
+            "curso": "5to Año 3ra",
+            "foto": "8.jpeg"
+        },
+        {
+            "id": 9,
+            "nombre": "Micaela Cruz",
+            "curso": "6to Año 1ra",
+            "foto": "9.jpeg"
+        },
+        {
+            "id": 10,
+            "nombre": "Abril Vázquez",
+            "curso": "6to Año 2da",
+            "foto": "10.jpeg"
+        }
+    ],
+    "votos_jurados": []
+}
