@@ -1,2 +1,2 @@
-# Practica---Sistema-de-Votaci-n
-Eleccion Reina
+# Practica---Sistema-de-Votacion-n
+Eleccion Reina 2026
