@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación - Secundario 59</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .tarjeta-oculta {
+            display: none !important;
+        }
+    </style>
+</head>
+<body class="bg-blue-50 min-h-screen p-4 md:p-8 relative overflow-x-hidden" style="background: linear-gradient(to top right, #e0f2fe, #ffffff, #eff6ff);">
+
+    <div class="fixed top-0 left-0 text-sky-300 opacity-10 text-7xl p-4 select-none pointer-events-none" style="opacity: 0.15; font-size: 5rem;">🌸</div>
+    <div class="fixed bottom-0 right-0 text-sky-300 opacity-10 text-7xl p-4 select-none pointer-events-none" style="opacity: 0.15; font-size: 5rem;">🌸</div>
+
+    <div class="max-w-2xl mx-auto relative z-10">
+        
+        <header class="bg-white shadow-md rounded-2xl p-6 mb-8 border border-blue-100 text-center" style="border-radius: 1rem;">
+            <div class="text-blue-400 text-2xl mb-1">🌸</div>
+            <h2 class="text-xs font-semibold tracking-wider text-blue-500 uppercase">Secundario Nº59 "Olga Márquez de Aredez"</h2>
+            <h1 class="text-2xl font-bold text-gray-800 mt-1">Planilla de Calificación</h1>
+            <div class="mt-2 inline-block bg-blue-100 text-blue-800 text-sm font-semibold px-4 py-1 rounded-full" style="border-radius: 9999px;">
+                ✍️ Evaluador Activo: <span class="text-blue-900 font-bold">{{ nombre_jurado }}</span>
+            </div>
+        </header>
+
+        <form action="/guardar_votos" method="POST" class="space-y-6">
+            <input type="hidden" name="nombre_jurado" value="{{ nombre_jurado }}">
+
+            <div id="contenedor-carrusel">
+                {% for c in candidatas %}
+                <div class="candidata-card bg-white shadow-lg rounded-2xl p-6 border border-blue-100 transition-all relative overflow-hidden flex flex-col justify-between {% if not loop.first %}tarjeta-oculta{% endif %}" style="border-radius: 1rem;" data-index="{{ loop.index0 }}" data-nombre="{{ c.nombre }}" data-id="{{ c.id }}">
+                    
+                    <div class="absolute -top-2 -right-2 text-blue-100 text-4xl opacity-40 select-none pointer-events-none">🌸</div>
+
+                    <div>
+                        <div class="flex justify-between items-start mb-3" style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-blue-400 block">Postulante Nº {{ loop.index }}</span>
+                                <h3 class="text-xl font-bold text-gray-800 mt-0.5">{{ c.nombre }}</h3>
+                            </div>
+                            <span class="bg-gray-100 text-gray-700 text-xs font-medium px-2.5 py-1 rounded-lg" style="border-radius: 0.5rem; white-space: nowrap;">
+                                {{ c.curso }}
+                            </span>
+                        </div>
+
+                        <div class="my-4 w-full h-52 bg-gray-50 rounded-xl overflow-hidden border border-blue-100 flex items-center justify-center shadow-inner" style="border-radius: 0.75rem;">
+                            {% if c.foto %}
+                                <img src="{{ url_for('static', filename='fotos/' + c.foto) }}" 
+                                     alt="Foto de {{ c.nombre }}" 
+                                     class="w-full h-full object-cover"
+                                     onerror="this.parentElement.innerHTML='<div class=\'text-center p-4\'><span class=\'text-3xl block mb-1\'>📸</span><span class=\'text-xs text-gray-400 font-medium\'>Sin foto cargada</span></div>';">
+                            {% else %}
+                                <div class="text-center p-4">
+                                    <span class="text-3xl block mb-1">📸</span>
+                                    <span class="text-xs text-gray-400 font-medium">Sin foto cargada</span>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="h-px bg-gray-100 w-full mb-4"></div>
+
+                        <div class="space-y-3 mb-2" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            
+                            <div class="flex items-center justify-between">
+                                <label class="text-sm font-medium text-gray-600 flex items-center gap-1">
+                                    <span>✨ Belleza</span>
+                                </label>
+                                <select name="belleza_{{ c.id }}" required class="select-puntaje bg-blue-50 border border-blue-200 rounded-lg p-1.5 text-sm font-semibold text-blue-900 w-24" style="width: 6rem; border-radius: 0.5rem; text-align: center;">
+                                    {% for n in range(5, 11) %}
+                                        <option value="{{ n }}">{{ n }} pts</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="flex items-center justify-between">
+                                <label class="text-sm font-medium text-gray-600 flex items-center gap-1">
+                                    <span>💃 Elegancia</span>
+                                </label>
+                                <select name="elegancia_{{ c.id }}" required class="select-puntaje bg-blue-50 border border-blue-200 rounded-lg p-1.5 text-sm font-semibold text-blue-900 w-24" style="width: 6rem; border-radius: 0.5rem; text-align: center;">
+                                    {% for n in range(5, 11) %}
+                                        <option value="{{ n }}">{{ n }} pts</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="flex items-center justify-between">
+                                <label class="text-sm font-medium text-gray-600 flex items-center gap-1">
+                                    <span>😊 Simpatía</span>
+                                </label>
+                                <select name="simpatia_{{ c.id }}" required class="select-puntaje bg-blue-50 border border-blue-200 rounded-lg p-1.5 text-sm font-semibold text-blue-900 w-24" style="width: 6rem; border-radius: 0.5rem; text-align: center;">
+                                    {% for n in range(5, 11) %}
+                                        <option value="{{ n }}">{{ n }} pts</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="flex items-center justify-between">
+                                <label class="text-sm font-medium text-gray-600 flex items-center gap-1">
+                                    <span>🚶‍♀️ Postura</span>
+                                </label>
+                                <select name="postura_{{ c.id }}" required class="select-puntaje bg-blue-50 border border-blue-200 rounded-lg p-1.5 text-sm font-semibold text-blue-900 w-24" style="width: 6rem; border-radius: 0.5rem; text-align: center;">
+                                    {% for n in range(5, 11) %}
+                                        <option value="{{ n }}">{{ n }} pts</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <div id="tarjeta-resumen" class="bg-white shadow-lg rounded-2xl p-6 border border-green-200 transition-all relative overflow-hidden tarjeta-oculta" style="border-radius: 1rem;">
+                    <div class="absolute -top-2 -right-2 text-green-100 text-4xl opacity-40 select-none pointer-events-none">📝</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-1">Resumen General de Calificaciones</h3>
+                    <p class="text-xs text-gray-500 mb-4">Verifica los puntos asignados antes de enviar la planilla.</p>
+                    <div id="lista-resumen" class="space-y-4 max-h-96 overflow-y-auto pr-1"></div>
+                </div>
+            </div>
+
+            <div class="bg-white p-3 shadow-md rounded-2xl border border-blue-100 flex justify-between items-center" style="border-radius: 1rem;">
+                <button type="button" id="btn-anterior" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-xl shadow-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed" style="border-radius: 0.75rem; border: none;">
+                    ⬅️ Anterior
+                </button>
+                <span id="indicador-carrusel" class="text-sm font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                    Candidata 1 de {{ candidatas|length }}
+                </span>
+                <button type="button" id="btn-siguiente" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-xl shadow-sm transition-all" style="border-radius: 0.75rem; border: none;">
+                    Siguiente ➡️
+                </button>
+            </div>
+
+            <div class="bg-white p-4 shadow-lg rounded-2xl border border-blue-100 flex justify-between items-center" style="border-radius: 1rem;">
+                <a href="/" class="text-sm text-gray-500 hover:text-gray-700 font-medium" style="text-decoration: none;">🏠 Volver al Inicio</a>
+                <button type="submit" id="btn-guardar" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-xl shadow-md transition-all cursor-pointer opacity-40 cursor-not-allowed" style="border-radius: 0.75rem; background-color: #10b981; color: white; border: none;" disabled>
+                    Finalizar y Guardar Votos ✔️
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let indexActual = 0;
+            const tarjetas = document.querySelectorAll('.candidata-card');
+            const total = tarjetas.length;
+            
+            const tarjetaResumen = document.getElementById('tarjeta-resumen');
+            const listaResumen = document.getElementById('lista-resumen');
+            
+            const btnAnterior = document.getElementById('btn-anterior');
+            const btnSiguiente = document.getElementById('btn-siguiente');
+            const btnGuardar = document.getElementById('btn-guardar');
+            const indicador = document.getElementById('indicador-carrusel');
+
+            function generarResumen() {
+                listaResumen.innerHTML = '';
+                
+                tarjetas.forEach((tarjeta) => {
+                    const nombre = tarjeta.getAttribute('data-nombre');
+                    const id = tarjeta.getAttribute('data-id');
+                    
+                    const belleza = tarjeta.querySelector(`[name="belleza_${id}"]`).value;
+                    const elegancia = tarjeta.querySelector(`[name="elegancia_${id}"]`).value;
+                    const simpatia = tarjeta.querySelector(`[name="simpatia_${id}"]`).value;
+                    const postura = tarjeta.querySelector(`[name="postura_${id}"]`).value;
+                    
+                    const totalPuntos = parseInt(belleza) + parseInt(elegancia) + parseInt(simpatia) + parseInt(postura);
+
+                    const fila = document.createElement('div');
+                    fila.className = "bg-gray-50 p-3 rounded-xl border border-gray-100 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2";
+                    fila.innerHTML = `
+                        <div>
+                            <h4 class="font-bold text-gray-800 text-sm">${nombre}</h4>
+                            <div class="text-xs text-gray-500 mt-0.5 space-x-2">
+                                <span>✨ Bel: <b>${belleza}</b></span>
+                                <span>💃 Ele: <b>${elegancia}</b></span>
+                                <span>😊 Sim: <b>${simpatia}</b></span>
+                                <span>🚶‍♀️ Pos: <b>${postura}</b></span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="inline-block bg-blue-100 text-blue-800 font-bold text-xs px-2.5 py-1 rounded-md">Total: ${totalPuntos} pts</span>
+                        </div>
+                    `;
+                    listaResumen.appendChild(fila);
+                });
+            }
+
+            function actualizarVista() {
+                if (indexActual === total) {
+                    tarjetas.forEach(t => t.classList.add('tarjeta-oculta'));
+                    tarjetaResumen.classList.remove('tarjeta-oculta');
+                    
+                    generarResumen();
+
+                    indicador.textContent = "Revisión Final 📋";
+                    btnSiguiente.classList.add('tarjeta-oculta');
+                    
+                    btnGuardar.disabled = false;
+                    btnGuardar.classList.remove('opacity-40', 'cursor-not-allowed');
+                } else {
+                    tarjetas.forEach((tarjeta, idx) => {
+                        if (idx === indexActual) {
+                            tarjeta.classList.remove('tarjeta-oculta');
+                        } else {
+                            tarjeta.classList.add('tarjeta-oculta');
+                        }
+                    });
+                    tarjetaResumen.classList.add('tarjeta-oculta');
+                    
+                    indicador.textContent = `Candidata ${indexActual + 1} de ${total}`;
+                    btnSiguiente.classList.remove('tarjeta-oculta');
+                    
+                    btnGuardar.disabled = true;
+                    btnGuardar.classList.add('opacity-40', 'cursor-not-allowed');
+                }
+
+                btnAnterior.disabled = (indexActual === 0);
+            }
+
+            btnAnterior.addEventListener('click', function() {
+                if (indexActual > 0) {
+                    indexActual--;
+                    actualizarVista();
+                }
+            });
+
+            btnSiguiente.addEventListener('click', function() {
+                if (indexActual < total) {
+                    indexActual++;
+                    actualizarVista();
+                }
+            });
+
+            actualizarVista();
+        });
+    </script>
+</body>
+</html>

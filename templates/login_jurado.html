@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secundario 59 - Elección Reina</title>
+    <!-- Conectamos Tailwind CSS para el diseño moderno -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gradient-to-tr from-sky-100 via-white to-blue-50 min-h-screen flex items-center justify-center p-4 relative overflow-x-hidden">
+
+    <!-- Adornos de flores artificiales flotantes en las esquinas -->
+    <div class="absolute top-0 left-0 text-sky-300 opacity-20 text-7xl p-4 select-none pointer-events-none">🌸✨</div>
+    <div class="absolute bottom-0 right-0 text-sky-300 opacity-20 text-7xl p-4 select-none pointer-events-none">✨🌸</div>
+    <div class="absolute top-12 right-12 text-blue-300 opacity-15 text-5xl select-none pointer-events-none">🌺</div>
+    <div class="absolute bottom-12 left-12 text-blue-300 opacity-15 text-5xl select-none pointer-events-none">🌺</div>
+
+    <!-- Contenedor Principal de la Tarjeta -->
+    <div class="bg-white/80 backdrop-blur-md shadow-xl rounded-3xl p-8 max-w-md w-full border border-sky-200 text-center relative z-10">
+        
+        <!-- Encabezado con detalles florales -->
+        <header class="mb-6">
+            <div class="text-sky-500 text-3xl mb-2">🌸</div>
+            <h2 class="text-sm font-semibold tracking-wider text-sky-600 uppercase">Secundario Nº59 "Olga Márquez de Aredez"</h2>
+            <h1 class="text-2xl font-bold text-slate-800 mt-1">Puntuación de Candidatas</h1>
+            <div class="h-1 w-20 bg-sky-300 mx-auto mt-3 rounded-full"></div>
+        </header>
+
+        <!-- Mensajes Flash (Alertas de Flask) -->
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="mb-4 p-3 bg-amber-50 border-l-4 border-amber-400 text-amber-700 text-sm rounded-r-xl text-left animate-pulse">
+                  ⚠️ {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <!-- Estado de la Votación / Barra de Progreso -->
+        <div class="bg-sky-50/70 border border-sky-100 rounded-2xl p-4 mb-6">
+            <div class="flex justify-between items-center text-sm mb-2 text-slate-600">
+                <span>Planillas cargadas oficialmente:</span>
+                <span class="font-bold text-sky-700 text-base">{{ cantidad_jurados }} / 5</span>
+            </div>
+            
+            <!-- Barra de progreso estilizada en azul claro -->
+            <div class="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
+                <div class="bg-gradient-to-r from-sky-400 to-blue-500 h-3 rounded-full transition-all duration-500" 
+                     style="width: {{ (cantidad_jurados / 5) * 100 }}%"></div>
+            </div>
+        </div>
+
+        <!-- Formulario o Aviso de Fin -->
+        {% if cantidad_jurados < 5 %}
+        <form action="/evaluacion" method="POST" class="space-y-4 text-left">
+            <div>
+                <label class="block text-sm font-medium text-slate-600 mb-1 ml-1">Identificación del Evaluador:</label>
+                <select name="nombre_jurado" required class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 cursor-pointer appearance-none shadow-sm">
+                    <option value="" disabled selected>Haga clic para seleccionar...</option>
+                    <option value="Jurado Nº 1">Jurado Nº 1</option>
+                    <option value="Jurado Nº 2">Jurado Nº 2</option>
+                    <option value="Jurado Nº 3">Jurado Nº 3</option>
+                    <option value="Jurado Nº 4">Jurado Nº 4</option>
+                    <option value="Jurado Nº 5">Jurado Nº 5</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="w-full bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white font-semibold py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer mt-2">
+                <span>Abrir Planilla de Evaluación</span> 📑
+            </button>
+        </form>
+        {% else %}
+        <div class="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl font-medium flex items-center justify-center gap-2 mb-6">
+            ✨ ¡Los 5 jurados completaron el escrutinio con éxito! ✨
+        </div>
+        {% endif %}
+
+        <!-- Panel de Acciones y Administración -->
+        <div class="mt-8 pt-6 border-t border-slate-100 flex flex-col gap-3">
+            <a href="/resultados" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-2.5 px-4 rounded-xl shadow transition-colors text-sm flex items-center justify-center gap-2">
+                Ver Resultados Finales (Podio) 📊
+            </a>
+            
+            <a href="/reiniciar" class="text-xs text-red-400 hover:text-red-600 font-medium transition-colors hover:underline mt-2 self-center" 
+               onclick="return confirm('⚠️ ¿Está seguro de que desea REINICIAR TODA LA VOTACIÓN? Esto borrará los datos actuales.');">
+                Reiniciar base de datos
+            </a>
+        </div>
+
+    </div>
+</body>
+</html>

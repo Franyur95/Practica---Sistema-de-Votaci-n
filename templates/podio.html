@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados Oficiales - Secundario 59</title>
+    <!-- Conector tradicional de Tailwind -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-blue-50 min-h-screen p-4 md:p-8 relative overflow-x-hidden" style="background: linear-gradient(to top right, #e0f2fe, #ffffff, #eff6ff);">
+
+    <!-- Flores decorativas flotantes -->
+    <div class="fixed top-0 left-0 text-sky-300 opacity-10 text-7xl p-4 select-none pointer-events-none" style="opacity: 0.15; font-size: 5rem;">🌸</div>
+    <div class="fixed bottom-0 right-0 text-sky-300 opacity-10 text-7xl p-4 select-none pointer-events-none" style="opacity: 0.15; font-size: 5rem;">🌸</div>
+
+    <div class="max-w-4xl mx-auto relative z-10">
+        
+        <!-- Encabezado de los Resultados -->
+        <header class="bg-white shadow-md rounded-2xl p-6 mb-8 border border-blue-100 text-center" style="border-radius: 1rem;">
+            <div class="text-blue-400 text-2xl mb-1">👑</div>
+            <h2 class="text-xs font-semibold tracking-wider text-blue-500 uppercase">Secundario Nº59 "Olga Márquez de Aredez"</h2>
+            <h1 class="text-3xl font-black text-gray-800 mt-1">Escrutinio Final</h1>
+            <div class="mt-2 inline-block bg-green-100 text-green-800 text-xs font-semibold px-4 py-1 rounded-full" style="border-radius: 9999px;">
+                📊 Planillas procesadas: <span class="font-bold">{{ total_jurados }} / 5</span>
+            </div>
+        </header>
+
+        {% if total_jurados > 0 %}
+        <!-- ================= SECCIÓN DEL PODIO DE PREMIOS ================= -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 items-end" style="display: grid; gap: 1.5rem; align-items: end;">
+            
+            {% for electa in podio %}
+                {% if "Reina" in electa.titulo %}
+                <!-- TARJETA REINA (Se destaca arriba o al centro) -->
+                <div class="bg-white shadow-2xl rounded-3xl border-2 border-yellow-300 p-8 text-center relative overflow-hidden order-first md:order-none" style="border-radius: 1.5rem; transform: scale(1.03); box-shadow: 0 25px 50px -12px rgba(251, 191, 36, 0.15);">
+                    <div class="absolute -top-4 -right-4 text-yellow-100 text-6xl opacity-30 select-none pointer-events-none">✨</div>
+                    <div class="text-4xl mb-2 animate-bounce">👑</div>
+                    <span class="bg-yellow-100 text-yellow-800 text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest block mx-auto w-max mb-3" style="border-radius: 9999px;">
+                        {{ electa.titulo }}
+                    </span>
+                    <h3 class="text-2xl font-black text-gray-800 leading-tight">{{ electa.nombre }}</h3>
+                    <p class="text-sm font-semibold text-gray-500 mt-1">{{ electa.curso }}</p>
+                    <div class="mt-4 pt-3 border-t border-yellow-100">
+                        <span class="text-xl font-extrabold text-yellow-600">{{ electa.score_mostrar }}</span>
+                    </div>
+                </div>
+                {% else %}
+                <!-- TARJETAS MISS ELEGANCIA Y MISS SIMPATÍA -->
+                <div class="bg-white shadow-xl rounded-2xl border border-blue-100 p-6 text-center relative overflow-hidden" style="border-radius: 1rem;">
+                    <div class="text-3xl mb-2">
+                        {% if "Elegancia" in electa.titulo %}✨{% else %}😊{% endif %}
+                    </div>
+                    <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider block mx-auto w-max mb-3" style="border-radius: 9999px;">
+                        {{ electa.titulo }}
+                    </span>
+                    <h3 class="text-xl font-bold text-gray-800 leading-tight">{{ electa.nombre }}</h3>
+                    <p class="text-sm font-medium text-gray-400 mt-1">{{ electa.curso }}</p>
+                    <div class="mt-4 pt-3 border-t border-gray-100">
+                        <span class="text-lg font-bold text-blue-600">{{ electa.score_mostrar }}</span>
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+
+        </div>
+        {% else %}
+        <!-- Alerta si todavía no votó nadie -->
+        <div class="bg-white shadow-md rounded-2xl p-8 border border-blue-100 text-center text-gray-500 font-medium" style="border-radius: 1rem;">
+            📭 Todavía no hay votos registrados. Las posiciones se generarán cuando vote al menos un jurado.
+        </div>
+        {% endif %}
+
+        <!-- Menú Inferior de Navegación -->
+        <div class="bg-white p-4 shadow-lg rounded-2xl border border-blue-100 flex justify-center items-center" style="border-radius: 1rem; display: flex; justify-content: center;">
+            <a href="/" class="bg-gray-800 hover:bg-gray-900 text-white font-semibold py-2.5 px-6 rounded-xl shadow text-sm transition-colors" style="border-radius: 0.75rem; color: white; background-color: #1f2937; text-decoration: none;">
+                🏠 Volver al Panel Principal
+            </a>
+        </div>
+
+    </div>
+
+</body>
+</html>
