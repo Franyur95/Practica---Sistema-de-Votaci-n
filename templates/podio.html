@@ -31,11 +31,11 @@
             
             {% for electa in podio %}
                 {% if "Reina" in electa.titulo %}
-                <!-- TARJETA REINA (Se destaca arriba o al centro) -->
+                <!-- TARJETA REINA -->
                 <div class="bg-white shadow-2xl rounded-3xl border-2 border-yellow-300 p-8 text-center relative overflow-hidden order-first md:order-none" style="border-radius: 1.5rem; transform: scale(1.03); box-shadow: 0 25px 50px -12px rgba(251, 191, 36, 0.15);">
                     <div class="absolute -top-4 -right-4 text-yellow-100 text-6xl opacity-30 select-none pointer-events-none">✨</div>
                     <div class="text-4xl mb-2 animate-bounce">👑</div>
-                    <span class="bg-yellow-100 text-yellow-800 text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest block mx-auto w-max mb-3" style="border-radius: 9999px;">
+                    <span class="bg-yellow-100 text-yellow-800 text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest block mx-auto w-max mb-3">
                         {{ electa.titulo }}
                     </span>
                     <h3 class="text-2xl font-black text-gray-800 leading-tight">{{ electa.nombre }}</h3>
@@ -46,11 +46,11 @@
                 </div>
                 {% else %}
                 <!-- TARJETAS MISS ELEGANCIA Y MISS SIMPATÍA -->
-                <div class="bg-white shadow-xl rounded-2xl border border-blue-100 p-6 text-center relative overflow-hidden" style="border-radius: 1rem;">
+                <div class="bg-white shadow-xl rounded-2xl border border-blue-100 p-6 text-center relative overflow-hidden">
                     <div class="text-3xl mb-2">
                         {% if "Elegancia" in electa.titulo %}✨{% else %}😊{% endif %}
                     </div>
-                    <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider block mx-auto w-max mb-3" style="border-radius: 9999px;">
+                    <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider block mx-auto w-max mb-3">
                         {{ electa.titulo }}
                     </span>
                     <h3 class="text-xl font-bold text-gray-800 leading-tight">{{ electa.nombre }}</h3>
@@ -65,15 +65,18 @@
         </div>
         {% else %}
         <!-- Alerta si todavía no votó nadie -->
-        <div class="bg-white shadow-md rounded-2xl p-8 border border-blue-100 text-center text-gray-500 font-medium" style="border-radius: 1rem;">
+        <div class="bg-white shadow-md rounded-2xl p-8 border border-blue-100 text-center text-gray-500 font-medium">
             📭 Todavía no hay votos registrados. Las posiciones se generarán cuando vote al menos un jurado.
         </div>
         {% endif %}
 
         <!-- Menú Inferior de Navegación -->
-        <div class="bg-white p-4 shadow-lg rounded-2xl border border-blue-100 flex justify-center items-center" style="border-radius: 1rem; display: flex; justify-content: center;">
-            <a href="/" class="bg-gray-800 hover:bg-gray-900 text-white font-semibold py-2.5 px-6 rounded-xl shadow text-sm transition-colors" style="border-radius: 0.75rem; color: white; background-color: #1f2937; text-decoration: none;">
+        <div class="bg-white p-4 shadow-lg rounded-2xl border border-blue-100 flex justify-center gap-4 items-center">
+            <a href="/" class="bg-gray-800 hover:bg-gray-900 text-white font-semibold py-2.5 px-6 rounded-xl shadow text-sm transition-colors">
                 🏠 Volver al Panel Principal
+            </a>
+            <a href="{{ url_for('descargar_pdf') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-6 rounded-xl shadow text-sm transition-colors">
+                📄 Descargar PDF
             </a>
         </div>
 
