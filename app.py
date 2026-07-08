@@ -145,28 +145,40 @@ def descargar_pdf():
     buffer = io.BytesIO()
     c = canvas.Canvas(buffer, pagesize=letter)
 
-    # Escudo y logotipo (ajustá las rutas a tus archivos PNG)
-    c.drawImage(os.path.join(CARPETA_ACTUAL, "static", "fotos", "escudo.png"), 50, 730, width=80, height=80, mask='auto')
-    c.drawImage(os.path.join(CARPETA_ACTUAL, "static", "fotos", "logo_evento.png"), 450, 730, width=80, height=80, mask='auto')
+    # Márgenes (1,5 cm ≈ 43 puntos)
+    margen = 43
+    ancho_pagina, alto_pagina = letter
+
+    # Escudo y logotipo
+    c.drawImage(os.path.join(CARPETA_ACTUAL, "static", "fotos", "escudo.png"),
+                margen, alto_pagina-120, width=80, height=80, mask='auto')
+    c.drawImage(os.path.join(CARPETA_ACTUAL, "static", "fotos", "logo_evento.png"),
+                ancho_pagina-160, alto_pagina-120, width=80, height=80, mask='auto')
 
     # Título general
     c.setFont("Helvetica-Bold", 16)
-    c.drawCentredString(300, 780, "Resultados Finales Elección Reina")
+    c.drawCentredString(ancho_pagina/2, alto_pagina-40, "Resultados Finales Elección Reina")
     c.setFont("Helvetica", 12)
-    c.drawCentredString(300, 760, "Colegio Secundario Olga Márquez de Aredez")
+    c.drawCentredString(ancho_pagina/2, alto_pagina-60, "Colegio Secundario Olga Márquez de Aredez")
 
-    y = 680
+    y = alto_pagina-150
 
     for v in votos:
-        # Encabezado de cada jurado
+        # Si no hay espacio suficiente, salto de página
+        if y < 200:
+            c.showPage()
+            y = alto_pagina-100
+
+        # Encabezado jurado
         c.setFont("Helvetica-Bold", 12)
-        c.drawString(50, y, f"Jurado: {v['jurado']}")
+        c.drawString(margen, y, f"Jurado: {v['jurado']}")
         y -= 20
 
-        # Construir tabla con puntajes
+        # Construir tabla
         data = [["Candidata", "Belleza", "Elegancia", "Simpatía", "Postura", "Total"]]
         for id_c, notas in v['puntuaciones'].items():
-            fila = [id_c, notas['belleza'], notas['elegancia'], notas['simpatia'], notas['postura'], notas['total']]
+            fila = [id_c, notas['belleza'], notas['elegancia'],
+                    notas['simpatia'], notas['postura'], notas['total']]
             data.append(fila)
 
         table = Table(data, colWidths=[70]*6)
@@ -176,23 +188,26 @@ def descargar_pdf():
             ('ALIGN', (0,0), (-1,-1), 'CENTER')
         ]))
 
-        # Dibujar tabla en PDF
-        table.wrapOn(c, 50, y)
-        table.drawOn(c, 50, y-200)
+        # Centrar tabla
+        ancho_tabla = 6*70
+        x_centrado = (ancho_pagina - ancho_tabla) / 2
+        table.wrapOn(c, x_centrado, y)
+        table.drawOn(c, x_centrado, y-200)
 
-        # Espacio para firma del jurado
-        c.rect(50, y-250, 200, 40)
-        c.drawString(55, y-240, "Firma del Jurado")
+        # Firma jurado
+        c.rect(x_centrado, y-250, 200, 40)
+        c.drawString(x_centrado+5, y-240, "Firma del Jurado")
 
-        y -= 300  # bajar espacio para el siguiente jurado
+        y -= 300
 
     # Firmas de directivos al final
+    c.showPage()
     c.setFont("Helvetica-Bold", 12)
-    c.drawString(50, 120, "Firma Director/a")
-    c.rect(50, 100, 200, 40)
+    c.drawString(margen, 120, "Firma Director/a")
+    c.rect(margen, 100, 200, 40)
 
-    c.drawString(300, 120, "Firma Vicedirector/a")
-    c.rect(300, 100, 200, 40)
+    c.drawString(ancho_pagina/2, 120, "Firma Vicedirector/a")
+    c.rect(ancho_pagina/2, 100, 200, 40)
 
     c.save()
     buffer.seek(0)
