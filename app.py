@@ -4,7 +4,8 @@ import os
 import io
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
-
+from reportlab.platypus import Table, TableStyle   
+from reportlab.lib import colors                   
 app = Flask(__name__)
 app.secret_key = 'clave_secreta_olga_marquez'
 
@@ -143,19 +144,55 @@ def descargar_pdf():
 
     buffer = io.BytesIO()
     c = canvas.Canvas(buffer, pagesize=letter)
-    c.setFont("Helvetica", 12)
 
-    c.drawString(200, 750, "Resultados de la Elección Escolar")
-    y = 700
+    # Escudo y logotipo (ajustá las rutas a tus archivos PNG)
+    c.drawImage(os.path.join(CARPETA_ACTUAL, "escudo.png"), 50, 730, width=80, height=80, mask='auto')
+    c.drawImage(os.path.join(CARPETA_ACTUAL, "logo_evento.png"), 450, 730, width=80, height=80, mask='auto')
+
+    # Título general
+    c.setFont("Helvetica-Bold", 16)
+    c.drawCentredString(300, 780, "Resultados Finales Elección Reina")
+    c.setFont("Helvetica", 12)
+    c.drawCentredString(300, 760, "Colegio Secundario Olga Márquez de Aredez")
+
+    y = 680
 
     for v in votos:
+        # Encabezado de cada jurado
+        c.setFont("Helvetica-Bold", 12)
         c.drawString(50, y, f"Jurado: {v['jurado']}")
         y -= 20
+
+        # Construir tabla con puntajes
+        data = [["Candidata", "Belleza", "Elegancia", "Simpatía", "Postura", "Total"]]
         for id_c, notas in v['puntuaciones'].items():
-            linea = f"Candidata {id_c} - Total: {notas['total']} (Belleza: {notas['belleza']}, Elegancia: {notas['elegancia']}, Simpatía: {notas['simpatia']}, Postura: {notas['postura']})"
-            c.drawString(70, y, linea)
-            y -= 15
-        y -= 10
+            fila = [id_c, notas['belleza'], notas['elegancia'], notas['simpatia'], notas['postura'], notas['total']]
+            data.append(fila)
+
+        table = Table(data, colWidths=[70]*6)
+        table.setStyle(TableStyle([
+            ('BACKGROUND', (0,0), (-1,0), colors.lightblue),
+            ('GRID', (0,0), (-1,-1), 1, colors.black),
+            ('ALIGN', (0,0), (-1,-1), 'CENTER')
+        ]))
+
+        # Dibujar tabla en PDF
+        table.wrapOn(c, 50, y)
+        table.drawOn(c, 50, y-200)
+
+        # Espacio para firma del jurado
+        c.rect(50, y-250, 200, 40)
+        c.drawString(55, y-240, "Firma del Jurado")
+
+        y -= 300  # bajar espacio para el siguiente jurado
+
+    # Firmas de directivos al final
+    c.setFont("Helvetica-Bold", 12)
+    c.drawString(50, 120, "Firma Director/a")
+    c.rect(50, 100, 200, 40)
+
+    c.drawString(300, 120, "Firma Vicedirector/a")
+    c.rect(300, 100, 200, 40)
 
     c.save()
     buffer.seek(0)
