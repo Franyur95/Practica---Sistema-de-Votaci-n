@@ -199,7 +199,43 @@ def descargar_pdf():
         c.drawString(x_centrado+5, y-240, "Firma del Jurado")
 
         y -= 300
+    # Tabla FINAL RESUMEN DE PUNTAJE
+    c.showPage()
+    c.setFont("Helvetica-Bold", 14)
+    c.drawCentredString(ancho_pagina/2, alto_pagina-50, "Tabla Resumen Final")
+    # Construir datos resumen
+    candidatas = datos['candidatas']
+    resumen = []
+    for candi in candidatas:
+        fila = [candi['nombre']]
+        total_final = 0
+        for idx, v in enumerate(votos, start=1):
+            puntaje = v['puntuaciones'].get(str(candi['id']), {}).get('total', 0)
+            fila.append(puntaje)
+            total_final += puntaje
+        fila.append(total_final)
+        resumen.append(fila)
+        
+    # Ordenar por total final (última columna)
+    resumen.sort(key=lambda x: x[-1], reverse=True)
 
+    # Encabezado de la tabla
+    data_resumen = [["Candidata", "Jurado 1", "Jurado 2", "Jurado 3", "Jurado 4", "Jurado 5", "Total"]]
+    data_resumen.extend(resumen)
+
+    # Crear tabla
+    table_resumen = Table(data_resumen, colWidths=[90,60,60,60,60,60,60])
+    table_resumen.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,0), colors.lightblue),
+        ('GRID', (0,0), (-1,-1), 1, colors.black),
+        ('ALIGN', (0,0), (-1,-1), 'CENTER')
+    ]))
+
+    # Centrar tabla
+    ancho_tabla = 90 + 6*60
+    x_centrado = (ancho_pagina - ancho_tabla) / 2
+    table_resumen.wrapOn(c, x_centrado, alto_pagina-100)
+    table_resumen.drawOn(c, x_centrado, alto_pagina-500)
     # Firmas de directivos al final
     c.showPage()
     c.setFont("Helvetica-Bold", 12)
