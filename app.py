@@ -146,8 +146,8 @@ def descargar_pdf():
     c = canvas.Canvas(buffer, pagesize=letter)
 
     # Escudo y logotipo (ajustá las rutas a tus archivos PNG)
-    c.drawImage(os.path.join(CARPETA_ACTUAL, "escudo.png"), 50, 730, width=80, height=80, mask='auto')
-    c.drawImage(os.path.join(CARPETA_ACTUAL, "logo_evento.png"), 450, 730, width=80, height=80, mask='auto')
+    c.drawImage(os.path.join(CARPETA_ACTUAL, "static", "fotos", "escudo.png"), 50, 730, width=80, height=80, mask='auto')
+    c.drawImage(os.path.join(CARPETA_ACTUAL, "static", "fotos", "logo_evento.png"), 450, 730, width=80, height=80, mask='auto')
 
     # Título general
     c.setFont("Helvetica-Bold", 16)
