@@ -125,13 +125,13 @@ def resultados():
         
         lista_candidatas.sort(key=lambda x: x['acumulado_elegancia'], reverse=True)
         miss_elegancia = lista_candidatas.pop(0)
-        miss_elegancia['titulo'] = "✨ Miss Elegancia ✨"
+        miss_elegancia['titulo'] = "✨ Primera Princesa ✨"
         miss_elegancia['score_mostrar'] = f"{miss_elegancia['acumulado_elegancia']} pts"
         podio.append(miss_elegancia)
         
         lista_candidatas.sort(key=lambda x: x['acumulado_simpatia'], reverse=True)
         miss_simpatia = lista_candidatas.pop(0)
-        miss_simpatia['titulo'] = "😊 Miss Simpatía 😊"
+        miss_simpatia['titulo'] = "😊 Segunda Princesa 😊"
         miss_simpatia['score_mostrar'] = f"{miss_simpatia['acumulado_simpatia']} pts"
         podio.append(miss_simpatia)
 
