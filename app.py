@@ -15,18 +15,68 @@ DB_FILE = os.path.join(CARPETA_ACTUAL, 'base_datos.json')
 def cargar_datos():
     if not os.path.exists(DB_FILE):
         datos_iniciales = {
-            "candidatas": [
-                {"id": 1, "nombre": "Sofía Benítez", "curso": "1er Año", "foto": "1.jpg"},
-                {"id": 2, "nombre": "Valentina Giménez", "curso": "2do Año", "foto": "2.jpg"},
-                {"id": 3, "nombre": "Martina Alarcón", "curso": "3er Año", "foto": "3.jpg"},
-                {"id": 4, "nombre": "Camila Mamani", "curso": "4to Año 1ra", "foto": "4.jpg"},
-                {"id": 5, "nombre": "Lucía Flores", "curso": "4to Año 2da", "foto": "5.jpg"},
-                {"id": 6, "nombre": "Antonella Solís", "curso": "5to Año 1ra", "foto": "6.jpg"},
-                {"id": 7, "nombre": "Zoe Gutiérrez", "curso": "5to Año 2da", "foto": "7.jpg"},
-                {"id": 8, "nombre": "Agostina Tolaba", "curso": "5to Año 3ra", "foto": "8.jpg"},
-                {"id": 9, "nombre": "Micaela Cruz", "curso": "6to Año 1ra", "foto": "9.jpg"},
-                {"id": 10, "nombre": "Abril Vázquez", "curso": "6to Año 2da", "foto": "10.jpg"}
-            ],
+        "candidatas": [
+        {
+            "id": 1,
+            "nombre": "Luisina Chamorro",
+            "curso": "1er Año",
+            "foto": "1.jpg"
+        },
+        {
+            "id": 2,
+            "nombre": "Carolina Clemente",
+            "curso": "2do Año",
+            "foto": "2.jpg"
+        },
+        {
+            "id": 3,
+            "nombre": "Tamara Garay",
+            "curso": "3er Año",
+            "foto": "3.jpg"
+        },
+        {
+            "id": 4,
+            "nombre": "Daiana Flores",
+            "curso": "4to Año 1ra",
+            "foto": "4.jpg"
+        },
+        {
+            "id": 5,
+            "nombre": "Rocio Sánchez",
+            "curso": "4to Año 2da",
+            "foto": "5.jpg"
+        },
+        {
+            "id": 6,
+            "nombre": "Agustina Patagua",
+            "curso": "5to Año 1ra",
+            "foto": "6.jpg"
+        },
+        {
+            "id": 7,
+            "nombre": "Ana Velazquez",
+            "curso": "5to Año 2da",
+            "foto": "7.jpg"
+        },
+        {
+            "id": 8,
+            "nombre": "Abigail Barrios",
+            "curso": "5to Año 3ra",
+            "foto": "8.jpg"
+        },
+        {
+            "id": 9,
+            "nombre": "Camila Díaz",
+            "curso": "6to Año 1ra",
+            "foto": "9.jpg"
+        },
+        {
+            "id": 10,
+            "nombre": "Luciana Choque",
+            "curso": "6to Año 2da",
+            "foto": "10.jpg"
+        }
+    ],
             "votos_jurados": []
         }
         guardar_datos(datos_iniciales)
