@@ -2,64 +2,140 @@
     "candidatas": [
         {
             "id": 1,
-            "nombre": "Sofía Benítez",
+            "nombre": "Luisina Chamorro",
             "curso": "1er Año",
-            "foto": "1.jpeg"
+            "foto": "1.jpg"
         },
         {
             "id": 2,
-            "nombre": "Valentina Giménez",
+            "nombre": "Carolina Clemente",
             "curso": "2do Año",
-            "foto": "2.jpeg"
+            "foto": "2.jpg"
         },
         {
             "id": 3,
-            "nombre": "Martina Alarcón",
+            "nombre": "Tamara Garay",
             "curso": "3er Año",
-            "foto": "3.jpeg"
+            "foto": "3.jpg"
         },
         {
             "id": 4,
-            "nombre": "Camila Mamani",
+            "nombre": "Daiana Flores",
             "curso": "4to Año 1ra",
-            "foto": "4.jpeg"
+            "foto": "4.jpg"
         },
         {
             "id": 5,
-            "nombre": "Lucía Flores",
+            "nombre": "Rocio Sánchez",
             "curso": "4to Año 2da",
-            "foto": "5.jpeg"
+            "foto": "5.jpg"
         },
         {
             "id": 6,
-            "nombre": "Antonella Solís",
+            "nombre": "Agustina Patagua",
             "curso": "5to Año 1ra",
-            "foto": "6.jpeg"
+            "foto": "6.jpg"
         },
         {
             "id": 7,
-            "nombre": "Zoe Gutiérrez",
+            "nombre": "Ana Velazquez",
             "curso": "5to Año 2da",
-            "foto": "7.jpeg"
+            "foto": "7.jpg"
         },
         {
             "id": 8,
-            "nombre": "Agostina Tolaba",
+            "nombre": "Abigail Barrios",
             "curso": "5to Año 3ra",
-            "foto": "8.jpeg"
+            "foto": "8.jpg"
         },
         {
             "id": 9,
-            "nombre": "Micaela Cruz",
+            "nombre": "Camila Díaz",
             "curso": "6to Año 1ra",
-            "foto": "9.jpeg"
+            "foto": "9.jpg"
         },
         {
             "id": 10,
-            "nombre": "Abril Vázquez",
+            "nombre": "Luciana Choque",
             "curso": "6to Año 2da",
-            "foto": "10.jpeg"
+            "foto": "10.jpg"
         }
     ],
-    "votos_jurados": []
+    "votos_jurados": [
+        {
+            "jurado": "Jurado Nº 2",
+            "puntuaciones": {
+                "1": {
+                    "belleza": 10,
+                    "elegancia": 5,
+                    "simpatia": 5,
+                    "postura": 5,
+                    "total": 25
+                },
+                "2": {
+                    "belleza": 5,
+                    "elegancia": 5,
+                    "simpatia": 5,
+                    "postura": 5,
+                    "total": 20
+                },
+                "3": {
+                    "belleza": 5,
+                    "elegancia": 5,
+                    "simpatia": 5,
+                    "postura": 5,
+                    "total": 20
+                },
+                "4": {
+                    "belleza": 5,
+                    "elegancia": 5,
+                    "simpatia": 5,
+                    "postura": 5,
+                    "total": 20
+                },
+                "5": {
+                    "belleza": 5,
+                    "elegancia": 5,
+                    "simpatia": 5,
+                    "postura": 5,
+                    "total": 20
+                },
+                "6": {
+                    "belleza": 5,
+                    "elegancia": 5,
+                    "simpatia": 5,
+                    "postura": 5,
+                    "total": 20
+                },
+                "7": {
+                    "belleza": 5,
+                    "elegancia": 5,
+                    "simpatia": 5,
+                    "postura": 5,
+                    "total": 20
+                },
+                "8": {
+                    "belleza": 5,
+                    "elegancia": 5,
+                    "simpatia": 5,
+                    "postura": 5,
+                    "total": 20
+                },
+                "9": {
+                    "belleza": 5,
+                    "elegancia": 5,
+                    "simpatia": 5,
+                    "postura": 5,
+                    "total": 20
+                },
+                "10": {
+                    "belleza": 5,
+                    "elegancia": 5,
+                    "simpatia": 5,
+                    "postura": 5,
+                    "total": 20
+                }
+            }
+        }
+    ]
 }

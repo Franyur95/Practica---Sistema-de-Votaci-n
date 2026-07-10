@@ -13,10 +13,9 @@
 </head>
 <body class="min-h-screen p-4 md:p-8 relative overflow-x-hidden"
       style="background: linear-gradient(to top right, #81E6D9, #ffffff, #4FD1C5);">
-
+       
     <div class="fixed top-0 left-0 text-sky-300 opacity-10 text-7xl p-4 select-none pointer-events-none" style="opacity: 0.15; font-size: 5rem;">🌸</div>
     <div class="fixed bottom-0 right-0 text-sky-300 opacity-10 text-7xl p-4 select-none pointer-events-none" style="opacity: 0.15; font-size: 5rem;">🌸</div>
-    <!-- Logo del evento difuminado en la esquina superior derecha -->
     <div class="absolute top-6 right-6 select-none pointer-events-none">
         <img src="{{ url_for('static', filename='fotos/logo_evento.png') }}"
              alt="Logo Evento" class="w-48 opacity-100">
@@ -24,28 +23,36 @@
 
     <div class="max-w-2xl mx-auto relative z-10">
         
-        <header class="bg-white shadow-md rounded-2xl p-6 mb-8 border border-blue-100 text-center" style="border-radius: 1rem;">
-            <div class="mb-2">
+        <header class="bg-white shadow-md rounded-2xl py-3 px-6 mb-2 border border-blue-100 flex flex-col sm:flex-row items-center justify-center gap-8 text-center sm:text-left" style="border-radius: 1rem;">
+            <div class="flex-shrink-0">
                 <img src="{{ url_for('static', filename='fotos/escudo.png') }}"
-                    alt="Escudo" class="mx-auto w-20 opacity-90">
+                    alt="Escudo" class="mx-auto sm:mx-0 w-20 opacity-90">
             </div>  
-            <h1 class="text-2xl font-bold text-gray-800 mt-1">Planilla de Calificación</h1>
-            <div class="mt-2 inline-block bg-blue-100 text-blue-800 text-sm font-semibold px-4 py-1 rounded-full" style="border-radius: 9999px;">
-                ✍️ Evaluador Activo: <span class="text-blue-900 font-bold">{{ nombre_jurado }}</span>
+             
+            <div class="flex flex-col items-center sm:items-start">
+                <h1 class="text-2xl font-bold text-gray-800">Planilla de Calificación</h1>
+                <div class="mt-1.5 flex items-center gap-2 bg-blue-100 text-blue-800 text-sm font-semibold px-4 py-1 rounded-full select-none" style="border-radius: 9999px;">
+                    <!-- Icono de Persona Minimalista -->
+                    <svg class="w-3.5 h-3.5 text-blue-700 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                    <span>Evaluador Activo: <span class="text-blue-900 font-bold">{{ nombre_jurado }}</span></span>
+                </div>
             </div>
         </header>
 
         <form action="/guardar_votos" method="POST" class="space-y-6">
             <input type="hidden" name="nombre_jurado" value="{{ nombre_jurado }}">
 
-            <div id="contenedor-carrusel">
+            
+               <div id="contenedor-carrusel">
                 {% for c in candidatas %}
                 <div class="candidata-card bg-white shadow-lg rounded-2xl p-6 border border-blue-100 transition-all relative overflow-hidden flex flex-col justify-between {% if not loop.first %}tarjeta-oculta{% endif %}" style="border-radius: 1rem;" data-index="{{ loop.index0 }}" data-nombre="{{ c.nombre }}" data-id="{{ c.id }}">
                     
                     <div class="absolute -top-2 -right-2 text-blue-100 text-4xl opacity-40 select-none pointer-events-none">🌸</div>
 
                     <div>
-                        <div class="flex justify-between items-start mb-3" style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div class="flex justify-between items-start mb-4">
                             <div>
                                 <span class="text-xs font-bold uppercase tracking-wider text-blue-400 block">Postulante Nº {{ loop.index }}</span>
                                 <h3 class="text-xl font-bold text-gray-800 mt-0.5">{{ c.nombre }}</h3>
@@ -55,69 +62,91 @@
                             </span>
                         </div>
 
-                        <div class="my-4 w-full h-52 bg-gray-50 rounded-xl overflow-hidden border border-blue-100 flex items-center justify-center shadow-inner" style="border-radius: 0.75rem;">
-                            {% if c.foto %}
-                                <img src="{{ url_for('static', filename='fotos/' + c.foto) }}" 
-                                     alt="Foto de {{ c.nombre }}" 
-                                     class="w-full h-full object-cover"
-                                     onerror="this.parentElement.innerHTML='<div class=\'text-center p-4\'><span class=\'text-3xl block mb-1\'>📸</span><span class=\'text-xs text-gray-400 font-medium\'>Sin foto cargada</span></div>';">
-                            {% else %}
-                                <div class="text-center p-4">
-                                    <span class="text-3xl block mb-1">📸</span>
-                                    <span class="text-xs text-gray-400 font-medium">Sin foto cargada</span>
-                                </div>
-                            {% endif %}
-                        </div>
-
-                        <div class="h-px bg-gray-100 w-full mb-4"></div>
-
-                        <div class="space-y-3 mb-2" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-4 items-center">
                             
-                            <div class="flex items-center justify-between">
-                                <label class="text-sm font-medium text-gray-600 flex items-center gap-1">
-                                    <span>✨ Belleza</span>
-                                </label>
-                                <select name="belleza_{{ c.id }}" required class="select-puntaje bg-blue-50 border border-blue-200 rounded-lg p-1.5 text-sm font-semibold text-blue-900 w-24" style="width: 6rem; border-radius: 0.5rem; text-align: center;">
-                                    {% for n in range(5, 11) %}
-                                        <option value="{{ n }}">{{ n }} pts</option>
-                                    {% endfor %}
-                                </select>
+                            <div class="w-full h-80 bg-gray-50 rounded-xl overflow-hidden border border-blue-100 flex items-center justify-center shadow-inner" style="border-radius: 0.75rem;">
+                                {% if c.foto %}
+                                    <img src="{{ url_for('static', filename='fotos/' + c.foto) }}" 
+                                         alt="Foto de {{ c.nombre }}" 
+                                         class="w-full h-full object-cover"
+                                         onerror="this.parentElement.innerHTML='<div class=\'text-center p-4\'><span class=\'text-3xl block mb-1\'>📸</span><span class=\'text-xs text-gray-400 font-medium\'>Sin foto cargada</span></div>';">
+                                {% else %}
+                                    <div class="text-center p-4">
+                                        <span class="text-3xl block mb-1">📸</span>
+                                        <span class="text-xs text-gray-400 font-medium">Sin foto cargada</span>
+                                    </div>
+                                {% endif %}
                             </div>
 
-                            <div class="flex items-center justify-between">
-                                <label class="text-sm font-medium text-gray-600 flex items-center gap-1">
-                                    <span>💃 Elegancia</span>
-                                </label>
-                                <select name="elegancia_{{ c.id }}" required class="select-puntaje bg-blue-50 border border-blue-200 rounded-lg p-1.5 text-sm font-semibold text-blue-900 w-24" style="width: 6rem; border-radius: 0.5rem; text-align: center;">
-                                    {% for n in range(5, 11) %}
-                                        <option value="{{ n }}">{{ n }} pts</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
+                            <div class="space-y-4 flex flex-col justify-center" style="display: flex; flex-direction: column; gap: 1rem;">
+                                
+                                <div class="flex items-center justify-between bg-blue-50/30 p-2 rounded-lg border border-gray-50">
+                                    <label class="text-sm font-medium text-gray-700 flex items-center gap-1">
+                                        <span class="w-5 h-5 rounded-full bg-blue-100 text-blue-700 text-[10px] font-black flex items-center justify-center border border-blue-200 shadow-sm flex-shrink-0">
+                                        <svg class="w-3.5 h-3.5 text-blue-400 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 21.5c-1.35-2.24-3.12-4.14-5.22-5.59a11.13 11.13 0 0 1-3.69-4.5c-.48-1.07-.63-2.28-.35-3.45a3.94 3.94 0 0 1 2.27-2.73 4.26 4.26 0 0 1 3.54.21A8.92 8.92 0 0 1 12 8.24a8.92 8.92 0 0 1 3.45-2.81 4.26 4.26 0 0 1 3.54-.21 3.94 3.94 0 0 1 2.27 2.73c.28 1.17.13 2.38-.35 3.45a11.13 11.13 0 0 1-3.69 4.5c-2.1 1.45-3.87 3.35-5.22 5.59zM12 9.42a4.92 4.92 0 0 0-1.84-1.37c-.7-.3-1.48-.35-2.21-.13a1.94 1.94 0 0 0-1.12 1.35c-.14.57-.06 1.16.17 1.68.44.97 1.15 1.83 2.06 2.47a15.7 15.7 0 0 0 2.94 1.63V9.42zm1.84-1.37A4.92 4.92 0 0 0 12 9.42v5.76c1.04-.44 2.03-1 2.94-1.63a13.12 13.12 0 0 0 2.06-2.47c.23-.52.31-1.11.17-1.68a1.94 1.94 0 0 0-1.12-1.35c-.73-.22-1.51-.17-2.21.13z"/>
+                                        </svg>
+                                        </span>
+                                        <span>Belleza</span>
+                                    </label>
+                                    <select name="belleza_{{ c.id }}" required class="select-puntaje bg-blue-50 border border-blue-200 rounded-lg p-2 text-sm font-semibold text-blue-900 w-24" style="width: 6rem; border-radius: 0.5rem; text-align: center;">
+                                        {% for n in range(5, 11) %}
+                                            <option value="{{ n }}">{{ n }} pts</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
 
-                            <div class="flex items-center justify-between">
-                                <label class="text-sm font-medium text-gray-600 flex items-center gap-1">
-                                    <span>😊 Simpatía</span>
-                                </label>
-                                <select name="simpatia_{{ c.id }}" required class="select-puntaje bg-blue-50 border border-blue-200 rounded-lg p-1.5 text-sm font-semibold text-blue-900 w-24" style="width: 6rem; border-radius: 0.5rem; text-align: center;">
-                                    {% for n in range(5, 11) %}
-                                        <option value="{{ n }}">{{ n }} pts</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
+                                <div class="flex items-center justify-between bg-blue-50/30 p-2 rounded-lg border border-gray-50">
+                                    <label class="text-sm font-medium text-gray-700 flex items-center gap-1">
+                                        <span class="w-5 h-5 rounded-full bg-blue-100 text-blue-700 text-[10px] font-black flex items-center justify-center border border-blue-200 shadow-sm flex-shrink-0">
+                                        <svg class="w-3.5 h-3.5 text-blue-400 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 21.5c-1.35-2.24-3.12-4.14-5.22-5.59a11.13 11.13 0 0 1-3.69-4.5c-.48-1.07-.63-2.28-.35-3.45a3.94 3.94 0 0 1 2.27-2.73 4.26 4.26 0 0 1 3.54.21A8.92 8.92 0 0 1 12 8.24a8.92 8.92 0 0 1 3.45-2.81 4.26 4.26 0 0 1 3.54-.21 3.94 3.94 0 0 1 2.27 2.73c.28 1.17.13 2.38-.35 3.45a11.13 11.13 0 0 1-3.69 4.5c-2.1 1.45-3.87 3.35-5.22 5.59zM12 9.42a4.92 4.92 0 0 0-1.84-1.37c-.7-.3-1.48-.35-2.21-.13a1.94 1.94 0 0 0-1.12 1.35c-.14.57-.06 1.16.17 1.68.44.97 1.15 1.83 2.06 2.47a15.7 15.7 0 0 0 2.94 1.63V9.42zm1.84-1.37A4.92 4.92 0 0 0 12 9.42v5.76c1.04-.44 2.03-1 2.94-1.63a13.12 13.12 0 0 0 2.06-2.47c.23-.52.31-1.11.17-1.68a1.94 1.94 0 0 0-1.12-1.35c-.73-.22-1.51-.17-2.21.13z"/>
+                                        </svg>
+                                        </span>
+                                        <span> Elegancia</span>
+                                    </label>
+                                    <select name="elegancia_{{ c.id }}" required class="select-puntaje bg-blue-50 border border-blue-200 rounded-lg p-2 text-sm font-semibold text-blue-900 w-24" style="width: 6rem; border-radius: 0.5rem; text-align: center;">
+                                        {% for n in range(5, 11) %}
+                                            <option value="{{ n }}">{{ n }} pts</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
 
-                            <div class="flex items-center justify-between">
-                                <label class="text-sm font-medium text-gray-600 flex items-center gap-1">
-                                    <span>🚶‍♀️ Postura</span>
-                                </label>
-                                <select name="postura_{{ c.id }}" required class="select-puntaje bg-blue-50 border border-blue-200 rounded-lg p-1.5 text-sm font-semibold text-blue-900 w-24" style="width: 6rem; border-radius: 0.5rem; text-align: center;">
-                                    {% for n in range(5, 11) %}
-                                        <option value="{{ n }}">{{ n }} pts</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
+                                <div class="flex items-center justify-between bg-blue-50/30 p-2 rounded-lg border border-gray-50">
+                                    <label class="text-sm font-medium text-gray-700 flex items-center gap-1">
+                                        <span class="w-5 h-5 rounded-full bg-blue-100 text-blue-700 text-[10px] font-black flex items-center justify-center border border-blue-200 shadow-sm flex-shrink-0">
+                                        <svg class="w-3.5 h-3.5 text-blue-400 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 21.5c-1.35-2.24-3.12-4.14-5.22-5.59a11.13 11.13 0 0 1-3.69-4.5c-.48-1.07-.63-2.28-.35-3.45a3.94 3.94 0 0 1 2.27-2.73 4.26 4.26 0 0 1 3.54.21A8.92 8.92 0 0 1 12 8.24a8.92 8.92 0 0 1 3.45-2.81 4.26 4.26 0 0 1 3.54-.21 3.94 3.94 0 0 1 2.27 2.73c.28 1.17.13 2.38-.35 3.45a11.13 11.13 0 0 1-3.69 4.5c-2.1 1.45-3.87 3.35-5.22 5.59zM12 9.42a4.92 4.92 0 0 0-1.84-1.37c-.7-.3-1.48-.35-2.21-.13a1.94 1.94 0 0 0-1.12 1.35c-.14.57-.06 1.16.17 1.68.44.97 1.15 1.83 2.06 2.47a15.7 15.7 0 0 0 2.94 1.63V9.42zm1.84-1.37A4.92 4.92 0 0 0 12 9.42v5.76c1.04-.44 2.03-1 2.94-1.63a13.12 13.12 0 0 0 2.06-2.47c.23-.52.31-1.11.17-1.68a1.94 1.94 0 0 0-1.12-1.35c-.73-.22-1.51-.17-2.21.13z"/>
+                                        </svg>
+                                        </span>
+                                        <span>Simpatía</span>
+                                    </label>
+                                    <select name="simpatia_{{ c.id }}" required class="select-puntaje bg-blue-50 border border-blue-200 rounded-lg p-2 text-sm font-semibold text-blue-900 w-24" style="width: 6rem; border-radius: 0.5rem; text-align: center;">
+                                        {% for n in range(5, 11) %}
+                                            <option value="{{ n }}">{{ n }} pts</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
 
+                                <div class="flex items-center justify-between bg-blue-50/30 p-2 rounded-lg border border-gray-50">
+                                    <label class="text-sm font-medium text-gray-700 flex items-center gap-1">
+                                        <span class="w-5 h-5 rounded-full bg-blue-100 text-blue-700 text-[10px] font-black flex items-center justify-center border border-blue-200 shadow-sm flex-shrink-0">
+                                        <svg class="w-3.5 h-3.5 text-blue-400 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 21.5c-1.35-2.24-3.12-4.14-5.22-5.59a11.13 11.13 0 0 1-3.69-4.5c-.48-1.07-.63-2.28-.35-3.45a3.94 3.94 0 0 1 2.27-2.73 4.26 4.26 0 0 1 3.54.21A8.92 8.92 0 0 1 12 8.24a8.92 8.92 0 0 1 3.45-2.81 4.26 4.26 0 0 1 3.54-.21 3.94 3.94 0 0 1 2.27 2.73c.28 1.17.13 2.38-.35 3.45a11.13 11.13 0 0 1-3.69 4.5c-2.1 1.45-3.87 3.35-5.22 5.59zM12 9.42a4.92 4.92 0 0 0-1.84-1.37c-.7-.3-1.48-.35-2.21-.13a1.94 1.94 0 0 0-1.12 1.35c-.14.57-.06 1.16.17 1.68.44.97 1.15 1.83 2.06 2.47a15.7 15.7 0 0 0 2.94 1.63V9.42zm1.84-1.37A4.92 4.92 0 0 0 12 9.42v5.76c1.04-.44 2.03-1 2.94-1.63a13.12 13.12 0 0 0 2.06-2.47c.23-.52.31-1.11.17-1.68a1.94 1.94 0 0 0-1.12-1.35c-.73-.22-1.51-.17-2.21.13z"/>
+                                        </svg>
+                                        </span>
+                                        <span>Postura</span>
+                                    </label>
+                                    <select name="postura_{{ c.id }}" required class="select-puntaje bg-blue-50 border border-blue-200 rounded-lg p-2 text-sm font-semibold text-blue-900 w-24" style="width: 6rem; border-radius: 0.5rem; text-align: center;">
+                                        {% for n in range(5, 11) %}
+                                            <option value="{{ n }}">{{ n }} pts</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                            </div>
                         </div>
+
                     </div>
                 </div>
                 {% endfor %}
@@ -129,8 +158,9 @@
                     <div id="lista-resumen" class="space-y-4 max-h-96 overflow-y-auto pr-1"></div>
                 </div>
             </div>
+            </div>
 
-            <div class="bg-white p-3 shadow-md rounded-2xl border border-blue-100 flex justify-between items-center" style="border-radius: 1rem;">
+           <div class="max-w-2xl mx-auto bg-white p-3 shadow-md rounded-b-2xl border border-blue-100 border-t-0 flex justify-between items-center w-full relative z-20" style="border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; margin-top: -1rem;">
                 <button type="button" id="btn-anterior" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-xl shadow-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed" style="border-radius: 0.75rem; border: none;">
                     ⬅️ Anterior
                 </button>
@@ -142,7 +172,7 @@
                 </button>
             </div>
 
-            <div class="bg-white p-4 shadow-lg rounded-2xl border border-blue-100 flex justify-between items-center" style="border-radius: 1rem;">
+            <div class="bg-white py-2 px-4 shadow-lg rounded-2xl border border-blue-100 flex justify-between items-center mt-4" style="border-radius: 1rem;">
                 <a href="/" class="text-sm text-gray-500 hover:text-gray-700 font-medium" style="text-decoration: none;">🏠 Volver al Inicio</a>
                 <button type="submit" id="btn-guardar" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-xl shadow-md transition-all cursor-pointer opacity-40 cursor-not-allowed" style="border-radius: 0.75rem; background-color: #10b981; color: white; border: none;" disabled>
                     Finalizar y Guardar Votos ✔️
