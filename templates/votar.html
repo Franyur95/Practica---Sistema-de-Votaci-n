@@ -43,11 +43,12 @@
 
         <form action="/guardar_votos" method="POST" class="space-y-6">
             <input type="hidden" name="nombre_jurado" value="{{ nombre_jurado }}">
+            <input type="hidden" name="jurado_id" value="{{ jurado_id }}">
 
             
                <div id="contenedor-carrusel">
                 {% for c in candidatas %}
-                <div class="candidata-card bg-white shadow-lg rounded-2xl p-6 border border-blue-100 transition-all relative overflow-hidden flex flex-col justify-between {% if not loop.first %}tarjeta-oculta{% endif %}" style="border-radius: 1rem;" data-index="{{ loop.index0 }}" data-nombre="{{ c.nombre }}" data-id="{{ c.id }}">
+                <div class="candidata-card bg-white shadow-lg rounded-2xl p-6 border border-blue-100 transition-all relative overflow-hidden flex flex-col justify-between {% if not loop.first %}tarjeta-oculta{% endif %}" style="border-radius: 1rem;" data-index="{{ loop.index0 }}" data-nombre="{{ c.nombre }}" data-id="{{ c.id }}" data-foto="{{ c.foto }}">
                     
                     <div class="absolute -top-2 -right-2 text-blue-100 text-4xl opacity-40 select-none pointer-events-none">🌸</div>
 
@@ -201,6 +202,7 @@
                 tarjetas.forEach((tarjeta) => {
                     const nombre = tarjeta.getAttribute('data-nombre');
                     const id = tarjeta.getAttribute('data-id');
+                    const foto = tarjeta.getAttribute('data-foto');
                     
                     const belleza = tarjeta.querySelector(`[name="belleza_${id}"]`).value;
                     const elegancia = tarjeta.querySelector(`[name="elegancia_${id}"]`).value;
@@ -209,16 +211,23 @@
                     
                     const totalPuntos = parseInt(belleza) + parseInt(elegancia) + parseInt(simpatia) + parseInt(postura);
 
+                    const fotoHtml = foto
+                        ? `<img src="/static/fotos/${foto}" class="w-12 h-12 rounded-full object-cover border border-gray-200 flex-shrink-0" onerror="this.outerHTML='<div class=\\'w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-sm flex-shrink-0\\'>📸</div>';">`
+                        : `<div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-sm flex-shrink-0">📸</div>`;
+
                     const fila = document.createElement('div');
                     fila.className = "bg-gray-50 p-3 rounded-xl border border-gray-100 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2";
                     fila.innerHTML = `
-                        <div>
-                            <h4 class="font-bold text-gray-800 text-sm">${nombre}</h4>
-                            <div class="text-xs text-gray-500 mt-0.5 space-x-2">
-                                <span>✨ Bel: <b>${belleza}</b></span>
-                                <span>💃 Ele: <b>${elegancia}</b></span>
-                                <span>😊 Sim: <b>${simpatia}</b></span>
-                                <span>🚶‍♀️ Pos: <b>${postura}</b></span>
+                        <div class="flex items-center gap-3">
+                            ${fotoHtml}
+                            <div>
+                                <h4 class="font-bold text-gray-800 text-sm">${nombre}</h4>
+                                <div class="text-xs text-gray-500 mt-0.5 space-x-2">
+                                    <span>✨ Bel: <b>${belleza}</b></span>
+                                    <span>💃 Ele: <b>${elegancia}</b></span>
+                                    <span>😊 Sim: <b>${simpatia}</b></span>
+                                    <span>🚶‍♀️ Pos: <b>${postura}</b></span>
+                                </div>
                             </div>
                         </div>
                         <div class="text-right">

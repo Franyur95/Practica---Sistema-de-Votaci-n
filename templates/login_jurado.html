@@ -48,38 +48,41 @@
         <div class="bg-sky-50/70 border border-sky-100 rounded-2xl p-4 mb-6">
             <div class="flex justify-between items-center text-sm mb-2 text-slate-600">
                 <span>Planillas cargadas oficialmente:</span>
-                <span class="font-bold text-sky-700 text-base">{{ cantidad_jurados }} / 5</span>
+                <span class="font-bold text-sky-700 text-base">{{ votos_emitidos }} / {{ total_jurados }}</span>
             </div>
             
             <!-- Barra de progreso estilizada en azul claro -->
             <div class="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
                 <div class="bg-gradient-to-r from-sky-400 to-blue-500 h-3 rounded-full transition-all duration-500" 
-                     style="width: {{ (cantidad_jurados / 5) * 100 }}%"></div>
+                     style="width: {{ (votos_emitidos / total_jurados * 100) if total_jurados > 0 else 0 }}%"></div>
             </div>
         </div>
 
-        <!-- Formulario o Aviso de Fin -->
-        {% if cantidad_jurados < 5 %}
+<!-- Formulario o Aviso de Fin -->
+        {% if votos_emitidos < total_jurados and total_jurados > 0 %}
         <form action="/evaluacion" method="POST" class="space-y-4 text-left">
             <div>
-                <label class="block text-sm font-medium text-slate-600 mb-1 ml-1">Identificación del Evaluador:</label>
-                <select name="nombre_jurado" required class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 cursor-pointer appearance-none shadow-sm">
-                    <option value="" disabled selected>Haga clic para seleccionar...</option>
-                    <option value="Jurado Nº 1">Jurado Nº 1</option>
-                    <option value="Jurado Nº 2">Jurado Nº 2</option>
-                    <option value="Jurado Nº 3">Jurado Nº 3</option>
-                    <option value="Jurado Nº 4">Jurado Nº 4</option>
-                    <option value="Jurado Nº 5">Jurado Nº 5</option>
-                </select>
+                <label class="block text-sm font-medium text-slate-600 mb-1 ml-1">Usuario:</label>
+                <input type="text" name="usuario" required
+                       class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 shadow-sm">
             </div>
-            
+            <div>
+                <label class="block text-sm font-medium text-slate-600 mb-1 ml-1">Contraseña:</label>
+                <input type="password" name="password" required
+                       class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 shadow-sm">
+            </div>
+
             <button type="submit" class="w-full bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white font-semibold py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer mt-2">
                 <span>Abrir Planilla de Evaluación</span> 📑
             </button>
         </form>
+        {% elif total_jurados == 0 %}
+        <div class="p-4 bg-amber-50 border border-amber-200 text-amber-800 rounded-2xl font-medium text-center mb-6">
+            ⚠️ El administrador todavía no cargó jurados en el sistema.
+        </div>
         {% else %}
         <div class="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl font-medium flex items-center justify-center gap-2 mb-6">
-            ✨ ¡Los 5 jurados completaron el escrutinio con éxito! ✨
+            ✨ ¡Todos los jurados completaron el escrutinio con éxito! ✨
         </div>
         {% endif %}
 
@@ -89,10 +92,9 @@
                 Ver Resultados Finales (Podio) 📊
             </a>
             
-            <a href="/reiniciar" class="text-xs text-red-400 hover:text-red-600 font-medium transition-colors hover:underline mt-2 self-center" 
-               onclick="return confirm('⚠️ ¿Está seguro de que desea REINICIAR TODA LA VOTACIÓN? Esto borrará los datos actuales.');">
-                Reiniciar base de datos
-            </a>
+        <a href="/admin/login" class="text-xs text-slate-400 hover:text-slate-600 font-medium transition-colors hover:underline mt-2 self-center">
+                        Panel de Administrador 🔐
+        </a>
         </div>
 
     </div>

@@ -27,7 +27,7 @@
             <h2 class="text-xs font-semibold tracking-wider text-blue-500 uppercase">Secundario Nº59 "Olga Márquez de Aredez"</h2>
             <h1 class="text-3xl font-black text-gray-800 mt-1">Escrutinio Final</h1>
             <div class="mt-2 inline-block bg-green-100 text-green-800 text-xs font-semibold px-4 py-1 rounded-full" style="border-radius: 9999px;">
-                📊 Planillas procesadas: <span class="font-bold">{{ total_jurados }} / 5</span>
+                📊 Planillas procesadas: <span class="font-bold">{{ total_jurados }} / {{ total_registrados }}</span>
             </div>
         </header>
 
@@ -40,12 +40,22 @@
                 <!-- TARJETA REINA -->
                 <div class="bg-white shadow-2xl rounded-3xl border-2 border-yellow-300 p-8 text-center relative overflow-hidden order-first md:order-none" style="border-radius: 1.5rem; transform: scale(1.03); box-shadow: 0 25px 50px -12px rgba(251, 191, 36, 0.15);">
                     <div class="absolute -top-4 -right-4 text-yellow-100 text-6xl opacity-30 select-none pointer-events-none">✨</div>
+                    <div class="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-yellow-300 shadow-md mb-3 bg-gray-50 flex items-center justify-center">
+                        {% if electa.foto %}
+                        <img src="{{ url_for('static', filename='fotos/' + electa.foto) }}" alt="{{ electa.nombre }}" class="w-full h-full object-cover">
+                        {% else %}
+                        <span class="text-3xl">📸</span>
+                        {% endif %}
+                    </div>
                     <div class="text-4xl mb-2 animate-bounce">👑</div>
                     <span class="bg-yellow-100 text-yellow-800 text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest block mx-auto w-max mb-3">
                         {{ electa.titulo }}
                     </span>
                     <h3 class="text-2xl font-black text-gray-800 leading-tight">{{ electa.nombre }}</h3>
                     <p class="text-sm font-semibold text-gray-500 mt-1">{{ electa.curso }}</p>
+                    {% if electa.empate %}
+                    <p class="text-xs text-red-500 font-semibold mt-2">⚠️ Empate técnico — verificar planillas</p>
+                    {% endif %}
                     <div class="mt-4 pt-3 border-t border-yellow-100">
                         <span class="text-xl font-extrabold text-yellow-600">{{ electa.score_mostrar }}</span>
                     </div>
@@ -53,6 +63,13 @@
                 {% else %}
                 <!-- TARJETAS MISS ELEGANCIA Y MISS SIMPATÍA -->
                 <div class="bg-white shadow-xl rounded-2xl border border-blue-100 p-6 text-center relative overflow-hidden">
+                    <div class="w-20 h-20 mx-auto rounded-full overflow-hidden border-4 border-blue-200 shadow mb-3 bg-gray-50 flex items-center justify-center">
+                        {% if electa.foto %}
+                        <img src="{{ url_for('static', filename='fotos/' + electa.foto) }}" alt="{{ electa.nombre }}" class="w-full h-full object-cover">
+                        {% else %}
+                        <span class="text-2xl">📸</span>
+                        {% endif %}
+                    </div>
                     <div class="text-3xl mb-2">
                         {% if "Elegancia" in electa.titulo %}✨{% else %}😊{% endif %}
                     </div>
@@ -61,6 +78,9 @@
                     </span>
                     <h3 class="text-xl font-bold text-gray-800 leading-tight">{{ electa.nombre }}</h3>
                     <p class="text-sm font-medium text-gray-400 mt-1">{{ electa.curso }}</p>
+                    {% if electa.empate %}
+                    <p class="text-xs text-red-500 font-semibold mt-1">⚠️ Empate técnico</p>
+                    {% endif %}
                     <div class="mt-4 pt-3 border-t border-gray-100">
                         <span class="text-lg font-bold text-blue-600">{{ electa.score_mostrar }}</span>
                     </div>

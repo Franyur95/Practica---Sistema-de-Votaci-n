@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Administrador - Secundario 59</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gradient-to-tr from-slate-100 via-white to-slate-200 min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white shadow-xl rounded-3xl p-8 max-w-sm w-full border border-slate-200 text-center">
+        <h1 class="text-xl font-bold text-slate-800 mb-1">🔐 Panel de Administrador</h1>
+        <p class="text-xs text-slate-400 mb-6">Secundario Nº59 "Olga Márquez de Aredez"</p>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="mb-4 p-3 bg-amber-50 border-l-4 border-amber-400 text-amber-700 text-sm rounded-r-xl text-left">
+                  ⚠️ {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <form action="/admin/login" method="POST" class="space-y-4 text-left">
+            <div>
+                <label class="block text-sm font-medium text-slate-600 mb-1">Usuario:</label>
+                <input type="text" name="usuario" required class="w-full border border-slate-300 rounded-xl px-4 py-3">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-600 mb-1">Contraseña:</label>
+                <input type="password" name="password" required class="w-full border border-slate-300 rounded-xl px-4 py-3">
+            </div>
+            <button type="submit" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-semibold py-3 rounded-xl">
+                Ingresar
+            </button>
+        </form>
+
+        <a href="/" class="block text-xs text-slate-400 hover:text-slate-600 mt-6">← Volver al inicio</a>
+    </div>
+</body>
+</html>

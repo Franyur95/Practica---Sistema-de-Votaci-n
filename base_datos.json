@@ -2,140 +2,61 @@
     "candidatas": [
         {
             "id": 1,
-            "nombre": "Luisina Chamorro",
-            "curso": "1er Año",
-            "foto": "1.jpg"
+            "nombre": "Ester Fernandez",
+            "curso": "1ero 3era",
+            "foto": "candidata_1.jpg"
         },
         {
             "id": 2,
-            "nombre": "Carolina Clemente",
-            "curso": "2do Año",
-            "foto": "2.jpg"
+            "nombre": "Mariana Vallejo",
+            "curso": "3ero 3era",
+            "foto": "candidata_2.jpg"
         },
         {
             "id": 3,
-            "nombre": "Tamara Garay",
-            "curso": "3er Año",
-            "foto": "3.jpg"
+            "nombre": "Mariela Cruz",
+            "curso": "1era 2da",
+            "foto": "candidata_3.jpg"
         },
         {
             "id": 4,
-            "nombre": "Daiana Flores",
-            "curso": "4to Año 1ra",
-            "foto": "4.jpg"
+            "nombre": "Julia Martinez",
+            "curso": "5ta 2da",
+            "foto": "candidata_4.jpg"
         },
         {
             "id": 5,
-            "nombre": "Rocio Sánchez",
-            "curso": "4to Año 2da",
-            "foto": "5.jpg"
-        },
-        {
-            "id": 6,
-            "nombre": "Agustina Patagua",
-            "curso": "5to Año 1ra",
-            "foto": "6.jpg"
-        },
-        {
-            "id": 7,
-            "nombre": "Ana Velazquez",
-            "curso": "5to Año 2da",
-            "foto": "7.jpg"
-        },
-        {
-            "id": 8,
-            "nombre": "Abigail Barrios",
-            "curso": "5to Año 3ra",
-            "foto": "8.jpg"
-        },
-        {
-            "id": 9,
-            "nombre": "Camila Díaz",
-            "curso": "6to Año 1ra",
-            "foto": "9.jpg"
-        },
-        {
-            "id": 10,
-            "nombre": "Luciana Choque",
-            "curso": "6to Año 2da",
-            "foto": "10.jpg"
+            "nombre": "Laura Ortiz",
+            "curso": "4to 1ra",
+            "foto": "candidata_5.jpg"
         }
     ],
-    "votos_jurados": [
+    "jurados": [
         {
-            "jurado": "Jurado Nº 2",
-            "puntuaciones": {
-                "1": {
-                    "belleza": 10,
-                    "elegancia": 5,
-                    "simpatia": 5,
-                    "postura": 5,
-                    "total": 25
-                },
-                "2": {
-                    "belleza": 5,
-                    "elegancia": 5,
-                    "simpatia": 5,
-                    "postura": 5,
-                    "total": 20
-                },
-                "3": {
-                    "belleza": 5,
-                    "elegancia": 5,
-                    "simpatia": 5,
-                    "postura": 5,
-                    "total": 20
-                },
-                "4": {
-                    "belleza": 5,
-                    "elegancia": 5,
-                    "simpatia": 5,
-                    "postura": 5,
-                    "total": 20
-                },
-                "5": {
-                    "belleza": 5,
-                    "elegancia": 5,
-                    "simpatia": 5,
-                    "postura": 5,
-                    "total": 20
-                },
-                "6": {
-                    "belleza": 5,
-                    "elegancia": 5,
-                    "simpatia": 5,
-                    "postura": 5,
-                    "total": 20
-                },
-                "7": {
-                    "belleza": 5,
-                    "elegancia": 5,
-                    "simpatia": 5,
-                    "postura": 5,
-                    "total": 20
-                },
-                "8": {
-                    "belleza": 5,
-                    "elegancia": 5,
-                    "simpatia": 5,
-                    "postura": 5,
-                    "total": 20
-                },
-                "9": {
-                    "belleza": 5,
-                    "elegancia": 5,
-                    "simpatia": 5,
-                    "postura": 5,
-                    "total": 20
-                },
-                "10": {
-                    "belleza": 5,
-                    "elegancia": 5,
-                    "simpatia": 5,
-                    "postura": 5,
-                    "total": 20
-                }
-            }
+            "id": 1,
+            "nombre": "Franco",
+            "usuario": "Franco98",
+            "password": "1234",
+            "ha_votado": false
+        },
+        {
+            "id": 2,
+            "nombre": "Cesar Casio",
+            "usuario": "Cesar10",
+            "password": "1234",
+            "ha_votado": false
+        },
+        {
+            "id": 3,
+            "nombre": "Emilio Fernandez",
+            "usuario": "Emi20",
+            "password": "1234",
+            "ha_votado": false
         }
-    ]
+    ],
+    "votos_jurados": [],
+    "admin": {
+        "usuario": "admin",
+        "password": "olga2026"
+    }
 }

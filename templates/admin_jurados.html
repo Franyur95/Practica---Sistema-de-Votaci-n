@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrar Jurados</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-slate-50 min-h-screen p-6">
+    <div class="max-w-2xl mx-auto">
+        <a href="/admin/panel" class="text-sm text-slate-400 hover:text-slate-600">← Panel de administrador</a>
+        <h1 class="text-2xl font-bold text-slate-800 mt-2 mb-6">🧑‍⚖️ Jurados</h1>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}{% for message in messages %}
+            <div class="mb-4 p-3 bg-amber-50 border-l-4 border-amber-400 text-amber-700 text-sm rounded-r-xl">⚠️ {{ message }}</div>
+          {% endfor %}{% endif %}
+        {% endwith %}
+
+        <form action="/admin/jurados" method="POST" class="bg-white p-5 rounded-2xl shadow border border-slate-100 mb-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <input type="text" name="nombre" placeholder="Nombre (ej: Jurado Nº 1)" required class="border border-slate-300 rounded-xl px-3 py-2">
+            <input type="text" name="usuario" placeholder="Usuario" required class="border border-slate-300 rounded-xl px-3 py-2">
+            <input type="text" name="password" placeholder="Contraseña" required class="border border-slate-300 rounded-xl px-3 py-2">
+            <button type="submit" class="sm:col-span-3 bg-slate-800 hover:bg-slate-900 text-white font-semibold py-2 rounded-xl">
+                + Agregar jurado
+            </button>
+        </form>
+
+        <div class="bg-white rounded-2xl shadow border border-slate-100 divide-y">
+            {% for j in jurados %}
+            <div class="p-4 flex justify-between items-center">
+                <div>
+                    <p class="font-bold text-slate-800">{{ j.nombre }} <span class="text-xs text-slate-400">({{ j.usuario }})</span></p>
+                    <p class="text-xs {{ 'text-emerald-600' if j.ha_votado else 'text-slate-400' }}">
+                        {{ "✅ Ya votó" if j.ha_votado else "⏳ Pendiente de voto" }}
+                    </p>
+                </div>
+                <div class="flex gap-3">
+                    {% if j.ha_votado %}
+                    <form action="/admin/jurados/resetear/{{ j.id }}" method="POST"
+                          onclick="return confirm('¿Habilitar a {{ j.nombre }} para votar de nuevo? Se borrará su planilla actual.');">
+                        <button type="submit" class="text-amber-600 text-sm hover:underline">Reabilitar</button>
+                    </form>
+                    {% endif %}
+                    <form action="/admin/jurados/eliminar/{{ j.id }}" method="POST"
+                          onclick="return confirm('¿Eliminar a {{ j.nombre }}?');">
+                        <button type="submit" class="text-red-500 text-sm hover:underline">Eliminar</button>
+                    </form>
+                </div>
+            </div>
+            {% else %}
+            <p class="p-4 text-sm text-slate-400">Todavía no hay jurados cargados.</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
