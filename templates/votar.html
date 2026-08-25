@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evaluación - Secundario 59</title>
+    <title>Evaluación - Secundario N° 59</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         .tarjeta-oculta {
@@ -12,7 +12,7 @@
     </style>
 </head>
 <body class="min-h-screen p-4 md:p-8 relative overflow-x-hidden"
-      style="background: linear-gradient(to top right, #81E6D9, #ffffff, #4FD1C5);">
+      style="background: linear-gradient(to top right, #efebde 100% );">
        
     <div class="fixed top-0 left-0 text-sky-300 opacity-10 text-7xl p-4 select-none pointer-events-none" style="opacity: 0.15; font-size: 5rem;">🌸</div>
     <div class="fixed bottom-0 right-0 text-sky-300 opacity-10 text-7xl p-4 select-none pointer-events-none" style="opacity: 0.15; font-size: 5rem;">🌸</div>
@@ -24,7 +24,7 @@
     <div class="max-w-2xl mx-auto relative z-10">
         
         <header class="bg-white shadow-md rounded-2xl py-3 px-6 mb-2 border border-blue-100 flex flex-col sm:flex-row items-center justify-center gap-8 text-center sm:text-left" style="border-radius: 1rem;">
-            <div class="flex-shrink-0">
+---------            <div class="flex-shrink-0">
                 <img src="{{ url_for('static', filename='fotos/escudo.png') }}"
                     alt="Escudo" class="mx-auto sm:mx-0 w-20 opacity-90">
             </div>  
@@ -50,7 +50,7 @@
                 {% for c in candidatas %}
                 <div class="candidata-card bg-white shadow-lg rounded-2xl p-6 border border-blue-100 transition-all relative overflow-hidden flex flex-col justify-between {% if not loop.first %}tarjeta-oculta{% endif %}" style="border-radius: 1rem;" data-index="{{ loop.index0 }}" data-nombre="{{ c.nombre }}" data-id="{{ c.id }}" data-foto="{{ c.foto }}">
                     
-                    <div class="absolute -top-2 -right-2 text-blue-100 text-4xl opacity-40 select-none pointer-events-none">🌸</div>
+                    <div class="absolute -top-2 -right-2 text-blue-100 text-4xl opacity-40 select-none pointer-events-none"></div>
 
                     <div>
                         <div class="flex justify-between items-start mb-4">
@@ -153,7 +153,7 @@
                 {% endfor %}
 
                 <div id="tarjeta-resumen" class="bg-white shadow-lg rounded-2xl p-6 border border-green-200 transition-all relative overflow-hidden tarjeta-oculta" style="border-radius: 1rem;">
-                    <div class="absolute -top-2 -right-2 text-green-100 text-4xl opacity-40 select-none pointer-events-none">📝</div>
+                    <div class="absolute -top-2 -right-2 text-green-100 text-4xl opacity-40 select-none pointer-events-none"></div>
                     <h3 class="text-xl font-bold text-gray-800 mb-1">Resumen General de Calificaciones</h3>
                     <p class="text-xs text-gray-500 mb-4">Verifica los puntos asignados antes de enviar la planilla.</p>
                     <div id="lista-resumen" class="space-y-4 max-h-96 overflow-y-auto pr-1"></div>
@@ -174,7 +174,7 @@
             </div>
 
             <div class="bg-white py-2 px-4 shadow-lg rounded-2xl border border-blue-100 flex justify-between items-center mt-4" style="border-radius: 1rem;">
-                <a href="/" class="text-sm text-gray-500 hover:text-gray-700 font-medium" style="text-decoration: none;">🏠 Volver al Inicio</a>
+                <a href="/" class="text-sm text-gray-500 hover:text-gray-700 font-medium" style="text-decoration: none;"> Volver al Inicio</a>
                 <button type="submit" id="btn-guardar" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-xl shadow-md transition-all cursor-pointer opacity-40 cursor-not-allowed" style="border-radius: 0.75rem; background-color: #10b981; color: white; border: none;" disabled>
                     Finalizar y Guardar Votos ✔️
                 </button>
@@ -223,10 +223,10 @@
                             <div>
                                 <h4 class="font-bold text-gray-800 text-sm">${nombre}</h4>
                                 <div class="text-xs text-gray-500 mt-0.5 space-x-2">
-                                    <span>✨ Bel: <b>${belleza}</b></span>
-                                    <span>💃 Ele: <b>${elegancia}</b></span>
-                                    <span>😊 Sim: <b>${simpatia}</b></span>
-                                    <span>🚶‍♀️ Pos: <b>${postura}</b></span>
+                                    <span> Bel: <b>${belleza}</b></span>
+                                    <span> Ele: <b>${elegancia}</b></span>
+                                    <span> Sim: <b>${simpatia}</b></span>
+                                    <span> Pos: <b>${postura}</b></span>
                                 </div>
                             </div>
                         </div>
@@ -245,7 +245,7 @@
                     
                     generarResumen();
 
-                    indicador.textContent = "Revisión Final 📋";
+                    indicador.textContent = "Revisión Final ";
                     btnSiguiente.classList.add('tarjeta-oculta');
                     
                     btnGuardar.disabled = false;

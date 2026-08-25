@@ -1,102 +1,1427 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secundario 59 - Elección Reina</title>
-    <!-- Conectamos Tailwind CSS para el diseño moderno -->
+
+    <title>Elección Reina - Colegio N°59</title>
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        /* =====================================================
+           VARIABLES
+        ===================================================== */
+
+        :root {
+
+            --crema: #f7f1e7;
+            --crema-claro: #fffdf9;
+            --crema-oscuro: #eee4d5;
+
+            --marron: #654b3c;
+            --marron-oscuro: #49352a;
+
+            --dorado: #b9904d;
+            --dorado-claro: #d5b77d;
+
+            --texto: #3d3029;
+            --texto-suave: #75675e;
+
+            --borde: #dfd0bc;
+        }
+
+
+        /* =====================================================
+           GENERAL
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            min-height: 100vh;
+
+            font-family: "Montserrat", Arial, sans-serif;
+
+            color: var(--texto);
+
+            background:
+                radial-gradient(
+                    circle at 15% 20%,
+                    rgba(214, 188, 151, 0.20),
+                    transparent 25%
+                ),
+                radial-gradient(
+                    circle at 85% 80%,
+                    rgba(214, 188, 151, 0.16),
+                    transparent 25%
+                ),
+                var(--crema);
+        }
+
+
+        /* =====================================================
+           PANTALLA
+        ===================================================== */
+
+        .pantalla-inicio {
+
+            width: 100%;
+
+            min-height: 100vh;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 35px 25px;
+        }
+
+
+        /* =====================================================
+           MARCO PRINCIPAL
+        ===================================================== */
+
+        .marco-principal {
+
+            position: relative;
+
+            width: 100%;
+
+            max-width: 1000px;
+
+            min-height: 500px;
+
+            padding: 38px 70px 45px;
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.55),
+                    rgba(246,238,226,0.78)
+                );
+
+            border: 1px solid var(--borde);
+
+            border-radius: 28px;
+
+            box-shadow:
+                0 25px 70px rgba(72, 50, 34, 0.10),
+                0 5px 20px rgba(72, 50, 34, 0.05);
+        }
+
+
+        .marco-principal::before {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 10px;
+
+            border: 1px solid rgba(185, 144, 77, 0.15);
+
+            border-radius: 22px;
+
+            pointer-events: none;
+        }
+
+
+        /* =====================================================
+           LOGOS
+        ===================================================== */
+
+        .logo-evento,
+        .logo-colegio {
+
+            position: absolute;
+
+            top: 35px;
+
+            width: 115px;
+
+            height: 95px;
+
+            object-fit: contain;
+
+            z-index: 10;
+        }
+
+
+        .logo-evento {
+            left: 55px;
+        }
+
+
+        .logo-colegio {
+            right: 55px;
+        }
+
+
+        /* =====================================================
+           ENCABEZADO
+        ===================================================== */
+
+        .encabezado {
+
+            position: relative;
+
+            z-index: 5;
+
+            text-align: center;
+
+            margin-top: 25px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .corona {
+
+            color: var(--dorado);
+
+            font-size: 25px;
+
+            line-height: 1;
+
+            margin-bottom: 3px;
+        }
+
+
+        .encabezado h1 {
+
+            margin: 0;
+
+            font-family:
+                "Cormorant Garamond",
+                Georgia,
+                serif;
+
+            font-size: clamp(48px, 6vw, 74px);
+
+            font-weight: 600;
+
+            letter-spacing: 5px;
+
+            line-height: 0.95;
+
+            color: var(--marron-oscuro);
+        }
+
+
+        .linea-titulo {
+
+            position: relative;
+
+            width: 58%;
+
+            max-width: 650px;
+
+            height: 1px;
+
+            margin: 18px auto 13px;
+
+            background: var(--dorado);
+        }
+
+
+        .linea-titulo::after {
+
+            content: "◆";
+
+            position: absolute;
+
+            left: 50%;
+
+            top: 50%;
+
+            transform: translate(-50%, -50%);
+
+            padding: 0 7px;
+
+            background: var(--crema);
+
+            color: var(--dorado);
+
+            font-size: 8px;
+        }
+
+
+        .encabezado h2 {
+
+            margin: 0;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            letter-spacing: 4px;
+
+            color: var(--marron);
+
+            text-transform: uppercase;
+        }
+
+
+        /* =====================================================
+           RAMAS DECORATIVAS
+        ===================================================== */
+
+        .rama {
+
+            position: absolute;
+
+            width: 300px;
+
+            height: auto;
+
+            z-index: 2;
+
+            pointer-events: none;
+
+            opacity: 0.95;
+        }
+
+
+        /* Rama izquierda */
+
+        .rama-izquierda {
+
+            left: -55px;
+
+            bottom: -35px;
+        }
+
+
+        /* Rama derecha */
+
+        .rama-derecha {
+
+            right: -55px;
+
+            bottom: -35px;
+
+            transform: scaleX(-1);
+        }
+
+
+        /* =====================================================
+           DETALLES DORADOS
+        ===================================================== */
+
+        .decoracion-dorada {
+
+            position: absolute;
+
+            width: 6px;
+
+            height: 6px;
+
+            border-radius: 50%;
+
+            background: var(--dorado);
+
+            opacity: 0.65;
+
+            z-index: 2;
+        }
+
+
+        .punto-1 {
+
+            left: 95px;
+
+            bottom: 210px;
+        }
+
+
+        .punto-2 {
+
+            left: 65px;
+
+            bottom: 175px;
+
+            width: 4px;
+
+            height: 4px;
+        }
+
+
+        .punto-3 {
+
+            right: 105px;
+
+            bottom: 180px;
+
+            width: 4px;
+
+            height: 4px;
+        }
+
+
+        .punto-4 {
+
+            right: 75px;
+
+            bottom: 210px;
+        }
+
+
+        /* =====================================================
+           PANEL JURADO
+        ===================================================== */
+
+        .panel-jurado {
+
+            position: relative;
+
+            z-index: 6;
+
+            width: 570px;
+
+            max-width: 100%;
+
+            margin: 35px auto 0;
+
+            padding: 34px 65px 30px;
+
+            background: rgba(255, 253, 249, 0.94);
+
+            border: 1px solid var(--borde);
+
+            border-radius: 23px;
+
+            box-shadow:
+                0 15px 40px rgba(76, 55, 39, 0.10);
+
+            text-align: left;
+        }
+
+
+        /* =====================================================
+           ICONO JURADO
+        ===================================================== */
+
+        .icono-persona {
+
+            position: relative;
+
+            width: 50px;
+
+            height: 42px;
+
+            margin: -8px auto 10px;
+
+            text-align: center;
+        }
+
+
+        .icono-persona::before {
+
+            content: "♟";
+
+            color: var(--dorado);
+
+            font-size: 34px;
+
+            line-height: 1;
+        }
+
+
+        /* =====================================================
+           TÍTULO SESIÓN
+        ===================================================== */
+
+        .titulo-sesion {
+
+            text-align: center;
+
+            font-family:
+                "Cormorant Garamond",
+                Georgia,
+                serif;
+
+            font-size: 27px;
+
+            font-weight: 600;
+
+            letter-spacing: 3px;
+
+            color: var(--marron);
+
+            margin-bottom: 8px;
+        }
+
+
+        .titulo-sesion::after {
+
+            content: "";
+
+            display: block;
+
+            width: 100px;
+
+            height: 1px;
+
+            background: var(--dorado);
+
+            margin: 12px auto 22px;
+        }
+
+
+        /* =====================================================
+           ESTADO DE PLANILLAS
+        ===================================================== */
+
+        .estado-planillas {
+
+            height: 38px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 16px;
+
+            background: #faf7f1;
+
+            border: 1px solid var(--borde);
+
+            border-radius: 7px;
+
+            font-size: 9px;
+
+            letter-spacing: 1.3px;
+
+            color: var(--texto-suave);
+
+            margin-bottom: 10px;
+        }
+
+
+        .estado-planillas strong {
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            color: var(--dorado);
+        }
+
+
+        /* =====================================================
+           BARRA PROGRESO
+        ===================================================== */
+
+        .barra-contenedor {
+
+            width: 100%;
+
+            height: 3px;
+
+            margin-bottom: 25px;
+
+            background: #e7ded1;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+
+        .barra-progreso {
+
+            height: 100%;
+
+            background: var(--dorado);
+
+            transition: width 0.5s ease;
+        }
+
+
+        /* =====================================================
+           CAMPOS
+        ===================================================== */
+
+        .campo {
+
+            margin-bottom: 18px;
+        }
+
+
+        .campo label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+
+            color: var(--marron);
+
+            text-transform: uppercase;
+        }
+
+
+        .campo input {
+
+            width: 100%;
+
+            height: 47px;
+
+            padding: 8px 14px;
+
+            background: #fffdfb;
+
+            border: 1px solid #d5c6b5;
+
+            border-radius: 9px;
+
+            outline: none;
+
+            font-family: "Montserrat", sans-serif;
+
+            font-size: 13px;
+
+            color: var(--texto);
+
+            transition: all 0.2s ease;
+        }
+
+
+        .campo input::placeholder {
+
+            color: #a89b90;
+        }
+
+
+        .campo input:focus {
+
+            border-color: var(--dorado);
+
+            box-shadow:
+                0 0 0 3px rgba(185, 144, 77, 0.10);
+        }
+
+
+        /* =====================================================
+           RECUPERAR CONTRASEÑA
+        ===================================================== */
+
+        .recuperar {
+
+            display: block;
+
+            margin-top: -8px;
+
+            margin-bottom: 20px;
+
+            color: #9b6d25;
+
+            font-size: 10px;
+
+            text-decoration: underline;
+        }
+
+
+        .recuperar:hover {
+
+            color: var(--marron-oscuro);
+        }
+
+
+        /* =====================================================
+           BOTÓN PRINCIPAL
+        ===================================================== */
+
+        .boton-principal {
+
+            width: 100%;
+
+            height: 52px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #735441,
+                    #5b4031
+                );
+
+            color: white;
+
+            font-family: "Montserrat", sans-serif;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 2px;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 8px 18px rgba(91, 64, 49, 0.18);
+
+            transition: all 0.25s ease;
+        }
+
+
+        .boton-principal:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 12px 25px rgba(91, 64, 49, 0.25);
+        }
+
+
+        /* =====================================================
+           BOTÓN RESULTADOS
+        ===================================================== */
+
+        .boton-resultados {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            width: 100%;
+
+            height: 50px;
+
+            margin: 15px auto 0;
+
+            background: transparent;
+
+            border: 1px solid var(--dorado);
+
+            border-radius: 9px;
+
+            color: var(--marron);
+
+            font-family: "Montserrat", sans-serif;
+
+            font-size: 10px;
+
+            font-weight: 600;
+
+            letter-spacing: 1.7px;
+
+            text-decoration: none;
+
+            transition: all 0.25s ease;
+        }
+
+
+        .boton-resultados:hover {
+
+            background: rgba(185, 144, 77, 0.08);
+
+            transform: translateY(-2px);
+        }
+
+
+        /* =====================================================
+           ADMINISTRADOR
+        ===================================================== */
+
+        .panel-admin {
+
+            text-align: center;
+
+            margin-top: 23px;
+
+            padding-top: 18px;
+
+            border-top: 1px dashed #d6c7b5;
+        }
+
+
+        .panel-admin a {
+
+            color: var(--texto-suave);
+
+            font-size: 9px;
+
+            font-weight: 600;
+
+            letter-spacing: 2px;
+
+            text-decoration: none;
+
+            transition: color 0.2s ease;
+        }
+
+
+        .panel-admin a:hover {
+
+            color: var(--dorado);
+        }
+
+
+        /* =====================================================
+           MENSAJES
+        ===================================================== */
+
+        .mensaje {
+
+            padding: 13px;
+
+            margin-bottom: 17px;
+
+            border: 1px solid #d7c8b7;
+
+            border-radius: 8px;
+
+            background: #faf6ef;
+
+            color: var(--texto);
+
+            font-size: 10px;
+
+            line-height: 1.5;
+
+            text-align: center;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE - TABLET
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .marco-principal {
+
+                padding-left: 35px;
+
+                padding-right: 35px;
+            }
+
+
+            .logo-evento {
+
+                left: 30px;
+            }
+
+
+            .logo-colegio {
+
+                right: 30px;
+            }
+
+
+            .rama {
+
+                width: 250px;
+
+                opacity: 0.65;
+            }
+        }
+
+
+        /* =====================================================
+           RESPONSIVE - CELULAR
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .pantalla-inicio {
+
+                padding: 12px;
+            }
+
+
+            .marco-principal {
+
+                min-height: 720px;
+
+                padding:
+                    20px
+                    18px
+                    35px;
+
+                border-radius: 20px;
+            }
+
+
+            .marco-principal::before {
+
+                inset: 6px;
+
+                border-radius: 15px;
+            }
+
+
+            /* LOGOS */
+
+            .logo-evento,
+            .logo-colegio {
+
+                top: 22px;
+
+                width: 70px;
+
+                height: 60px;
+            }
+
+
+            .logo-evento {
+
+                left: 18px;
+            }
+
+
+            .logo-colegio {
+
+                right: 18px;
+            }
+
+
+            /* TÍTULO */
+
+            .encabezado {
+
+                margin-top: 45px;
+
+                margin-bottom: 25px;
+            }
+
+
+            .encabezado h1 {
+
+                font-size: 42px;
+
+                letter-spacing: 2px;
+            }
+
+
+            .encabezado h2 {
+
+                font-size: 8px;
+
+                letter-spacing: 1.5px;
+
+                padding: 0 45px;
+            }
+
+
+            .linea-titulo {
+
+                width: 70%;
+            }
+
+
+            /* PANEL */
+
+            .panel-jurado {
+
+                width: 100%;
+
+                padding:
+                    28px
+                    22px
+                    25px;
+
+                border-radius: 18px;
+
+                margin-top: 20px;
+            }
+
+
+            .titulo-sesion {
+
+                font-size: 23px;
+
+                letter-spacing: 2px;
+            }
+
+
+            /* PLANILLAS */
+
+            .estado-planillas {
+
+                font-size: 7px;
+
+                padding: 0 10px;
+            }
+
+
+            .estado-planillas strong {
+
+                font-size: 8px;
+            }
+
+
+            /* BOTONES */
+
+            .boton-principal,
+            .boton-resultados {
+
+                font-size: 8px;
+
+                letter-spacing: 1.2px;
+            }
+
+
+            /* RAMAS */
+
+            .rama {
+
+                width: 190px;
+
+                opacity: 0.22;
+            }
+
+
+            .rama-izquierda {
+
+                left: -70px;
+
+                bottom: -15px;
+            }
+
+
+            .rama-derecha {
+
+                right: -70px;
+
+                bottom: -15px;
+            }
+
+
+            /* PUNTOS */
+
+            .decoracion-dorada {
+
+                display: none;
+            }
+        }
+
+
+        /* =====================================================
+           CELULARES MUY PEQUEÑOS
+        ===================================================== */
+
+        @media (max-width: 420px) {
+
+            .encabezado h1 {
+
+                font-size: 35px;
+            }
+
+
+            .encabezado h2 {
+
+                font-size: 7px;
+
+                padding: 0 30px;
+            }
+
+
+            .panel-jurado {
+
+                padding-left: 18px;
+
+                padding-right: 18px;
+            }
+
+
+            .estado-planillas span {
+
+                font-size: 6px;
+            }
+
+
+            .rama {
+
+                width: 160px;
+
+                opacity: 0.15;
+            }
+        }
+
+    </style>
+
 </head>
-<body class="bg-gradient-to-tr from-teal-100 via-white to-teal-200 min-h-screen flex items-center justify-center p-4 relative overflow-x-hidden">
 
-    <!-- Adornos de flores artificiales flotantes en las esquinas -->
-    <div class="absolute top-0 left-0 text-sky-300 opacity-20 text-7xl p-4 select-none pointer-events-none">🌸✨</div>
-    <div class="absolute bottom-0 right-0 text-sky-300 opacity-20 text-7xl p-4 select-none pointer-events-none">✨🌸</div>
-    <div class="absolute bottom-12 left-12 text-blue-300 opacity-15 text-5xl select-none pointer-events-none">🌺</div>
-    <!-- Logo del evento difuminado en la esquina superior derecha -->
-    <div class="absolute top-6 right-6 select-none pointer-events-none">
-        <img src="{{ url_for('static', filename='fotos/logo_evento.png') }}"
-             alt="Logo Evento" class="w-48 opacity-100">
-    </div>
-            
-    <!-- Contenedor Principal de la Tarjeta -->
-    <div class="bg-white/80 backdrop-blur-md shadow-xl rounded-3xl p-8 max-w-md w-full border border-sky-200 text-center relative z-10">
-        
-        <!-- Encabezado con detalles florales -->
-        <header class="mb-6">
-            <div class="mb-2">
-                <img src="{{ url_for('static', filename='fotos/escudo.png') }}"
-                    alt="Escudo" class="mx-auto w-20 opacity-90">
-             </div>   
-            <h2 class="text-sm font-semibold tracking-wider text-sky-600 uppercase">Secundario Nº59 "Olga Márquez de Aredez"</h2>
-            <h1 class="text-2xl font-bold text-slate-800 mt-1">Puntuación de Candidatas</h1>
-            <div class="h-1 w-20 bg-sky-300 mx-auto mt-3 rounded-full"></div>
-        </header>
 
-        <!-- Mensajes Flash (Alertas de Flask) -->
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            {% for message in messages %}
-              <div class="mb-4 p-3 bg-amber-50 border-l-4 border-amber-400 text-amber-700 text-sm rounded-r-xl text-left animate-pulse">
-                  ⚠️ {{ message }}
-              </div>
-            {% endfor %}
-          {% endif %}
-        {% endwith %}
+<body>
 
-        <!-- Estado de la Votación / Barra de Progreso -->
-        <div class="bg-sky-50/70 border border-sky-100 rounded-2xl p-4 mb-6">
-            <div class="flex justify-between items-center text-sm mb-2 text-slate-600">
-                <span>Planillas cargadas oficialmente:</span>
-                <span class="font-bold text-sky-700 text-base">{{ votos_emitidos }} / {{ total_jurados }}</span>
+
+    <!-- =====================================================
+         PANTALLA PRINCIPAL
+    ===================================================== -->
+
+    <main class="pantalla-inicio">
+
+
+        <!-- =================================================
+             MARCO PRINCIPAL
+        ================================================== -->
+
+        <section class="marco-principal">
+
+
+            <!-- =================================================
+                 LOGO EVENTO
+            ================================================== -->
+
+            <img
+                src="{{ url_for('static', filename='fotos/logo_evento.png') }}"
+                alt="Logo del evento"
+                class="logo-evento"
+            >
+
+
+            <!-- =================================================
+                 ESCUDO COLEGIO
+            ================================================== -->
+
+            <img
+                src="{{ url_for('static', filename='fotos/escudo.png') }}"
+                alt="Escudo del Colegio N°59"
+                class="logo-colegio"
+            >
+
+
+            <!-- =================================================
+                 RAMA IZQUIERDA
+            ================================================== -->
+
+            <img
+                src="{{ url_for('static', filename='fotos/rama.png') }}"
+                alt=""
+                class="rama rama-izquierda"
+            >
+
+
+            <!-- =================================================
+                 RAMA DERECHA
+            ================================================== -->
+
+            <img
+                src="{{ url_for('static', filename='fotos/rama.png') }}"
+                alt=""
+                class="rama rama-derecha"
+            >
+
+
+            <!-- =================================================
+                 DETALLES DORADOS
+            ================================================== -->
+
+            <div class="decoracion-dorada punto-1"></div>
+
+            <div class="decoracion-dorada punto-2"></div>
+
+            <div class="decoracion-dorada punto-3"></div>
+
+            <div class="decoracion-dorada punto-4"></div>
+
+
+            <!-- =================================================
+                 ENCABEZADO
+            ================================================== -->
+
+            <header class="encabezado">
+
+
+                <div class="corona">
+                    ♛
+                </div>
+
+
+                <h1>
+                    ELECCIÓN REINA
+                </h1>
+
+
+                <div class="linea-titulo"></div>
+
+
+                <h2>
+                    COLEGIO N.º 59 · OLGA MÁRQUEZ DE AREDEZ
+                </h2>
+
+
+            </header>
+
+
+            <!-- =================================================
+                 PANEL DEL JURADO
+            ================================================== -->
+
+            <div class="panel-jurado">
+
+
+                <!-- ICONO -->
+
+                <div class="icono-persona"></div>
+
+
+                <!-- TÍTULO -->
+
+                <div class="titulo-sesion">
+                    SESIÓN DE JURADO
+                </div>
+
+
+                <!-- =================================================
+                     ESTADO DE PLANILLAS
+                ================================================== -->
+
+                <div class="estado-planillas">
+
+
+                    <span>
+                        PLANILLAS CARGADAS OFICIALMENTE
+                    </span>
+
+
+                    <strong>
+                        {{ votos_emitidos }} / {{ total_jurados }}
+                    </strong>
+
+
+                </div>
+
+
+                <!-- =================================================
+                     BARRA DE PROGRESO
+                ================================================== -->
+
+                <div class="barra-contenedor">
+
+
+                    <div
+                        class="barra-progreso"
+                        style="width: {{ (votos_emitidos / total_jurados * 100) if total_jurados > 0 else 0 }}%;"
+                    ></div>
+
+
+                </div>
+
+
+                <!-- =================================================
+                     MENSAJES FLASH
+                ================================================== -->
+
+                {% with messages = get_flashed_messages() %}
+
+
+                    {% if messages %}
+
+
+                        {% for message in messages %}
+
+
+                            <div class="mensaje">
+
+                                ⚠️ {{ message }}
+
+                            </div>
+
+
+                        {% endfor %}
+
+
+                    {% endif %}
+
+
+                {% endwith %}
+
+
+                <!-- =================================================
+                     FORMULARIO DE JURADO
+                ================================================== -->
+
+                {% if votos_emitidos < total_jurados and total_jurados > 0 %}
+
+
+                    <form
+                        action="/evaluacion"
+                        method="POST"
+                        class="form-login"
+                    >
+
+
+                        <!-- USUARIO -->
+
+                        <div class="campo">
+
+
+                            <label for="usuario">
+                                Usuario
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="usuario"
+                                name="usuario"
+                                placeholder="Ingrese su usuario"
+                                autocomplete="username"
+                                required
+                            >
+
+
+                        </div>
+
+
+                        <!-- CONTRASEÑA -->
+
+                        <div class="campo">
+
+
+                            <label for="password">
+                                Contraseña
+                            </label>
+
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Ingrese su contraseña"
+                                autocomplete="current-password"
+                                required
+                            >
+
+
+                        </div>
+
+
+                        <!-- RECUPERACIÓN -->
+
+                        <a
+                            href="#"
+                            class="recuperar"
+                        >
+                            ¿Olvidaste tu contraseña?
+                        </a>
+
+
+                        <!-- BOTÓN PRINCIPAL -->
+
+                        <button
+                            type="submit"
+                            class="boton-principal"
+                        >
+
+                            ▣ &nbsp;&nbsp;
+                            ABRIR PLANILLA DE EVALUACIÓN
+
+                        </button>
+
+
+                    </form>
+
+
+                {% elif total_jurados == 0 %}
+
+
+                    <!-- SIN JURADOS -->
+
+                    <div class="mensaje">
+
+                        El administrador todavía no cargó jurados en el sistema.
+
+                    </div>
+
+
+                {% else %}
+
+
+                    <!-- TODOS COMPLETARON -->
+
+                    <div class="mensaje">
+
+                        ¡Todos los jurados completaron el escrutinio con éxito!
+
+                    </div>
+
+
+                {% endif %}
+
+
+                <!-- =================================================
+                     RESULTADOS FINALES
+                ================================================== -->
+
+                <a
+                    href="/resultados"
+                    class="boton-resultados"
+                >
+
+                    ♜ &nbsp;&nbsp;
+                    VER RESULTADOS FINALES (PODIO)
+
+                </a>
+
+
+                <!-- =================================================
+                     PANEL ADMINISTRADOR
+                ================================================== -->
+
+                <div class="panel-admin">
+
+
+                    <a href="/admin/login">
+
+                        ♢ &nbsp;
+                        PANEL DE ADMINISTRADOR
+
+                    </a>
+
+
+                </div>
+
+
             </div>
-            
-            <!-- Barra de progreso estilizada en azul claro -->
-            <div class="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
-                <div class="bg-gradient-to-r from-sky-400 to-blue-500 h-3 rounded-full transition-all duration-500" 
-                     style="width: {{ (votos_emitidos / total_jurados * 100) if total_jurados > 0 else 0 }}%"></div>
-            </div>
-        </div>
 
-<!-- Formulario o Aviso de Fin -->
-        {% if votos_emitidos < total_jurados and total_jurados > 0 %}
-        <form action="/evaluacion" method="POST" class="space-y-4 text-left">
-            <div>
-                <label class="block text-sm font-medium text-slate-600 mb-1 ml-1">Usuario:</label>
-                <input type="text" name="usuario" required
-                       class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 shadow-sm">
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-slate-600 mb-1 ml-1">Contraseña:</label>
-                <input type="password" name="password" required
-                       class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 shadow-sm">
-            </div>
 
-            <button type="submit" class="w-full bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white font-semibold py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer mt-2">
-                <span>Abrir Planilla de Evaluación</span> 📑
-            </button>
-        </form>
-        {% elif total_jurados == 0 %}
-        <div class="p-4 bg-amber-50 border border-amber-200 text-amber-800 rounded-2xl font-medium text-center mb-6">
-            ⚠️ El administrador todavía no cargó jurados en el sistema.
-        </div>
-        {% else %}
-        <div class="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl font-medium flex items-center justify-center gap-2 mb-6">
-            ✨ ¡Todos los jurados completaron el escrutinio con éxito! ✨
-        </div>
-        {% endif %}
+        </section>
 
-        <!-- Panel de Acciones y Administración -->
-        <div class="mt-8 pt-6 border-t border-slate-100 flex flex-col gap-3">
-            <a href="/resultados" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-2.5 px-4 rounded-xl shadow transition-colors text-sm flex items-center justify-center gap-2">
-                Ver Resultados Finales (Podio) 📊
-            </a>
-            
-        <a href="/admin/login" class="text-xs text-slate-400 hover:text-slate-600 font-medium transition-colors hover:underline mt-2 self-center">
-                        Panel de Administrador 🔐
-        </a>
-        </div>
 
-    </div>
+    </main>
+
+
 </body>
+
 </html>

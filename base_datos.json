@@ -29,6 +29,12 @@
             "nombre": "Laura Ortiz",
             "curso": "4to 1ra",
             "foto": "candidata_5.jpg"
+        },
+        {
+            "id": 6,
+            "nombre": "noelia cazon",
+            "curso": "2do 1ra",
+            "foto": "candidata_6.png"
         }
     ],
     "jurados": [
@@ -52,9 +58,72 @@
             "usuario": "Emi20",
             "password": "1234",
             "ha_votado": false
+        },
+        {
+            "id": 4,
+            "nombre": "lucia",
+            "usuario": "lucia",
+            "password": "lucia",
+            "ha_votado": true
+        },
+        {
+            "id": 5,
+            "nombre": "noe",
+            "usuario": "noe",
+            "password": "noe",
+            "ha_votado": false
         }
     ],
-    "votos_jurados": [],
+    "votos_jurados": [
+        {
+            "jurado_id": 4,
+            "jurado": "lucia",
+            "puntuaciones": {
+                "1": {
+                    "belleza": 5,
+                    "elegancia": 5,
+                    "simpatia": 5,
+                    "postura": 5,
+                    "total": 20
+                },
+                "2": {
+                    "belleza": 5,
+                    "elegancia": 5,
+                    "simpatia": 5,
+                    "postura": 5,
+                    "total": 20
+                },
+                "3": {
+                    "belleza": 5,
+                    "elegancia": 5,
+                    "simpatia": 5,
+                    "postura": 5,
+                    "total": 20
+                },
+                "4": {
+                    "belleza": 5,
+                    "elegancia": 5,
+                    "simpatia": 5,
+                    "postura": 5,
+                    "total": 20
+                },
+                "5": {
+                    "belleza": 5,
+                    "elegancia": 5,
+                    "simpatia": 5,
+                    "postura": 5,
+                    "total": 20
+                },
+                "6": {
+                    "belleza": 5,
+                    "elegancia": 9,
+                    "simpatia": 5,
+                    "postura": 5,
+                    "total": 24
+                }
+            }
+        }
+    ],
     "admin": {
         "usuario": "admin",
         "password": "olga2026"

@@ -24,7 +24,7 @@ h1 { color: #4a148c; margin: 5px 0;}
 h2 { color: #6a1b9a; font-weight: 400;}
 
 .contenedor-login, .contenedor-planilla, .contenedor-podio {
-    background: white;
+    background: #ffffff;
     padding: 30px;
     border-radius: 14px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.12);
@@ -51,7 +51,7 @@ input[type="number"] { width: 65px; text-align: center; }
 .btn-secundario { background: #f1f2f6; color: var(--oscuro); }
 .btn-peligro { background: #e74c3c; color: white; font-size: 0.8rem; padding: 5px 10px; margin-top: 10px;}
 
-.alerta { background: #ffeaa7; padding: 10px; border-radius: 6px; margin: 10px 0; font-weight: 500; }
+.alerta { background: #062B69; padding: 10px; border-radius: 6px; margin: 10px 0; font-weight: 500; }
 .exito { background: #2ecc71; color: white; }
 
 .tabla-responsiva { overflow-x: auto; margin-bottom: 20px; }
@@ -69,3 +69,56 @@ th { background-color: #f1f2f6; }
 .titulo-honor { font-size: 1.2rem; font-weight: bold; color: var(--primario); margin-bottom: 10px; }
 .puntos-finales { font-size: 0.9rem; background: #dfe4ea; padding: 6px; border-radius: 5px; margin-top: 10px; }
 .controles-finales { text-align: center; }
+/* ==========================================
+   RAMAS DECORATIVAS
+========================================== */
+
+.rama {
+    position: fixed;
+    width: 280px;
+    height: auto;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.9;
+}
+
+
+/* Rama izquierda */
+
+.rama-izquierda {
+    left: -35px;
+    bottom: -20px;
+}
+
+
+/* Rama derecha */
+
+.rama-derecha {
+    right: -35px;
+    bottom: -20px;
+    transform: scaleX(-1);
+}
+
+
+/* ==========================================
+   RESPONSIVE - CELULAR
+========================================== */
+
+@media (max-width: 700px) {
+
+    .rama {
+        width: 180px;
+        opacity: 0.25;
+    }
+
+    .rama-izquierda {
+        left: -65px;
+        bottom: -10px;
+    }
+
+    .rama-derecha {
+        right: -65px;
+        bottom: -10px;
+    }
+
+}
