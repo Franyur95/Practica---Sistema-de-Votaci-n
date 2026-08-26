@@ -2,7 +2,7 @@
     "candidatas": [
         {
             "id": 1,
-            "nombre": "Maria Perez",
+            "nombre": "Maria Martinez",
             "curso": "5to 1ra",
             "foto": "candidata_1.jpg",
             "numero": 1
@@ -36,279 +36,57 @@
             "numero": 5
         }
     ],
-    "categorias": [
-        {
-            "id": "belleza",
-            "nombre": "Belleza",
-            "otorga_titulo": true
-        },
-        {
-            "id": "elegancia",
-            "nombre": "Elegancia",
-            "otorga_titulo": true
-        },
-        {
-            "id": "simpatia",
-            "nombre": "Simpatía",
-            "otorga_titulo": true
-        },
-        {
-            "id": "postura",
-            "nombre": "Postura",
-            "otorga_titulo": true
-        },
-        {
-            "id": "sonrisa",
-            "nombre": "Sonrisa",
-            "otorga_titulo": true
-        }
-    ],
     "jurados": [
         {
             "id": 1,
             "nombre": "Lucia",
             "usuario": "jurado1",
             "password": "1234",
-
-            "ha_votado": true
+            "ha_votado": false
         },
         {
             "id": 2,
             "nombre": "brenda",
             "usuario": "jurado2",
             "password": "1234",
-            "ha_votado": true
+            "ha_votado": false
         },
         {
             "id": 3,
             "nombre": "franco",
             "usuario": "jurado3",
             "password": "1234",
-            "ha_votado": true
+            "ha_votado": false
         },
         {
             "id": 4,
             "nombre": "luciano",
             "usuario": "jurado4",
             "password": "1234",
-            "ha_votado": true
-=======
             "ha_votado": false
-        },
-        {
-            "id": 2,
-            "nombre": "Cesar Casio",
-            "usuario": "Cesar10",
-            "password": "1234",
-            "ha_votado": false
-        },
-        {
-            "id": 3,
-            "nombre": "Emilio Fernandez",
-            "usuario": "Emi20",
-            "password": "1234",
-            "ha_votado": false
-        },
-        {
-            "id": 5,
-            "nombre": "noe",
-            "usuario": "noe",
-            "password": "noe",
-            "ha_votado": false
-        },
-        {
-            "id": 6,
-            "nombre": "4",
-            "usuario": "lucia",
-            "password": "lucia",
-            "ha_votado": false
-
         }
     ],
-    "votos_jurados": [
+    "votos_jurados": [],
+    "categorias": [
         {
-            "jurado_id": 1,
-            "jurado": "Lucia",
-            "puntuaciones": {
-                "1": {
-                    "belleza": 7,
-                    "elegancia": 6,
-                    "simpatia": 6,
-                    "postura": 7,
-                    "sonrisa": 9,
-                    "total": 35
-                },
-                "2": {
-                    "belleza": 6,
-                    "elegancia": 6,
-                    "simpatia": 6,
-                    "postura": 6,
-                    "sonrisa": 9,
-                    "total": 33
-                },
-                "3": {
-                    "belleza": 8,
-                    "elegancia": 7,
-                    "simpatia": 7,
-                    "postura": 6,
-                    "sonrisa": 8,
-                    "total": 36
-                },
-                "4": {
-                    "belleza": 8,
-                    "elegancia": 6,
-                    "simpatia": 6,
-                    "postura": 7,
-                    "sonrisa": 10,
-                    "total": 37
-                },
-                "5": {
-                    "belleza": 7,
-                    "elegancia": 7,
-                    "simpatia": 7,
-                    "postura": 6,
-                    "sonrisa": 9,
-                    "total": 36
-                }
-            }
+            "id": "primera_princesa",
+            "nombre": "primera princesa",
+            "otorga_titulo": true
         },
         {
-            "jurado_id": 3,
-            "jurado": "franco",
-            "puntuaciones": {
-                "1": {
-                    "belleza": 7,
-                    "elegancia": 8,
-                    "simpatia": 9,
-                    "postura": 9,
-                    "sonrisa": 8,
-                    "total": 41
-                },
-                "2": {
-                    "belleza": 7,
-                    "elegancia": 8,
-                    "simpatia": 7,
-                    "postura": 10,
-                    "sonrisa": 9,
-                    "total": 41
-                },
-                "3": {
-                    "belleza": 5,
-                    "elegancia": 8,
-                    "simpatia": 9,
-                    "postura": 9,
-                    "sonrisa": 9,
-                    "total": 40
-                },
-                "4": {
-                    "belleza": 8,
-                    "elegancia": 9,
-                    "simpatia": 9,
-                    "postura": 10,
-                    "sonrisa": 9,
-                    "total": 45
-                },
-                "5": {
-                    "belleza": 5,
-                    "elegancia": 5,
-                    "simpatia": 5,
-                    "postura": 5,
-                    "sonrisa": 5,
-                    "total": 25
-                }
-            }
+            "id": "segunda_princesa",
+            "nombre": "segunda princesa",
+            "otorga_titulo": true
         },
         {
-            "jurado_id": 2,
-            "jurado": "brenda",
-            "puntuaciones": {
-                "1": {
-                    "belleza": 5,
-                    "elegancia": 5,
-                    "simpatia": 5,
-                    "postura": 5,
-                    "sonrisa": 5,
-                    "total": 25
-                },
-                "2": {
-                    "belleza": 6,
-                    "elegancia": 6,
-                    "simpatia": 6,
-                    "postura": 10,
-                    "sonrisa": 9,
-                    "total": 37
-                },
-                "3": {
-                    "belleza": 7,
-                    "elegancia": 8,
-                    "simpatia": 6,
-                    "postura": 9,
-                    "sonrisa": 8,
-                    "total": 38
-                },
-                "4": {
-                    "belleza": 5,
-                    "elegancia": 8,
-                    "simpatia": 8,
-                    "postura": 8,
-                    "sonrisa": 7,
-                    "total": 36
-                },
-                "5": {
-                    "belleza": 9,
-                    "elegancia": 9,
-                    "simpatia": 5,
-                    "postura": 6,
-                    "sonrisa": 7,
-                    "total": 36
-                }
-            }
+            "id": "reina",
+            "nombre": "reina",
+            "otorga_titulo": true
         },
         {
-            "jurado_id": 4,
-            "jurado": "luciano",
-            "puntuaciones": {
-                "1": {
-                    "belleza": 7,
-                    "elegancia": 8,
-                    "simpatia": 6,
-                    "postura": 7,
-                    "sonrisa": 7,
-                    "total": 35
-                },
-                "2": {
-                    "belleza": 5,
-                    "elegancia": 7,
-                    "simpatia": 7,
-                    "postura": 7,
-                    "sonrisa": 8,
-                    "total": 34
-                },
-                "3": {
-                    "belleza": 9,
-                    "elegancia": 8,
-                    "simpatia": 7,
-                    "postura": 6,
-                    "sonrisa": 9,
-                    "total": 39
-                },
-                "4": {
-                    "belleza": 5,
-                    "elegancia": 7,
-                    "simpatia": 6,
-                    "postura": 5,
-                    "sonrisa": 5,
-                    "total": 28
-                },
-                "5": {
-                    "belleza": 8,
-                    "elegancia": 10,
-                    "simpatia": 9,
-                    "postura": 10,
-                    "sonrisa": 10,
-                    "total": 47
-                }
-            }
+            "id": "simpatia",
+            "nombre": "simpatia",
+            "otorga_titulo": false
         }
     ],
     "admin": {
