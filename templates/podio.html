@@ -38,7 +38,7 @@
         {% if loop.first %}
         <!-- TARJETA REINA -->
         <div class="bg-white shadow-2xl rounded-3xl border-2 border-yellow-300 p-8 text-center relative overflow-hidden order-first md:order-none" style="border-radius: 1.5rem; transform: scale(1.03); box-shadow: 0 25px 50px -12px rgba(251, 191, 36, 0.15);">
-            <div class="absolute -top-4 -right-4 text-yellow-100 text-6xl opacity-30 select-none pointer-events-none">✨</div>
+            <div class="absolute -top-4 -right-4 text-yellow-100 text-6xl opacity-30 select-none pointer-events-none"></div>
             <div class="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-yellow-300 shadow-md mb-3 bg-gray-50 flex items-center justify-center">
                 {% if electa.foto %}
                 <img src="{{ url_for('static', filename='fotos/' + electa.foto) }}" alt="{{ electa.nombre }}" class="w-full h-full object-cover">
