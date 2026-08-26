@@ -42,7 +42,7 @@
             "nombre": "Lucia",
             "usuario": "jurado1",
             "password": "1234",
-            "ha_votado": false
+            "ha_votado": true
         },
         {
             "id": 2,
@@ -73,7 +73,39 @@
             "ha_votado": false
         }
     ],
-    "votos_jurados": [],
+    "votos_jurados": [
+        {
+            "jurado_id": 1,
+            "jurado": "Lucia",
+            "puntuaciones": {
+                "1": {
+                    "primera_princesa": 5,
+                    "simpatia": 5,
+                    "total": 10
+                },
+                "2": {
+                    "primera_princesa": 5,
+                    "simpatia": 5,
+                    "total": 10
+                },
+                "3": {
+                    "primera_princesa": 5,
+                    "simpatia": 9,
+                    "total": 14
+                },
+                "4": {
+                    "primera_princesa": 10,
+                    "simpatia": 5,
+                    "total": 15
+                },
+                "5": {
+                    "primera_princesa": 8,
+                    "simpatia": 5,
+                    "total": 13
+                }
+            }
+        }
+    ],
     "categorias": [
         {
             "id": "primera_princesa",
