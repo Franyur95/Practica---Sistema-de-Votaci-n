@@ -97,11 +97,11 @@
         {% endif %}
 
         <!-- Menú Inferior de Navegación -->
-        <div class="bg-white p-4 shadow-lg rounded-2xl border border-blue-100 flex justify-center gap-4 items-center">
+        <div class="bg-white p-4 shadow-lg rounded-2xl border border-brown-600 flex justify-center gap-4 items-center">
             <a href="/" class="bg-gray-800 hover:bg-gray-900 text-white font-semibold py-2.5 px-6 rounded-xl shadow text-sm transition-colors">
                 Volver al Panel Principal
             </a>
-            <a href="{{ url_for('descargar_pdf') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-6 rounded-xl shadow text-sm transition-colors">
+            <a href="{{ url_for('descargar_pdf') }}" style="--bg-main: #fffdf9 ; --bg-hover: #49352a;" class="inline-block bg-[var(--bg-main)] hover:bg-[var(--bg-hover)] text-black font-semibold py-2.5 px-6 rounded-xl shadow text-sm transition-colors">
                 📄 Descargar PDF
             </a>
         </div>
