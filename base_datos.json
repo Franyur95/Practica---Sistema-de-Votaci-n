@@ -69,6 +69,7 @@
             "nombre": "Lucia",
             "usuario": "jurado1",
             "password": "1234",
+
             "ha_votado": true
         },
         {
@@ -91,6 +92,37 @@
             "usuario": "jurado4",
             "password": "1234",
             "ha_votado": true
+=======
+            "ha_votado": false
+        },
+        {
+            "id": 2,
+            "nombre": "Cesar Casio",
+            "usuario": "Cesar10",
+            "password": "1234",
+            "ha_votado": false
+        },
+        {
+            "id": 3,
+            "nombre": "Emilio Fernandez",
+            "usuario": "Emi20",
+            "password": "1234",
+            "ha_votado": false
+        },
+        {
+            "id": 5,
+            "nombre": "noe",
+            "usuario": "noe",
+            "password": "noe",
+            "ha_votado": false
+        },
+        {
+            "id": 6,
+            "nombre": "4",
+            "usuario": "lucia",
+            "password": "lucia",
+            "ha_votado": false
+
         }
     ],
     "votos_jurados": [
