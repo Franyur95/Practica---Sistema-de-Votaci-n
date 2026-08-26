@@ -60,17 +60,17 @@
             "ha_votado": false
         },
         {
-            "id": 4,
-            "nombre": "lucia",
-            "usuario": "lucia",
-            "password": "lucia",
-            "ha_votado": true
-        },
-        {
             "id": 5,
             "nombre": "noe",
             "usuario": "noe",
             "password": "noe",
+            "ha_votado": false
+        },
+        {
+            "id": 6,
+            "nombre": "4",
+            "usuario": "lucia",
+            "password": "lucia",
             "ha_votado": false
         }
     ],
