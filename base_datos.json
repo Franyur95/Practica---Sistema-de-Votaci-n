@@ -64,6 +64,13 @@
             "usuario": "jurado4",
             "password": "1234",
             "ha_votado": false
+        },
+        {
+            "id": 5,
+            "nombre": "noe",
+            "usuario": "jurado5",
+            "password": "1234",
+            "ha_votado": false
         }
     ],
     "votos_jurados": [],
