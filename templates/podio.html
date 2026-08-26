@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resultados Oficiales - Secundario 59</title>
     <!-- Conector tradicional de Tailwind -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.min.css') }}">
 </head>
 <body class="min-h-screen p-4 md:p-8 relative overflow-x-hidden"
       style="background: linear-gradient(to top right, #efebde);">
@@ -32,69 +32,71 @@
         </header>
 
         {% if total_jurados > 0 %}
-        <!-- ================= SECCIÓN DEL PODIO DE PREMIOS ================= -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 items-end" style="display: grid; gap: 1.5rem; align-items: end;">
-            
-            {% for electa in podio %}
-                {% if "Reina" in electa.titulo %}
-                <!-- TARJETA REINA -->
-                <div class="bg-white shadow-2xl rounded-3xl border-2 border-yellow-300 p-8 text-center relative overflow-hidden order-first md:order-none" style="border-radius: 1.5rem; transform: scale(1.03); box-shadow: 0 25px 50px -12px rgba(251, 191, 36, 0.15);">
-                    <div class="absolute -top-4 -right-4 text-yellow-100 text-6xl opacity-30 select-none pointer-events-none">✨</div>
-                    <div class="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-yellow-300 shadow-md mb-3 bg-gray-50 flex items-center justify-center">
-                        {% if electa.foto %}
-                        <img src="{{ url_for('static', filename='fotos/' + electa.foto) }}" alt="{{ electa.nombre }}" class="w-full h-full object-cover">
-                        {% else %}
-                        <span class="text-3xl">📸</span>
-                        {% endif %}
-                    </div>
-                    <div class="text-4xl mb-2 animate-bounce">👑</div>
-                    <span class="bg-yellow-100 text-yellow-800 text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest block mx-auto w-max mb-3">
-                        {{ electa.titulo }}
-                    </span>
-                    <h3 class="text-2xl font-black text-gray-800 leading-tight">{{ electa.nombre }}</h3>
-                    <p class="text-sm font-semibold text-gray-500 mt-1">{{ electa.curso }}</p>
-                    {% if electa.empate %}
-                    <p class="text-xs text-red-500 font-semibold mt-2">⚠️ Empate técnico — verificar planillas</p>
-                    {% endif %}
-                    <div class="mt-4 pt-3 border-t border-yellow-100">
-                        <span class="text-xl font-extrabold text-yellow-600">{{ electa.score_mostrar }}</span>
-                    </div>
-                </div>
-                {% else %}
-                <!-- TARJETAS MISS ELEGANCIA Y MISS SIMPATÍA -->
-                <div class="bg-white shadow-xl rounded-2xl border border-blue-100 p-6 text-center relative overflow-hidden">
-                    <div class="w-20 h-20 mx-auto rounded-full overflow-hidden border-4 border-blue-200 shadow mb-3 bg-gray-50 flex items-center justify-center">
-                        {% if electa.foto %}
-                        <img src="{{ url_for('static', filename='fotos/' + electa.foto) }}" alt="{{ electa.nombre }}" class="w-full h-full object-cover">
-                        {% else %}
-                        <span class="text-2xl">📸</span>
-                        {% endif %}
-                    </div>
-                    <div class="text-3xl mb-2">
-                        {% if "Elegancia" in electa.titulo %}✨{% else %}{% endif %}
-                    </div>
-                    <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider block mx-auto w-max mb-3">
-                        {{ electa.titulo }}
-                    </span>
-                    <h3 class="text-xl font-bold text-gray-800 leading-tight">{{ electa.nombre }}</h3>
-                    <p class="text-sm font-medium text-gray-400 mt-1">{{ electa.curso }}</p>
-                    {% if electa.empate %}
-                    <p class="text-xs text-red-500 font-semibold mt-1"> Empate técnico</p>
-                    {% endif %}
-                    <div class="mt-4 pt-3 border-t border-gray-100">
-                        <span class="text-lg font-bold text-blue-600">{{ electa.score_mostrar }}</span>
-                    </div>
-                </div>
-                {% endif %}
-            {% endfor %}
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 items-end" style="display: grid; gap: 1.5rem; align-items: end;">
 
+    {% for electa in podio %}
+        {% if loop.first %}
+        <!-- TARJETA REINA -->
+        <div class="bg-white shadow-2xl rounded-3xl border-2 border-yellow-300 p-8 text-center relative overflow-hidden order-first md:order-none" style="border-radius: 1.5rem; transform: scale(1.03); box-shadow: 0 25px 50px -12px rgba(251, 191, 36, 0.15);">
+            <div class="absolute -top-4 -right-4 text-yellow-100 text-6xl opacity-30 select-none pointer-events-none">✨</div>
+            <div class="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-yellow-300 shadow-md mb-3 bg-gray-50 flex items-center justify-center">
+                {% if electa.foto %}
+                <img src="{{ url_for('static', filename='fotos/' + electa.foto) }}" alt="{{ electa.nombre }}" class="w-full h-full object-cover">
+                {% else %}
+                <span class="text-3xl">📸</span>
+                {% endif %}
+            </div>
+            <div class="text-4xl mb-2 animate-bounce">{{ electa.emoji }}</div>
+            <span class="bg-yellow-100 text-yellow-800 text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest block mx-auto w-max mb-3">
+                {{ electa.titulo }}
+            </span>
+            <h3 class="text-2xl font-black text-gray-800 leading-tight">{{ electa.nombre }}</h3>
+            <p class="text-sm font-semibold text-gray-500 mt-1">{{ electa.curso }}</p>
+            <div class="mt-4 pt-3 border-t border-yellow-100">
+                <span class="text-xl font-extrabold text-yellow-600">{{ electa.score_mostrar }}</span>
+            </div>
         </div>
         {% else %}
-        <!-- Alerta si todavía no votó nadie -->
-        <div class="bg-white shadow-md rounded-2xl p-8 border border-blue-100 text-center text-gray-500 font-medium">
-             Todavía no hay votos registrados. Las posiciones se generarán cuando vote al menos un jurado.
+        <!-- TARJETAS DE TÍTULOS ADICIONALES -->
+        <div class="bg-white shadow-xl rounded-2xl border border-blue-100 p-6 text-center relative overflow-hidden">
+            <div class="w-20 h-20 mx-auto rounded-full overflow-hidden border-4 border-blue-200 shadow mb-3 bg-gray-50 flex items-center justify-center">
+                {% if electa.foto %}
+                <img src="{{ url_for('static', filename='fotos/' + electa.foto) }}" alt="{{ electa.nombre }}" class="w-full h-full object-cover">
+                {% else %}
+                <span class="text-2xl">📸</span>
+                {% endif %}
+            </div>
+            <div class="text-3xl mb-2">{{ electa.emoji }}</div>
+            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider block mx-auto w-max mb-3">
+                {{ electa.titulo }}
+            </span>
+            <h3 class="text-xl font-bold text-gray-800 leading-tight">{{ electa.nombre }}</h3>
+            <p class="text-sm font-medium text-gray-400 mt-1">{{ electa.curso }}</p>
+            <div class="mt-4 pt-3 border-t border-gray-100">
+                <span class="text-lg font-bold text-blue-600">{{ electa.score_mostrar }}</span>
+            </div>
         </div>
         {% endif %}
+    {% endfor %}
+
+</div>
+
+<!-- EXPLICACIÓN DEL CÁLCULO -->
+<details class="bg-white shadow rounded-2xl border border-blue-100 p-5 mb-8 text-sm text-gray-600">
+    <summary class="cursor-pointer font-semibold text-gray-700">¿Cómo se calculó este resultado?</summary>
+    <ul class="list-disc pl-5 mt-3 space-y-1">
+        <li>Cada categoría se promedia entre todos los jurados (no se suma), quedando en escala de 0 a 10.</li>
+        <li>La <b>Reina Escolar</b> es la candidata con mayor <b>promedio general</b> (el promedio de todas sus categorías).</li>
+        <li>Cada título adicional (Miss Elegancia, Miss Simpatía, etc.) se otorga a quien tenga mayor promedio en esa categoría puntual, entre las candidatas que aún no tienen título.</li>
+        <li>Si hay empate, se desempata automáticamente: primero por promedio general, luego categoría por categoría, y en última instancia por número de postulante. No queda ningún resultado sin definir.</li>
+    </ul>
+</details>
+{% else %}
+<!-- Alerta si todavía no votó nadie -->
+<div class="bg-white shadow-md rounded-2xl p-8 border border-blue-100 text-center text-gray-500 font-medium">
+     Todavía no hay votos registrados. Las posiciones se generarán cuando vote al menos un jurado.
+</div>
+{% endif %}
 
         <!-- Menú Inferior de Navegación -->
         <div class="bg-white p-4 shadow-lg rounded-2xl border border-brown-600 flex justify-center gap-4 items-center">

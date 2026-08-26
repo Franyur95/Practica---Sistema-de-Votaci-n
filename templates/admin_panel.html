@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administrador</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.min.css') }}">
 </head>
 <body class="bg-slate-50 min-h-screen p-6">
     <div class="max-w-3xl mx-auto">
@@ -42,6 +42,10 @@
             <a href="/admin/jurados" class="bg-white p-5 rounded-2xl shadow border border-slate-100 hover:shadow-md transition">
                 <h2 class="font-bold text-slate-800">Jurados</h2>
                 <p class="text-xs text-slate-500 mt-1">Agregar jurados y contraseñas</p>
+            </a>
+            <a href="/admin/categorias" class="bg-white p-5 rounded-2xl shadow border border-slate-100 hover:shadow-md transition">
+                <h2 class="font-bold text-slate-800">Categorías</h2>
+                <p class="text-xs text-slate-500 mt-1">Definir qué se evalúa y qué otorga título</p>
             </a>
             <a href="/resultados" class="bg-white p-5 rounded-2xl shadow border border-slate-100 hover:shadow-md transition">
                 <h2 class="font-bold text-slate-800"> Ver resultados</h2>

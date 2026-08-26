@@ -19,10 +19,24 @@ lock_datos = threading.Lock()
 CARPETA_FOTOS = os.path.join(CARPETA_ACTUAL, 'static', 'fotos')
 EXTENSIONES_PERMITIDAS = {'png', 'jpg', 'jpeg', 'webp'}
 
+CATEGORIAS_POR_DEFECTO = [
+    {"id": "belleza", "nombre": "Belleza", "otorga_titulo": False},
+    {"id": "elegancia", "nombre": "Elegancia", "otorga_titulo": True},
+    {"id": "simpatia", "nombre": "Simpatía", "otorga_titulo": True},
+    {"id": "postura", "nombre": "Postura", "otorga_titulo": False},
+]
+
+
 def extension_permitida(nombre_archivo):
     return '.' in nombre_archivo and nombre_archivo.rsplit('.', 1)[1].lower() in EXTENSIONES_PERMITIDAS
 
-lock_datos = threading.Lock()  # evita choques al escribir el JSON con varios jurados a la vez
+
+def slugify(texto):
+    texto = texto.strip().lower()
+    reemplazos = {'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u', 'ñ': 'n', ' ': '_'}
+    for k, v in reemplazos.items():
+        texto = texto.replace(k, v)
+    return ''.join(ch for ch in texto if ch.isalnum() or ch == '_') or "categoria"
 
 
 def cargar_datos():
@@ -31,6 +45,7 @@ def cargar_datos():
             "candidatas": [],
             "jurados": [],
             "votos_jurados": [],
+            "categorias": CATEGORIAS_POR_DEFECTO,
             "admin": {"usuario": "admin", "password": "1234"}
         }
         guardar_datos(datos_iniciales)
@@ -39,9 +54,19 @@ def cargar_datos():
     with open(DB_FILE, 'r', encoding='utf-8') as f:
         datos = json.load(f)
 
-    # Migración: asegura que existan las claves nuevas si venís de una base vieja
+    # Migraciones para bases de datos viejas
     datos.setdefault('jurados', [])
     datos.setdefault('admin', {"usuario": "admin", "password": "olga2026"})
+    datos.setdefault('categorias', CATEGORIAS_POR_DEFECTO)
+
+    cambio = False
+    for i, c in enumerate(datos.get('candidatas', []), start=1):
+        if 'numero' not in c or not c['numero']:
+            c['numero'] = i
+            cambio = True
+    if cambio:
+        guardar_datos(datos)
+
     return datos
 
 
@@ -59,6 +84,104 @@ def admin_requerido(f):
             return redirect(url_for('admin_login'))
         return f(*args, **kwargs)
     return decorador
+
+
+# ==========================================================================
+#  CÁLCULO DE RESULTADOS (nuevo método, explicado en el informe)
+# ==========================================================================
+
+def calcular_resultados(datos):
+    """
+    Devuelve (podio, detalle_completo).
+
+    MÉTODO DE CÁLCULO (ver informe adjunto en el chat):
+    1. Para cada candidata y cada categoría se calcula el PROMEDIO
+       (no la suma) de los puntos que le dieron los jurados.
+       Esto deja a todas las categorías en la misma escala (0 a 10).
+    2. El "promedio general" de una candidata es el promedio de sus
+       promedios de categoría (también queda en escala 0 a 10).
+    3. Reina Escolar = mayor promedio general.
+    4. Cada categoría marcada como "otorga_titulo" corona a la candidata
+       (entre las que quedan disponibles) con mayor promedio en ESA
+       categoría puntual.
+    5. Desempates: no se declara "empate técnico". Se desempata en
+       cascada: primero por promedio general, luego por cada categoría
+       en el orden en que fueron creadas, y si TODO es exactamente
+       igual, gana quien tenga el número de postulante más bajo.
+    """
+    candidatas = datos['candidatas']
+    votos = datos['votos_jurados']
+    categorias = datos['categorias']
+    n_categorias = len(categorias) or 1
+    n_votos = len(votos)
+
+    resultados = {}
+    for c in candidatas:
+        resultados[c['id']] = {
+            'id': c['id'],
+            'nombre': c['nombre'],
+            'curso': c['curso'],
+            'numero': c.get('numero', 0),
+            'foto': c.get('foto', ''),
+            'acumulado': {cat['id']: 0 for cat in categorias},
+            'acumulado_total': 0,
+        }
+
+    for v in votos:
+        for id_c, notas in v['puntuaciones'].items():
+            id_int = int(id_c)
+            if id_int in resultados:
+                for cat in categorias:
+                    resultados[id_int]['acumulado'][cat['id']] += notas.get(cat['id'], 0)
+                resultados[id_int]['acumulado_total'] += notas.get('total', 0)
+
+    lista = list(resultados.values())
+    for f in lista:
+        if n_votos > 0:
+            f['promedio'] = {cid: round(val / n_votos, 2) for cid, val in f['acumulado'].items()}
+            f['promedio_general'] = round((f['acumulado_total'] / n_votos) / n_categorias, 2)
+        else:
+            f['promedio'] = {cat['id']: 0 for cat in categorias}
+            f['promedio_general'] = 0
+
+    def clave_general(fila):
+        claves = [fila['promedio_general']]
+        for cat in categorias:
+            claves.append(fila['promedio'].get(cat['id'], 0))
+        claves.append(-(fila['numero'] or 0))
+        return tuple(claves)
+
+    podio = []
+    disponibles = list(lista)
+
+    if n_votos > 0 and disponibles:
+        disponibles.sort(key=clave_general, reverse=True)
+        reina = disponibles.pop(0)
+        reina['titulo'] = "Reina Escolar"
+        reina['emoji'] = "👑"
+        reina['score_mostrar'] = f"{reina['promedio_general']} / 10 (promedio general)"
+        podio.append(reina)
+
+        for cat in categorias:
+            if not cat.get('otorga_titulo') or not disponibles:
+                continue
+
+            def clave_categoria(fila, cat_id=cat['id']):
+                claves = [fila['promedio'].get(cat_id, 0), fila['promedio_general']]
+                for otra in categorias:
+                    if otra['id'] != cat_id:
+                        claves.append(fila['promedio'].get(otra['id'], 0))
+                claves.append(-(fila['numero'] or 0))
+                return tuple(claves)
+
+            disponibles.sort(key=clave_categoria, reverse=True)
+            ganadora = disponibles.pop(0)
+            ganadora['titulo'] = f"Miss {cat['nombre']}"
+            ganadora['emoji'] = "✨"
+            ganadora['score_mostrar'] = f"{ganadora['promedio'].get(cat['id'], 0)} / 10 en {cat['nombre']}"
+            podio.append(ganadora)
+
+    return podio, lista
 
 
 # ---------------------- PANEL DE JURADOS ----------------------
@@ -94,10 +217,13 @@ def evaluacion():
         flash('Todavía no hay candidatas cargadas. Contactá al administrador.')
         return redirect(url_for('home'))
 
+    candidatas_ordenadas = sorted(datos['candidatas'], key=lambda c: c.get('numero', 0))
+
     return render_template('votar.html',
                             nombre_jurado=jurado['nombre'],
                             jurado_id=jurado['id'],
-                            candidatas=datos['candidatas'])
+                            candidatas=candidatas_ordenadas,
+                            categorias=datos['categorias'])
 
 
 @app.route('/guardar_votos', methods=['POST'])
@@ -105,6 +231,7 @@ def guardar_votos():
     datos = cargar_datos()
     nombre_jurado = request.form.get('nombre_jurado')
     jurado_id = request.form.get('jurado_id')
+    categorias = datos['categorias']
 
     jurado = next((j for j in datos['jurados'] if str(j['id']) == str(jurado_id)), None)
     if not jurado:
@@ -119,18 +246,14 @@ def guardar_votos():
     for c in datos['candidatas']:
         id_c = str(c['id'])
         try:
-            belleza = int(request.form.get(f'belleza_{id_c}', 0))
-            elegancia = int(request.form.get(f'elegancia_{id_c}', 0))
-            simpatia = int(request.form.get(f'simpatia_{id_c}', 0))
-            postura = int(request.form.get(f'postura_{id_c}', 0))
-
-            planilla_jurado["puntuaciones"][id_c] = {
-                "belleza": belleza,
-                "elegancia": elegancia,
-                "simpatia": simpatia,
-                "postura": postura,
-                "total": belleza + elegancia + simpatia + postura
-            }
+            notas = {}
+            total = 0
+            for cat in categorias:
+                valor = int(request.form.get(f"{cat['id']}_{id_c}", 0))
+                notas[cat['id']] = valor
+                total += valor
+            notas['total'] = total
+            planilla_jurado["puntuaciones"][id_c] = notas
         except (TypeError, ValueError):
             flash("Error en los datos ingresados.")
             return redirect(url_for('home'))
@@ -146,76 +269,25 @@ def guardar_votos():
 @app.route('/resultados')
 def resultados():
     datos = cargar_datos()
-    candidatas = datos['candidatas']
-    votos = datos['votos_jurados']
     total_registrados = len(datos.get('jurados', []))
-
-    resultados_candidatas = {}
-    for c in candidatas:
-        resultados_candidatas[c['id']] = {
-            'id': c['id'],
-            'nombre': c['nombre'],
-            'curso': c['curso'],
-            'foto': c.get('foto', ''),
-            'acumulado_total': 0,
-            'acumulado_belleza': 0,
-            'acumulado_elegancia': 0,
-            'acumulado_simpatia': 0,
-            'acumulado_postura': 0
-        }
-
-    for v in votos:
-        for id_c, notas in v['puntuaciones'].items():
-            id_int = int(id_c)
-            if id_int in resultados_candidatas:
-                resultados_candidatas[id_int]['acumulado_total'] += notas['total']
-                resultados_candidatas[id_int]['acumulado_belleza'] += notas['belleza']
-                resultados_candidatas[id_int]['acumulado_elegancia'] += notas['elegancia']
-                resultados_candidatas[id_int]['acumulado_simpatia'] += notas['simpatia']
-                resultados_candidatas[id_int]['acumulado_postura'] += notas['postura']
-
-    lista_candidatas = list(resultados_candidatas.values())
-    podio = []
-
-    if len(votos) > 0 and len(lista_candidatas) >= 3:
-        # Reina: total, con desempate en cascada (belleza > elegancia > simpatia > postura)
-        lista_candidatas.sort(key=lambda x: (
-            x['acumulado_total'], x['acumulado_belleza'],
-            x['acumulado_elegancia'], x['acumulado_simpatia'], x['acumulado_postura']
-        ), reverse=True)
-        reina = lista_candidatas.pop(0)
-        empate_reina = len(lista_candidatas) > 0 and lista_candidatas[0]['acumulado_total'] == reina['acumulado_total']
-        reina['titulo'] = "👑 Reina Escolar 👑"
-        reina['score_mostrar'] = f"{reina['acumulado_total']} pts totales"
-        reina['empate'] = empate_reina
-        podio.append(reina)
-
-        # Primera princesa: elegancia, con desempate por total
-        lista_candidatas.sort(key=lambda x: (x['acumulado_elegancia'], x['acumulado_total']), reverse=True)
-        miss_elegancia = lista_candidatas.pop(0)
-        empate_elegancia = len(lista_candidatas) > 0 and lista_candidatas[0]['acumulado_elegancia'] == miss_elegancia['acumulado_elegancia']
-        miss_elegancia['titulo'] = "✨ Primera Princesa ✨"
-        miss_elegancia['score_mostrar'] = f"{miss_elegancia['acumulado_elegancia']} pts"
-        miss_elegancia['empate'] = empate_elegancia
-        podio.append(miss_elegancia)
-
-        # Segunda princesa: simpatía, con desempate por total
-        lista_candidatas.sort(key=lambda x: (x['acumulado_simpatia'], x['acumulado_total']), reverse=True)
-        miss_simpatia = lista_candidatas.pop(0)
-        empate_simpatia = len(lista_candidatas) > 0 and lista_candidatas[0]['acumulado_simpatia'] == miss_simpatia['acumulado_simpatia']
-        miss_simpatia['titulo'] = "😊 Segunda Princesa 😊"
-        miss_simpatia['score_mostrar'] = f"{miss_simpatia['acumulado_simpatia']} pts"
-        miss_simpatia['empate'] = empate_simpatia
-        podio.append(miss_simpatia)
-
-    return render_template('podio.html', podio=podio,
-                            total_jurados=len(votos),
+    podio, _ = calcular_resultados(datos)
+    return render_template('podio.html',
+                            podio=podio,
+                            categorias=datos['categorias'],
+                            total_jurados=len(datos['votos_jurados']),
                             total_registrados=total_registrados)
+
 
 @app.route('/descargar_pdf')
 def descargar_pdf():
     datos = cargar_datos()
     votos = datos['votos_jurados']
+    categorias = datos['categorias']
+    nombres_categorias = [cat['nombre'] for cat in categorias]
+
+    def nombre_de(id_c):
+        cand = next((c for c in datos['candidatas'] if str(c['id']) == str(id_c)), None)
+        return cand['nombre'] if cand else id_c
 
     buffer = io.BytesIO()
     c = canvas.Canvas(buffer, pagesize=letter)
@@ -234,6 +306,8 @@ def descargar_pdf():
     c.drawCentredString(ancho_pagina / 2, alto_pagina - 60, "Colegio Secundario Olga Márquez de Aredez")
 
     y = alto_pagina - 150
+    n_cols = len(categorias) + 2
+    ancho_col = 480 // n_cols
 
     for v in votos:
         if y < 200:
@@ -244,20 +318,20 @@ def descargar_pdf():
         c.drawString(margen, y, f"Jurado: {v['jurado']}")
         y -= 20
 
-        data = [["Candidata", "Belleza", "Elegancia", "Simpatía", "Postura", "Total"]]
+        data = [["Candidata"] + nombres_categorias + ["Total"]]
         for id_c, notas in v['puntuaciones'].items():
-            fila = [id_c, notas['belleza'], notas['elegancia'],
-                    notas['simpatia'], notas['postura'], notas['total']]
+            fila = [nombre_de(id_c)] + [notas.get(cat['id'], 0) for cat in categorias] + [notas.get('total', 0)]
             data.append(fila)
 
-        table = Table(data, colWidths=[70] * 6)
+        table = Table(data, colWidths=[ancho_col] * n_cols)
         table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
             ('GRID', (0, 0), (-1, -1), 1, colors.black),
-            ('ALIGN', (0, 0), (-1, -1), 'CENTER')
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTSIZE', (0, 0), (-1, -1), 8),
         ]))
 
-        ancho_tabla = 6 * 70
+        ancho_tabla = n_cols * ancho_col
         x_centrado = (ancho_pagina - ancho_tabla) / 2
         table.wrapOn(c, x_centrado, y)
         table.drawOn(c, x_centrado, y - 200)
@@ -271,30 +345,23 @@ def descargar_pdf():
     c.setFont("Helvetica-Bold", 14)
     c.drawCentredString(ancho_pagina / 2, alto_pagina - 50, "Tabla Resumen Final")
 
-    candidatas = datos['candidatas']
-    resumen = []
-    for candi in candidatas:
-        fila = [candi['nombre']]
-        total_final = 0
-        for v in votos:
-            puntaje = v['puntuaciones'].get(str(candi['id']), {}).get('total', 0)
-            fila.append(puntaje)
-            total_final += puntaje
-        fila.append(total_final)
-        resumen.append(fila)
+    _, detalle = calcular_resultados(datos)
+    detalle.sort(key=lambda x: x['promedio_general'], reverse=True)
 
-    resumen.sort(key=lambda x: x[-1], reverse=True)
-
-    encabezado = ["Candidata"] + [f"Jurado {i+1}" for i in range(len(votos))] + ["Total"]
+    encabezado = ["Candidata"] + nombres_categorias + ["Promedio general"]
     data_resumen = [encabezado]
-    data_resumen.extend(resumen)
+    for f in detalle:
+        fila = [f['nombre']] + [f['promedio'].get(cat['id'], 0) for cat in categorias] + [f['promedio_general']]
+        data_resumen.append(fila)
 
-    col_widths = [90] + [60] * len(votos) + [60]
+    n_cols_resumen = len(categorias) + 2
+    col_widths = [100] + [55] * (n_cols_resumen - 2) + [70]
     table_resumen = Table(data_resumen, colWidths=col_widths)
     table_resumen.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER')
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTSIZE', (0, 0), (-1, -1), 8),
     ]))
 
     ancho_tabla = sum(col_widths)
@@ -362,6 +429,7 @@ def admin_candidatas():
             return redirect(url_for('admin_candidatas'))
 
         nuevo_id = max([c['id'] for c in datos['candidatas']], default=0) + 1
+        nuevo_numero = max([c.get('numero', 0) for c in datos['candidatas']], default=0) + 1
         nombre_foto = ""
 
         if archivo and archivo.filename != '':
@@ -375,13 +443,55 @@ def admin_candidatas():
                 return redirect(url_for('admin_candidatas'))
 
         datos['candidatas'].append({
-            "id": nuevo_id, "nombre": nombre, "curso": curso, "foto": nombre_foto
+            "id": nuevo_id, "numero": nuevo_numero, "nombre": nombre, "curso": curso, "foto": nombre_foto
         })
         guardar_datos(datos)
         flash(f'Candidata "{nombre}" agregada correctamente.')
         return redirect(url_for('admin_candidatas'))
 
-    return render_template('admin_candidatas.html', candidatas=datos['candidatas'])
+    candidatas_ordenadas = sorted(datos['candidatas'], key=lambda c: c.get('numero', 0))
+    return render_template('admin_candidatas.html', candidatas=candidatas_ordenadas)
+
+
+@app.route('/admin/candidatas/editar/<int:id_candidata>', methods=['POST'])
+@admin_requerido
+def editar_candidata(id_candidata):
+    datos = cargar_datos()
+    candidata = next((c for c in datos['candidatas'] if c['id'] == id_candidata), None)
+    if not candidata:
+        flash('Candidata no encontrada.')
+        return redirect(url_for('admin_candidatas'))
+
+    nombre = request.form.get('nombre', '').strip()
+    curso = request.form.get('curso', '').strip()
+    numero = request.form.get('numero', '').strip()
+    archivo = request.files.get('foto_archivo')
+
+    if nombre:
+        candidata['nombre'] = nombre
+    if curso:
+        candidata['curso'] = curso
+    if numero:
+        try:
+            candidata['numero'] = int(numero)
+        except ValueError:
+            flash('El número de postulante debe ser un número.')
+            return redirect(url_for('admin_candidatas'))
+
+    if archivo and archivo.filename != '':
+        if extension_permitida(archivo.filename):
+            extension = archivo.filename.rsplit('.', 1)[1].lower()
+            nombre_foto = f"candidata_{id_candidata}.{extension}"
+            os.makedirs(CARPETA_FOTOS, exist_ok=True)
+            archivo.save(os.path.join(CARPETA_FOTOS, nombre_foto))
+            candidata['foto'] = nombre_foto
+        else:
+            flash('Formato de imagen no permitido (usá jpg, jpeg, png o webp).')
+            return redirect(url_for('admin_candidatas'))
+
+    guardar_datos(datos)
+    flash(f'Candidata "{candidata["nombre"]}" actualizada correctamente.')
+    return redirect(url_for('admin_candidatas'))
 
 
 @app.route('/admin/candidatas/eliminar/<int:id_candidata>', methods=['POST'])
@@ -392,6 +502,62 @@ def eliminar_candidata(id_candidata):
     guardar_datos(datos)
     flash('Candidata eliminada.')
     return redirect(url_for('admin_candidatas'))
+
+
+@app.route('/admin/categorias', methods=['GET', 'POST'])
+@admin_requerido
+def admin_categorias():
+    datos = cargar_datos()
+    if request.method == 'POST':
+        nombre = request.form.get('nombre', '').strip()
+        otorga_titulo = request.form.get('otorga_titulo') == 'on'
+
+        if not nombre:
+            flash('El nombre de la categoría es obligatorio.')
+            return redirect(url_for('admin_categorias'))
+
+        id_cat = slugify(nombre)
+        if any(cat['id'] == id_cat for cat in datos['categorias']):
+            flash('Ya existe una categoría con ese nombre.')
+            return redirect(url_for('admin_categorias'))
+
+        if datos.get('votos_jurados'):
+            flash('No se pueden agregar categorías si ya hay votos cargados. Reiniciá la votación primero.')
+            return redirect(url_for('admin_categorias'))
+
+        datos['categorias'].append({"id": id_cat, "nombre": nombre, "otorga_titulo": otorga_titulo})
+        guardar_datos(datos)
+        flash(f'Categoría "{nombre}" agregada correctamente.')
+        return redirect(url_for('admin_categorias'))
+
+    return render_template('admin_categorias.html', categorias=datos['categorias'])
+
+
+@app.route('/admin/categorias/eliminar/<id_categoria>', methods=['POST'])
+@admin_requerido
+def eliminar_categoria(id_categoria):
+    datos = cargar_datos()
+    if len(datos['categorias']) <= 1:
+        flash('Debe existir al menos una categoría.')
+        return redirect(url_for('admin_categorias'))
+    if datos.get('votos_jurados'):
+        flash('No se pueden eliminar categorías si ya hay votos cargados. Reiniciá la votación primero.')
+        return redirect(url_for('admin_categorias'))
+    datos['categorias'] = [c for c in datos['categorias'] if c['id'] != id_categoria]
+    guardar_datos(datos)
+    flash('Categoría eliminada.')
+    return redirect(url_for('admin_categorias'))
+
+
+@app.route('/admin/categorias/titulo/<id_categoria>', methods=['POST'])
+@admin_requerido
+def alternar_titulo_categoria(id_categoria):
+    datos = cargar_datos()
+    for cat in datos['categorias']:
+        if cat['id'] == id_categoria:
+            cat['otorga_titulo'] = not cat.get('otorga_titulo', False)
+    guardar_datos(datos)
+    return redirect(url_for('admin_categorias'))
 
 
 @app.route('/admin/jurados', methods=['GET', 'POST'])

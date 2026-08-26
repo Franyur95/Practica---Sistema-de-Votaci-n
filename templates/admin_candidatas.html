@@ -4,55 +4,207 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administrar Candidatas</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.min.css') }}">
 </head>
-<body class="bg-slate-50 min-h-screen p-6">
-    <div class="max-w-2xl mx-auto">
-        <a href="/admin/panel" class="text-sm text-slate-400 hover:text-slate-600">← Panel de administrador</a>
-        <h1 class="text-2xl font-bold text-slate-800 mt-2 mb-6">Candidatas</h1>
 
+<body class="bg-slate-50 min-h-screen p-6">
+
+    <div class="max-w-2xl mx-auto">
+
+        <!-- Volver al panel -->
+        <a href="/admin/panel"
+           class="text-sm text-slate-400 hover:text-slate-600">
+            ← Panel de administrador
+        </a>
+
+        <h1 class="text-2xl font-bold text-slate-800 mt-2 mb-6">
+            Candidatas
+        </h1>
+
+        <!-- Mensajes -->
         {% with messages = get_flashed_messages() %}
-          {% if messages %}{% for message in messages %}
-            <div class="mb-4 p-3 bg-amber-50 border-l-4 border-amber-400 text-amber-700 text-sm rounded-r-xl">⚠️ {{ message }}</div>
-          {% endfor %}{% endif %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="mb-4 p-3 bg-amber-50 border-l-4 border-amber-400 text-amber-700 text-sm rounded-r-xl">
+                        ⚠️ {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
         {% endwith %}
 
-<form action="/admin/candidatas" method="POST" enctype="multipart/form-data" class="bg-white p-5 rounded-2xl shadow border border-slate-100 mb-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <input type="text" name="nombre" placeholder="Nombre completo" required class="border border-slate-300 rounded-xl px-3 py-2 sm:col-span-1">
-            <input type="text" name="curso" placeholder="Curso (ej: 5to Año 1ra)" required class="border border-slate-300 rounded-xl px-3 py-2 sm:col-span-1">
+
+        <!-- ==========================================================
+             FORMULARIO PARA AGREGAR CANDIDATA
+        =========================================================== -->
+
+        <form action="/admin/candidatas"
+              method="POST"
+              enctype="multipart/form-data"
+              class="bg-white p-5 rounded-2xl shadow border border-slate-100 mb-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
+
+            <input type="text"
+                   name="nombre"
+                   placeholder="Nombre completo"
+                   required
+                   class="border border-slate-300 rounded-xl px-3 py-2 sm:col-span-1">
+
+            <input type="text"
+                   name="curso"
+                   placeholder="Curso (ej: 5to Año 1ra)"
+                   required
+                   class="border border-slate-300 rounded-xl px-3 py-2 sm:col-span-1">
+
             <div class="sm:col-span-1">
-                <input type="file" name="foto_archivo" accept="image/png, image/jpeg, image/webp" class="w-full text-sm border border-slate-300 rounded-xl px-2 py-2">
+                <input type="file"
+                       name="foto_archivo"
+                       accept="image/png, image/jpeg, image/webp"
+                       class="w-full text-sm border border-slate-300 rounded-xl px-2 py-2">
             </div>
-            <button type="submit" class="sm:col-span-3 bg-slate-800 hover:bg-slate-900 text-white font-semibold py-2 rounded-xl">
+
+            <button type="submit"
+                    class="sm:col-span-3 bg-slate-800 hover:bg-slate-900 text-white font-semibold py-2 rounded-xl">
                 + Agregar candidata
             </button>
+
         </form>
 
+
+        <!-- ==========================================================
+             LISTA DE CANDIDATAS
+        =========================================================== -->
+
         <div class="bg-white rounded-2xl shadow border border-slate-100 divide-y">
+
             {% for c in candidatas %}
-            <div class="p-4 flex justify-between items-center">
-                <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 rounded-full overflow-hidden bg-slate-100 border border-slate-200 flex items-center justify-center flex-shrink-0">
-                        {% if c.foto %}
-                        <img src="{{ url_for('static', filename='fotos/' + c.foto) }}" class="w-full h-full object-cover" alt="{{ c.nombre }}">
-                        {% else %}
-                        <span class="text-lg">📸</span>
-                        {% endif %}
+
+            <div class="p-4">
+
+                <!-- INFORMACIÓN PRINCIPAL -->
+
+                <div class="flex justify-between items-center">
+
+                    <div class="flex items-center gap-3">
+
+                        <!-- Foto -->
+                        <div class="w-12 h-12 rounded-full overflow-hidden bg-slate-100 border border-slate-200 flex items-center justify-center flex-shrink-0">
+
+                            {% if c.foto %}
+
+                                <img src="{{ url_for('static', filename='fotos/' + c.foto) }}"
+                                     class="w-full h-full object-cover"
+                                     alt="{{ c.nombre }}">
+
+                            {% else %}
+
+                                <span class="text-lg">📸</span>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- Datos -->
+                        <div>
+
+                            <p class="font-bold text-slate-800">
+                                Nº {{ c.numero }} — {{ c.nombre }}
+                            </p>
+
+                            <p class="text-xs text-slate-500">
+                                {{ c.curso }}
+                                —
+                                {{ "foto cargada" if c.foto else "sin foto" }}
+                            </p>
+
+                        </div>
+
                     </div>
-                    <div>
-                        <p class="font-bold text-slate-800">{{ c.nombre }}</p>
-                        <p class="text-xs text-slate-500">{{ c.curso }} — {{ "foto cargada" if c.foto else "sin foto" }}</p>
+
+
+                    <!-- BOTONES -->
+
+                    <div class="flex gap-3 items-center">
+
+                        <!-- Editar -->
+                        <details>
+                            <summary class="text-blue-600 text-sm hover:underline cursor-pointer list-none">
+                                Editar
+                            </summary>
+
+                            <!-- FORMULARIO DE EDICIÓN -->
+
+                            <form action="/admin/candidatas/editar/{{ c.id }}"
+                                  method="POST"
+                                  enctype="multipart/form-data"
+                                  class="grid grid-cols-1 sm:grid-cols-4 gap-2 mt-3 bg-slate-50 p-3 rounded-xl">
+
+                                <!-- Número -->
+                                <input type="number"
+                                       name="numero"
+                                       value="{{ c.numero }}"
+                                       placeholder="Número"
+                                       class="border border-slate-300 rounded-lg px-2 py-1 text-sm">
+
+                                <!-- Nombre -->
+                                <input type="text"
+                                       name="nombre"
+                                       value="{{ c.nombre }}"
+                                       placeholder="Nombre"
+                                       class="border border-slate-300 rounded-lg px-2 py-1 text-sm sm:col-span-2">
+
+                                <!-- Curso -->
+                                <input type="text"
+                                       name="curso"
+                                       value="{{ c.curso }}"
+                                       placeholder="Curso"
+                                       class="border border-slate-300 rounded-lg px-2 py-1 text-sm">
+
+                                <!-- Nueva foto -->
+                                <input type="file"
+                                       name="foto_archivo"
+                                       accept="image/png, image/jpeg, image/webp"
+                                       class="text-xs sm:col-span-3">
+
+                                <!-- Guardar -->
+                                <button type="submit"
+                                        class="bg-slate-800 hover:bg-slate-900 text-white text-sm font-semibold py-1.5 rounded-lg">
+                                    Guardar cambios
+                                </button>
+
+                            </form>
+
+                        </details>
+
+
+                        <!-- Eliminar -->
+                        <form action="/admin/candidatas/eliminar/{{ c.id }}"
+                              method="POST"
+                              onclick="return confirm('¿Eliminar a {{ c.nombre }}?');">
+
+                            <button type="submit"
+                                    class="text-red-500 text-sm hover:underline">
+                                Eliminar
+                            </button>
+
+                        </form>
+
                     </div>
+
                 </div>
-                <form action="/admin/candidatas/eliminar/{{ c.id }}" method="POST"
-                      onclick="return confirm('¿Eliminar a {{ c.nombre }}?');">
-                    <button type="submit" class="text-red-500 text-sm hover:underline">Eliminar</button>
-                </form>
+
             </div>
+
             {% else %}
-            <p class="p-4 text-sm text-slate-400">Todavía no hay candidatas cargadas.</p>
+
+                <p class="p-4 text-sm text-slate-400">
+                    Todavía no hay candidatas cargadas.
+                </p>
+
             {% endfor %}
+
         </div>
+
     </div>
+
 </body>
 </html>

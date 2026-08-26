@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrar Categorías</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.min.css') }}">
+</head>
+<body class="bg-slate-50 min-h-screen p-6">
+    <div class="max-w-2xl mx-auto">
+        <a href="/admin/panel" class="text-sm text-slate-400 hover:text-slate-600">← Panel de administrador</a>
+        <h1 class="text-2xl font-bold text-slate-800 mt-2 mb-2">Categorías a evaluar</h1>
+        <p class="text-xs text-slate-500 mb-6">Marcá "Otorga título" en las categorías que además de sumar al promedio general, coronan a una "Miss" propia (ej: Elegancia, Simpatía).</p>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}{% for message in messages %}
+            <div class="mb-4 p-3 bg-amber-50 border-l-4 border-amber-400 text-amber-700 text-sm rounded-r-xl">⚠️ {{ message }}</div>
+          {% endfor %}{% endif %}
+        {% endwith %}
+
+        <form action="/admin/categorias" method="POST" class="bg-white p-5 rounded-2xl shadow border border-slate-100 mb-6 flex flex-col sm:flex-row gap-3 items-center">
+            <input type="text" name="nombre" placeholder="Nombre de la categoría (ej: Carisma)" required class="border border-slate-300 rounded-xl px-3 py-2 flex-1 w-full">
+            <label class="flex items-center gap-2 text-sm text-slate-600 whitespace-nowrap">
+                <input type="checkbox" name="otorga_titulo"> Otorga título propio
+            </label>
+            <button type="submit" class="bg-slate-800 hover:bg-slate-900 text-white font-semibold py-2 px-4 rounded-xl whitespace-nowrap">
+                + Agregar
+            </button>
+        </form>
+
+        <div class="bg-white rounded-2xl shadow border border-slate-100 divide-y">
+            {% for cat in categorias %}
+            <div class="p-4 flex justify-between items-center">
+                <div>
+                    <p class="font-bold text-slate-800">{{ cat.nombre }}</p>
+                    <p class="text-xs {{ 'text-emerald-600' if cat.otorga_titulo else 'text-slate-400' }}">
+                        {{ "✨ Otorga título propio" if cat.otorga_titulo else "Solo suma al promedio general" }}
+                    </p>
+                </div>
+                <div class="flex gap-3">
+                    <form action="/admin/categorias/titulo/{{ cat.id }}" method="POST">
+                        <button type="submit" class="text-blue-600 text-sm hover:underline">
+                            {{ "Quitar título" if cat.otorga_titulo else "Dar título" }}
+                        </button>
+                    </form>
+                    <form action="/admin/categorias/eliminar/{{ cat.id }}" method="POST"
+                          onclick="return confirm('¿Eliminar la categoría {{ cat.nombre }}?');">
+                        <button type="submit" class="text-red-500 text-sm hover:underline">Eliminar</button>
+                    </form>
+                </div>
+            </div>
+            {% else %}
+            <p class="p-4 text-sm text-slate-400">No hay categorías cargadas.</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
