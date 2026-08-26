@@ -1,114 +1,1726 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Resultados Oficiales - Secundario 59</title>
-    <!-- Conector tradicional de Tailwind -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.min.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/tailwind.min.css') }}">
+
+    <!-- FUENTES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+
+    <style>
+
+        /* =====================================================
+           GENERAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at 50% 0%,
+                    rgba(255,255,255,0.9),
+                    transparent 40%
+                ),
+                linear-gradient(
+                    135deg,
+                    #f8f1e5 0%,
+                    #f4ebdc 50%,
+                    #faf4e9 100%
+                );
+
+            color: #4e2b26;
+
+            font-family:
+                "Cormorant Garamond",
+                Georgia,
+                serif;
+
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           CONTENEDOR PRINCIPAL
+        ====================================================== */
+
+        .page {
+            position: relative;
+
+            width: 100%;
+            max-width: 1000px;
+
+            margin: 0 auto;
+
+            padding: 14px 25px 55px;
+
+            z-index: 2;
+        }
+
+
+        /* =====================================================
+           LOGOS EN LAS ESQUINAS DE LA PANTALLA
+        ====================================================== */
+
+        .corner-logo {
+            position: fixed;
+
+            top: 20px;
+
+            width: 145px;
+            height: 145px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            z-index: 20;
+
+            pointer-events: none;
+
+            user-select: none;
+        }
+
+        .corner-logo img {
+            display: block;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: contain;
+        }
+
+
+        /* LOGO EVENTO - EXTREMO IZQUIERDO */
+
+        .corner-logo-left {
+            left: 20px;
+        }
+
+
+        /* LOGO COLEGIO - EXTREMO DERECHO */
+
+        .corner-logo-right {
+            right: 20px;
+        }
+
+
+        /* =====================================================
+           DECORACIÓN SUPERIOR
+        ====================================================== */
+
+        .top-decoration {
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 12px;
+
+            margin-bottom: 8px;
+        }
+
+        .top-line {
+            height: 1px;
+
+            flex: 1;
+
+            background: #c9a45c;
+
+            opacity: 0.85;
+        }
+
+        .top-diamond {
+            color: #c4953d;
+
+            font-size: 16px;
+
+            line-height: 1;
+        }
+
+
+        /* =====================================================
+           ENCABEZADO PRINCIPAL
+        ====================================================== */
+
+        .main-header {
+            position: relative;
+
+            width: 100%;
+
+            min-height: 195px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 30px;
+        }
+
+
+        /* =====================================================
+           CENTRO DEL ENCABEZADO
+        ====================================================== */
+
+        .header-center {
+            width: 100%;
+
+            text-align: center;
+
+            /*
+             * Dejamos espacio para los logos que están
+             * pegados a las esquinas de la pantalla.
+             */
+            padding: 0 160px;
+        }
+
+
+        /* =====================================================
+           TÍTULO
+        ====================================================== */
+
+        .main-title {
+            margin: 0;
+
+            color: #4a211c;
+
+            font-family:
+                "Cormorant Garamond",
+                Georgia,
+                serif;
+
+            font-size: 60px;
+
+            line-height: 1;
+
+            font-weight: 600;
+
+            letter-spacing: 7px;
+
+            text-transform: uppercase;
+        }
+
+
+        /* =====================================================
+           DECORACIÓN DEL TÍTULO
+        ====================================================== */
+
+        .title-decoration {
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 12px;
+
+            width: 100%;
+            max-width: 700px;
+
+            margin: 13px auto 10px;
+        }
+
+        .title-decoration span {
+            height: 1px;
+
+            flex: 1;
+
+            background: #c9a45c;
+        }
+
+        .title-decoration b {
+            color: #c89a43;
+
+            font-size: 15px;
+
+            font-weight: 400;
+        }
+
+
+        /* =====================================================
+           NOMBRE DEL COLEGIO
+        ====================================================== */
+
+        .main-header .school-name {
+            margin: 0;
+
+            color: #542b26;
+
+            font-family:
+                "Montserrat",
+                sans-serif;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            letter-spacing: 3px;
+
+            text-transform: uppercase;
+        }
+
+
+        /* =====================================================
+           RAMAS / FLORES LATERALES
+        ====================================================== */
+
+        .branch {
+            position: fixed;
+
+            bottom: 0;
+
+            width: 230px;
+
+            z-index: 1;
+
+            pointer-events: none;
+
+            user-select: none;
+
+            display: flex;
+
+            align-items: flex-end;
+
+            opacity: 0.95;
+        }
+
+        .branch img {
+            display: block;
+
+            width: 100%;
+
+            height: auto;
+
+            max-height: 100vh;
+
+            object-fit: contain;
+
+            object-position: bottom;
+        }
+
+
+        /* RAMA IZQUIERDA */
+
+        .branch-left {
+            left: 0;
+
+            justify-content: flex-start;
+        }
+
+
+        /* RAMA DERECHA */
+
+        .branch-right {
+            right: 0;
+
+            justify-content: flex-end;
+        }
+
+
+        /* Espejamos la rama derecha */
+
+        .branch-right img {
+            transform: scaleX(-1);
+        }
+
+
+        /* =====================================================
+           TARJETAS
+        ====================================================== */
+
+        .card {
+            background:
+                rgba(255, 253, 248, 0.95);
+
+            border:
+                1px solid #dfd1bb;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 10px 30px
+                rgba(91, 62, 31, 0.075),
+
+                0 2px 6px
+                rgba(91, 62, 31, 0.035);
+        }
+
+
+        /* =====================================================
+           CABECERA ESCRUTINIO
+        ====================================================== */
+
+        .results-header {
+            padding: 34px 30px 30px;
+
+            text-align: center;
+
+            margin-bottom: 32px;
+        }
+
+        .results-school {
+            margin: 0;
+
+            color: #5b342e;
+
+            font-family:
+                "Montserrat",
+                sans-serif;
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            letter-spacing: 1.4px;
+
+            text-transform: uppercase;
+        }
+
+        .results-title {
+            margin: 6px 0 17px;
+
+            color: #43231f;
+
+            font-family:
+                "Cormorant Garamond",
+                Georgia,
+                serif;
+
+            font-size: 43px;
+
+            line-height: 1;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           PLANILLAS PROCESADAS
+        ====================================================== */
+
+        .processed {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 10px;
+
+            padding: 7px 19px;
+
+            border-radius: 999px;
+
+            background: #f9eacb;
+
+            color: #76512d;
+
+            font-size: 17px;
+
+            font-weight: 600;
+        }
+
+        .processed-icon {
+            color: #bd8b37;
+
+            font-size: 18px;
+        }
+
+
+        /* =====================================================
+           PODIO
+        ====================================================== */
+
+        .podium-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+
+            align-items: end;
+
+            margin-bottom: 30px;
+        }
+
+        .candidate-card {
+            position: relative;
+
+            overflow: hidden;
+
+            background:
+                rgba(255,253,248,0.95);
+
+            border:
+                1px solid #ddceb4;
+
+            border-radius: 17px;
+
+            padding: 25px 18px;
+
+            text-align: center;
+
+            box-shadow:
+                0 9px 24px
+                rgba(91,62,31,0.065);
+        }
+
+        .candidate-card.winner {
+            transform: scale(1.025);
+
+            border:
+                1px solid #c89b4c;
+
+            box-shadow:
+                0 14px 30px
+                rgba(121,78,30,0.10);
+        }
+
+
+        /* =====================================================
+           FOTO CANDIDATA
+        ====================================================== */
+
+        .candidate-photo {
+            width: 92px;
+            height: 92px;
+
+            margin: 0 auto 12px;
+
+            overflow: hidden;
+
+            border-radius: 50%;
+
+            border:
+                3px solid #c99b4d;
+
+            background: #f8f1e3;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+        }
+
+        .candidate-card:not(.winner)
+        .candidate-photo {
+            border-color: #d8c5a3;
+        }
+
+        .candidate-photo img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+        }
+
+        .candidate-photo span {
+            font-size: 26px;
+        }
+
+
+        /* =====================================================
+           EMOJI
+        ====================================================== */
+
+        .candidate-emoji {
+            font-size: 29px;
+
+            margin-bottom: 7px;
+        }
+
+
+        /* =====================================================
+           TÍTULO CANDIDATA
+        ====================================================== */
+
+        .candidate-title {
+            display: block;
+
+            width: fit-content;
+
+            max-width: 100%;
+
+            margin: 0 auto 9px;
+
+            padding: 5px 11px;
+
+            border-radius: 999px;
+
+            background: #f6e8c8;
+
+            color: #765025;
+
+            font-family:
+                "Montserrat",
+                sans-serif;
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .candidate-card:not(.winner)
+        .candidate-title {
+            background: #eee3cf;
+
+            color: #70594b;
+        }
+
+
+        /* =====================================================
+           NOMBRE
+        ====================================================== */
+
+        .candidate-name {
+            margin: 0;
+
+            color: #4b2924;
+
+            font-size: 25px;
+
+            line-height: 1.05;
+
+            font-weight: 700;
+        }
+
+        .candidate-course {
+            margin-top: 4px;
+
+            color: #887468;
+
+            font-family:
+                "Montserrat",
+                sans-serif;
+
+            font-size: 11px;
+
+            font-weight: 500;
+        }
+
+
+        /* =====================================================
+           PUNTAJE
+        ====================================================== */
+
+        .candidate-score {
+            margin-top: 15px;
+
+            padding-top: 11px;
+
+            border-top:
+                1px solid #eadfca;
+
+            color: #a7762f;
+
+            font-size: 21px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           EXPLICACIÓN
+        ====================================================== */
+
+        .calculation-card {
+            margin-bottom: 30px;
+
+            padding: 20px 24px;
+
+            color: #69534a;
+
+            font-family:
+                "Montserrat",
+                sans-serif;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+        .calculation-card summary {
+            cursor: pointer;
+
+            color: #59352e;
+
+            font-family:
+                "Cormorant Garamond",
+                Georgia,
+                serif;
+
+            font-size: 18px;
+
+            font-weight: 700;
+        }
+
+        .calculation-card ul {
+            margin-top: 12px;
+
+            padding-left: 22px;
+        }
+
+
+        /* =====================================================
+           MENSAJE SIN VOTOS
+        ====================================================== */
+
+        .empty-card {
+            min-height: 160px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 30px 40px;
+
+            margin-bottom: 30px;
+        }
+
+        .empty-content {
+            width: 100%;
+
+            max-width: 650px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 24px;
+        }
+
+        .info-icon {
+            flex-shrink: 0;
+
+            width: 44px;
+            height: 44px;
+
+            border:
+                2px solid #c89a42;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            color: #b98531;
+
+            font-family: Georgia, serif;
+
+            font-size: 27px;
+
+            font-weight: bold;
+        }
+
+        .empty-title {
+            margin: 0 0 3px;
+
+            color: #4d2a25;
+
+            font-size: 22px;
+
+            font-weight: 700;
+        }
+
+        .empty-description {
+            margin: 0;
+
+            color: #654a42;
+
+            font-size: 18px;
+
+            line-height: 1.3;
+        }
+
+
+        /* =====================================================
+           BOTONES INFERIORES
+        ====================================================== */
+
+        .navigation-card {
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            gap: 20px;
+
+            padding: 38px 25px;
+
+            margin-bottom: 32px;
+        }
+
+
+        /* =====================================================
+           ESTILO GENERAL BOTONES
+        ====================================================== */
+
+        .nav-button {
+            min-width: 310px;
+
+            height: 62px;
+
+            padding: 0 28px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 12px;
+
+            border-radius: 12px;
+
+            font-family:
+                "Cormorant Garamond",
+                Georgia,
+                serif;
+
+            font-size: 17px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            text-decoration: none;
+
+            text-transform: uppercase;
+
+            cursor: pointer;
+
+            transition:
+                background-color 0.2s ease,
+                color 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.15s ease;
+
+            -webkit-tap-highlight-color: transparent;
+        }
+
+
+        /* =====================================================
+           ICONOS
+        ====================================================== */
+
+        .nav-icon {
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 17px;
+
+            line-height: 1;
+        }
+
+
+        /* =====================================================
+           VOLVER AL PANEL PRINCIPAL
+        ====================================================== */
+
+        .nav-button-primary {
+
+            background: #572a22 !important;
+
+            border: 2px solid #572a22 !important;
+
+            color: #fffdf8 !important;
+
+            box-shadow:
+                0 5px 12px
+                rgba(82, 39, 31, 0.18);
+        }
+
+        .nav-button-primary:hover {
+
+            background: #432019 !important;
+
+            border-color: #432019 !important;
+
+            color: #fffdf8 !important;
+
+            box-shadow:
+                0 7px 16px
+                rgba(82, 39, 31, 0.25);
+
+            transform: translateY(-1px);
+        }
+
+        .nav-button-primary:active {
+
+            background: #351611 !important;
+
+            border-color: #351611 !important;
+
+            color: #ffffff !important;
+
+            transform: translateY(1px);
+        }
+
+
+        /* =====================================================
+           DESCARGAR PDF
+        ====================================================== */
+
+        .nav-button-secondary {
+
+            background: #fffdf8 !important;
+
+            border: 2px solid #b9955c !important;
+
+            color: #4e2b26 !important;
+
+            box-shadow:
+                0 3px 8px
+                rgba(75, 45, 30, 0.05);
+        }
+
+        .nav-button-secondary:hover {
+
+            background: #572a22 !important;
+
+            border-color: #572a22 !important;
+
+            color: #fffdf8 !important;
+
+            box-shadow:
+                0 7px 16px
+                rgba(82, 39, 31, 0.20);
+
+            transform: translateY(-1px);
+        }
+
+        .nav-button-secondary:active {
+
+            background: #432019 !important;
+
+            border-color: #432019 !important;
+
+            color: #ffffff !important;
+
+            transform: translateY(1px);
+        }
+
+
+        /* =====================================================
+           DECORACIÓN INFERIOR
+        ====================================================== */
+
+        .bottom-decoration {
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 10px;
+
+            margin-top: 4px;
+        }
+
+        .bottom-line {
+            width: 145px;
+
+            height: 1px;
+
+            background: #c8a360;
+        }
+
+        .bottom-diamond {
+            color: #c4943b;
+
+            font-size: 8px;
+        }
+
+        .bottom-crown {
+            color: #c6963b;
+
+            font-size: 27px;
+
+            line-height: 1;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 1100px) {
+
+            .corner-logo {
+                width: 120px;
+                height: 120px;
+
+                top: 18px;
+            }
+
+            .corner-logo-left {
+                left: 12px;
+            }
+
+            .corner-logo-right {
+                right: 12px;
+            }
+
+            .branch {
+                width: 170px;
+            }
+        }
+
+
+        @media (max-width: 900px) {
+
+            .page {
+                padding-left: 18px;
+                padding-right: 18px;
+            }
+
+            .corner-logo {
+                width: 95px;
+                height: 95px;
+
+                top: 15px;
+            }
+
+            .corner-logo-left {
+                left: 8px;
+            }
+
+            .corner-logo-right {
+                right: 8px;
+            }
+
+            .branch {
+                width: 145px;
+
+                opacity: 0.65;
+            }
+
+            .main-title {
+                font-size: 48px;
+
+                letter-spacing: 5px;
+            }
+
+            .header-center {
+                padding: 0 115px;
+            }
+
+            .nav-button {
+                min-width: 270px;
+
+                font-size: 16px;
+
+                padding: 0 22px;
+            }
+        }
+
+
+        /* =====================================================
+           CELULAR
+        ====================================================== */
+
+        @media (max-width: 650px) {
+
+            .page {
+                padding:
+                    10px 13px 40px;
+            }
+
+            /* Logos en las esquinas */
+
+            .corner-logo {
+                width: 65px;
+                height: 65px;
+
+                top: 8px;
+            }
+
+            .corner-logo-left {
+                left: 4px;
+            }
+
+            .corner-logo-right {
+                right: 4px;
+            }
+
+
+            /* Ramas */
+
+            .branch {
+                width: 85px;
+
+                opacity: 0.50;
+            }
+
+
+            /* Encabezado */
+
+            .main-header {
+                min-height: 145px;
+
+                margin-bottom: 22px;
+            }
+
+            .header-center {
+                padding: 0 70px;
+            }
+
+            .main-title {
+                font-size: 32px;
+
+                letter-spacing: 3px;
+            }
+
+            .main-header .school-name {
+                font-size: 7px;
+
+                letter-spacing: 1.2px;
+            }
+
+
+            /* Resultados */
+
+            .results-header {
+                padding:
+                    27px 16px 25px;
+            }
+
+            .results-school {
+                font-size: 8px;
+
+                letter-spacing: 1px;
+            }
+
+            .results-title {
+                font-size: 34px;
+
+                margin-bottom: 14px;
+            }
+
+            .processed {
+                font-size: 14px;
+
+                padding:
+                    7px 13px;
+            }
+
+
+            /* Sin votos */
+
+            .empty-card {
+                min-height: 145px;
+
+                padding:
+                    24px 18px;
+            }
+
+            .empty-content {
+                gap: 14px;
+            }
+
+            .info-icon {
+                width: 39px;
+                height: 39px;
+
+                font-size: 23px;
+            }
+
+            .empty-title {
+                font-size: 19px;
+            }
+
+            .empty-description {
+                font-size: 15px;
+            }
+
+
+            /* Podio */
+
+            .podium-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .candidate-card.winner {
+                transform: none;
+            }
+
+
+            /* Botones */
+
+            .navigation-card {
+
+                flex-direction: column;
+
+                gap: 12px;
+
+                padding: 28px 18px;
+            }
+
+            .nav-button {
+
+                width: 100%;
+
+                min-width: 0;
+
+                height: 56px;
+
+                font-size: 15px;
+            }
+
+
+            /* Decoración */
+
+            .bottom-line {
+                width: 70px;
+            }
+        }
+
+
+        /* =====================================================
+           CELULAR PEQUEÑO
+        ====================================================== */
+
+        @media (max-width: 420px) {
+
+            .corner-logo {
+                width: 52px;
+                height: 52px;
+
+                top: 6px;
+            }
+
+            .corner-logo-left {
+                left: 3px;
+            }
+
+            .corner-logo-right {
+                right: 3px;
+            }
+
+            .branch {
+                width: 65px;
+
+                opacity: 0.45;
+            }
+
+            .main-header {
+                min-height: 125px;
+            }
+
+            .header-center {
+                padding: 0 56px;
+            }
+
+            .main-title {
+                font-size: 27px;
+
+                letter-spacing: 2px;
+            }
+
+            .main-header .school-name {
+                font-size: 6px;
+
+                letter-spacing: 0.8px;
+            }
+
+            .results-title {
+                font-size: 30px;
+            }
+
+            .bottom-line {
+                width: 55px;
+            }
+        }
+
+    </style>
+
 </head>
-<body class="min-h-screen p-4 md:p-8 relative overflow-x-hidden"
-      style="background: linear-gradient(to top right, #efebde);">
-    
-    <!-- Flores decorativas flotantes -->
-    <div class="fixed top-0 left-0 text-sky-300 opacity-10 text-7xl p-4 select-none pointer-events-none" style="opacity: 0.15; font-size: 5rem;">🌸</div>
-    <div class="fixed bottom-0 right-0 text-sky-300 opacity-10 text-7xl p-4 select-none pointer-events-none" style="opacity: 0.15; font-size: 5rem;">🌸</div>
-    <!-- Logo del evento difuminado en la esquina superior derecha -->
-    <div class="absolute top-6 right-6 select-none pointer-events-none">
-        <img src="{{ url_for('static', filename='fotos/logo_evento.png') }}"
-             alt="Logo Evento" class="w-48 opacity-100">
+
+
+<body>
+
+
+    <!-- =====================================================
+         LOGO EVENTO - ESQUINA SUPERIOR IZQUIERDA
+    ====================================================== -->
+
+    <div class="corner-logo corner-logo-left">
+
+        <img
+            src="{{ url_for('static', filename='fotos/logo_evento.png') }}"
+            alt="Logo del evento"
+        >
+
     </div>
 
-    <div class="max-w-4xl mx-auto relative z-10">
-        
-        <!-- Encabezado de los Resultados -->
-        <header class="bg-white shadow-md rounded-2xl p-6 mb-8 border border-blue-100 text-center" style="border-radius: 1rem;">
-            <div class="text-blue-400 text-2xl mb-1"div>
-            <h2 class="text-xs font-semibold tracking-wider text-blue-500 uppercase">Secundario Nº59 "Olga Márquez de Aredez"</h2>
-            <h1 class="text-3xl font-black text-gray-800 mt-1">Escrutinio Final</h1>
-            <div class="mt-2 inline-block bg-green-100 text-green-800 text-xs font-semibold px-4 py-1 rounded-full" style="border-radius: 9999px;">
-                Planillas procesadas: <span class="font-bold">{{ total_jurados }} / {{ total_registrados }}</span>
+
+    <!-- =====================================================
+         LOGO COLEGIO - ESQUINA SUPERIOR DERECHA
+    ====================================================== -->
+
+    <div class="corner-logo corner-logo-right">
+
+        <img
+            src="{{ url_for('static', filename='fotos/escudo.png') }}"
+            alt="Logo del colegio"
+        >
+
+    </div>
+
+
+    <!-- =====================================================
+         RAMA IZQUIERDA
+    ====================================================== -->
+
+    <div class="branch branch-left">
+
+        <img
+            src="{{ url_for('static', filename='fotos/rama.png') }}"
+            alt=""
+        >
+
+    </div>
+
+
+    <!-- =====================================================
+         RAMA DERECHA
+    ====================================================== -->
+
+    <div class="branch branch-right">
+
+        <img
+            src="{{ url_for('static', filename='fotos/rama.png') }}"
+            alt=""
+        >
+
+    </div>
+
+
+    <!-- =====================================================
+         CONTENEDOR PRINCIPAL
+    ====================================================== -->
+
+    <div class="page">
+
+
+        <!-- =================================================
+             DECORACIÓN SUPERIOR
+        ================================================== -->
+
+        <div class="top-decoration">
+
+            <div class="top-line"></div>
+
+            <div class="top-diamond">
+                ◇
             </div>
+
+            <div class="top-line"></div>
+
+        </div>
+
+
+        <!-- =================================================
+             ENCABEZADO PRINCIPAL
+        ================================================== -->
+
+        <header class="main-header">
+
+
+            <!-- CENTRO -->
+
+            <div class="header-center">
+
+                <h1 class="main-title">
+                    ELECCIÓN REINA
+                </h1>
+
+
+                <div class="title-decoration">
+
+                    <span></span>
+
+                    <b>◇</b>
+
+                    <span></span>
+
+                </div>
+
+
+                <p class="school-name">
+                    COLEGIO N.º 59 • OLGA MÁRQUEZ DE AREDEZ
+                </p>
+
+            </div>
+
+
         </header>
 
+
+        <!-- =================================================
+             ESCRUTINIO FINAL
+        ================================================== -->
+
+        <header class="card results-header">
+
+
+            <h1 class="results-title">
+                ESCRUTINIO FINAL
+            </h1>
+
+
+            <div class="processed">
+
+                <span class="processed-icon">
+                    ▥
+                </span>
+
+                <span>
+                    Planillas procesadas:
+                    <strong>
+                        {{ total_jurados }} / {{ total_registrados }}
+                    </strong>
+                </span>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             SI HAY VOTOS
+        ================================================== -->
+
         {% if total_jurados > 0 %}
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 items-end" style="display: grid; gap: 1.5rem; align-items: end;">
 
-    {% for electa in podio %}
-        {% if loop.first %}
-        <!-- TARJETA REINA -->
-        <div class="bg-white shadow-2xl rounded-3xl border-2 border-yellow-300 p-8 text-center relative overflow-hidden order-first md:order-none" style="border-radius: 1.5rem; transform: scale(1.03); box-shadow: 0 25px 50px -12px rgba(251, 191, 36, 0.15);">
-            <div class="absolute -top-4 -right-4 text-yellow-100 text-6xl opacity-30 select-none pointer-events-none"></div>
-            <div class="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-yellow-300 shadow-md mb-3 bg-gray-50 flex items-center justify-center">
-                {% if electa.foto %}
-                <img src="{{ url_for('static', filename='fotos/' + electa.foto) }}" alt="{{ electa.nombre }}" class="w-full h-full object-cover">
-                {% else %}
-                <span class="text-3xl">📸</span>
-                {% endif %}
+
+            <div class="podium-grid">
+
+
+                {% for electa in podio %}
+
+
+                    {% if loop.first %}
+
+
+                        <!-- =================================
+                             REINA
+                        ================================== -->
+
+                        <div class="candidate-card winner">
+
+
+                            <div class="candidate-photo">
+
+                                {% if electa.foto %}
+
+                                    <img
+                                        src="{{ url_for('static', filename='fotos/' + electa.foto) }}"
+                                        alt="{{ electa.nombre }}"
+                                    >
+
+                                {% else %}
+
+                                    <span>
+                                        📸
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <div class="candidate-emoji">
+                                {{ electa.emoji }}
+                            </div>
+
+
+                            <span class="candidate-title">
+                                {{ electa.titulo }}
+                            </span>
+
+
+                            <h3 class="candidate-name">
+                                {{ electa.nombre }}
+                            </h3>
+
+
+                            <p class="candidate-course">
+                                {{ electa.curso }}
+                            </p>
+
+
+                            <div class="candidate-score">
+                                {{ electa.score_mostrar }}
+                            </div>
+
+
+                        </div>
+
+
+                    {% else %}
+
+
+                        <!-- =================================
+                             TÍTULO ADICIONAL
+                        ================================== -->
+
+                        <div class="candidate-card">
+
+
+                            <div class="candidate-photo">
+
+                                {% if electa.foto %}
+
+                                    <img
+                                        src="{{ url_for('static', filename='fotos/' + electa.foto) }}"
+                                        alt="{{ electa.nombre }}"
+                                    >
+
+                                {% else %}
+
+                                    <span>
+                                        📸
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <div class="candidate-emoji">
+                                {{ electa.emoji }}
+                            </div>
+
+
+                            <span class="candidate-title">
+                                {{ electa.titulo }}
+                            </span>
+
+
+                            <h3 class="candidate-name">
+                                {{ electa.nombre }}
+                            </h3>
+
+
+                            <p class="candidate-course">
+                                {{ electa.curso }}
+                            </p>
+
+
+                            <div class="candidate-score">
+                                {{ electa.score_mostrar }}
+                            </div>
+
+
+                        </div>
+
+
+                    {% endif %}
+
+
+                {% endfor %}
+
+
             </div>
-            <div class="text-4xl mb-2 animate-bounce">{{ electa.emoji }}</div>
-            <span class="bg-yellow-100 text-yellow-800 text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest block mx-auto w-max mb-3">
-                {{ electa.titulo }}
-            </span>
-            <h3 class="text-2xl font-black text-gray-800 leading-tight">{{ electa.nombre }}</h3>
-            <p class="text-sm font-semibold text-gray-500 mt-1">{{ electa.curso }}</p>
-            <div class="mt-4 pt-3 border-t border-yellow-100">
-                <span class="text-xl font-extrabold text-yellow-600">{{ electa.score_mostrar }}</span>
-            </div>
-        </div>
+
+
+            <!-- =================================================
+                 EXPLICACIÓN
+            ================================================== -->
+
+            <details class="card calculation-card">
+
+                <summary>
+                    ¿Cómo se calculó este resultado?
+                </summary>
+
+
+                <ul>
+
+                    <li>
+                        Cada categoría se promedia entre todos los
+                        jurados (no se suma), quedando en escala de
+                        0 a 10.
+                    </li>
+
+                    <li>
+                        La <b>Reina Escolar</b> es la candidata con
+                        mayor <b>promedio general</b>.
+                    </li>
+
+                    <li>
+                        Cada título adicional se otorga a quien tenga
+                        mayor promedio en esa categoría entre las
+                        candidatas que aún no tienen título.
+                    </li>
+
+                    <li>
+                        Si hay empate, se desempata automáticamente:
+                        primero por promedio general, luego categoría
+                        por categoría y finalmente por número de
+                        postulante.
+                    </li>
+
+                </ul>
+
+            </details>
+
+
         {% else %}
-        <!-- TARJETAS DE TÍTULOS ADICIONALES -->
-        <div class="bg-white shadow-xl rounded-2xl border border-blue-100 p-6 text-center relative overflow-hidden">
-            <div class="w-20 h-20 mx-auto rounded-full overflow-hidden border-4 border-blue-200 shadow mb-3 bg-gray-50 flex items-center justify-center">
-                {% if electa.foto %}
-                <img src="{{ url_for('static', filename='fotos/' + electa.foto) }}" alt="{{ electa.nombre }}" class="w-full h-full object-cover">
-                {% else %}
-                <span class="text-2xl">📸</span>
-                {% endif %}
+
+
+            <!-- =================================================
+                 SIN VOTOS
+            ================================================== -->
+
+            <div class="card empty-card">
+
+
+                <div class="empty-content">
+
+
+                    <div class="info-icon">
+                        i
+                    </div>
+
+
+                    <div>
+
+                        <h2 class="empty-title">
+                            Todavía no hay votos registrados.
+                        </h2>
+
+
+                        <p class="empty-description">
+                            Las posiciones se generarán cuando vote
+                            al menos un jurado.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
             </div>
-            <div class="text-3xl mb-2">{{ electa.emoji }}</div>
-            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider block mx-auto w-max mb-3">
-                {{ electa.titulo }}
-            </span>
-            <h3 class="text-xl font-bold text-gray-800 leading-tight">{{ electa.nombre }}</h3>
-            <p class="text-sm font-medium text-gray-400 mt-1">{{ electa.curso }}</p>
-            <div class="mt-4 pt-3 border-t border-gray-100">
-                <span class="text-lg font-bold text-blue-600">{{ electa.score_mostrar }}</span>
-            </div>
-        </div>
+
+
         {% endif %}
-    {% endfor %}
 
-</div>
 
-<!-- EXPLICACIÓN DEL CÁLCULO -->
-<details class="bg-white shadow rounded-2xl border border-blue-100 p-5 mb-8 text-sm text-gray-600">
-    <summary class="cursor-pointer font-semibold text-gray-700">¿Cómo se calculó este resultado?</summary>
-    <ul class="list-disc pl-5 mt-3 space-y-1">
-        <li>Cada categoría se promedia entre todos los jurados (no se suma), quedando en escala de 0 a 10.</li>
-        <li>La <b>Reina Escolar</b> es la candidata con mayor <b>promedio general</b> (el promedio de todas sus categorías).</li>
-        <li>Cada título adicional (Miss Elegancia, Miss Simpatía, etc.) se otorga a quien tenga mayor promedio en esa categoría puntual, entre las candidatas que aún no tienen título.</li>
-        <li>Si hay empate, se desempata automáticamente: primero por promedio general, luego categoría por categoría, y en última instancia por número de postulante. No queda ningún resultado sin definir.</li>
-    </ul>
-</details>
-{% else %}
-<!-- Alerta si todavía no votó nadie -->
-<div class="bg-white shadow-md rounded-2xl p-8 border border-blue-100 text-center text-gray-500 font-medium">
-     Todavía no hay votos registrados. Las posiciones se generarán cuando vote al menos un jurado.
-</div>
-{% endif %}
+        <!-- =================================================
+             BOTONES INFERIORES
+        ================================================== -->
 
-        <!-- Menú Inferior de Navegación -->
-        <div class="bg-white p-4 shadow-lg rounded-2xl border border-brown-600 flex justify-center gap-4 items-center">
-            <a href="/" class="bg-gray-800 hover:bg-gray-900 text-white font-semibold py-2.5 px-6 rounded-xl shadow text-sm transition-colors">
-                Volver al Panel Principal
+        <div class="card navigation-card">
+
+
+            <!-- VOLVER AL PANEL PRINCIPAL -->
+
+            <a
+                href="/"
+                class="nav-button nav-button-primary"
+            >
+
+                <span class="nav-icon">
+                    ◀
+                </span>
+
+                <span>
+                    VOLVER AL PANEL PRINCIPAL
+                </span>
+
             </a>
-            <a href="{{ url_for('descargar_pdf') }}" style="--bg-main: #fffdf9 ; --bg-hover: #49352a;" class="inline-block bg-[var(--bg-main)] hover:bg-[var(--bg-hover)] text-black font-semibold py-2.5 px-6 rounded-xl shadow text-sm transition-colors">
-                📄 Descargar PDF
+
+
+            <!-- DESCARGAR PDF -->
+
+            <a
+                href="{{ url_for('descargar_pdf') }}"
+                class="nav-button nav-button-secondary"
+            >
+
+                <span class="nav-icon">
+                    📄
+                </span>
+
+                <span>
+                    DESCARGAR PDF
+                </span>
+
             </a>
+
+
         </div>
+
+
+        <!-- =================================================
+             DECORACIÓN INFERIOR
+        ================================================== -->
+
+        <div class="bottom-decoration">
+
+
+            <div class="bottom-line"></div>
+
+
+            <div class="bottom-diamond">
+                ◆
+            </div>
+
+
+            <div class="bottom-crown">
+                ♛
+            </div>
+
+
+            <div class="bottom-diamond">
+                ◆
+            </div>
+
+
+            <div class="bottom-line"></div>
+
+
+        </div>
+
 
     </div>
 
+
 </body>
+
 </html>
