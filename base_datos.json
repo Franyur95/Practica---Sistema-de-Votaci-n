@@ -2,124 +2,279 @@
     "candidatas": [
         {
             "id": 1,
-            "nombre": "Ester Fernandez",
-            "curso": "1ero 3era",
-            "foto": "candidata_1.jpg"
+            "nombre": "Maria Perez",
+            "curso": "5to 1ra",
+            "foto": "candidata_1.jpg",
+            "numero": 1
         },
         {
             "id": 2,
-            "nombre": "Mariana Vallejo",
-            "curso": "3ero 3era",
-            "foto": "candidata_2.jpg"
+            "nombre": "Guada Perez",
+            "curso": "3ra 2da",
+            "foto": "candidata_2.jpg",
+            "numero": 2
         },
         {
             "id": 3,
-            "nombre": "Mariela Cruz",
-            "curso": "1era 2da",
-            "foto": "candidata_3.jpg"
+            "nombre": "Lucia Rueda",
+            "curso": "2da 3ra",
+            "foto": "candidata_3.jpg",
+            "numero": 3
         },
         {
             "id": 4,
-            "nombre": "Julia Martinez",
-            "curso": "5ta 2da",
-            "foto": "candidata_4.jpg"
+            "nombre": "Brenda Cazon",
+            "curso": "3ra 3ra",
+            "foto": "candidata_4.jpg",
+            "numero": 4
         },
         {
             "id": 5,
-            "nombre": "Laura Ortiz",
-            "curso": "4to 1ra",
-            "foto": "candidata_5.jpg"
+            "nombre": "Noelia Paredes",
+            "curso": "4ta 2da",
+            "foto": "candidata_5.jpg",
+            "numero": 5
+        }
+    ],
+    "categorias": [
+        {
+            "id": "belleza",
+            "nombre": "Belleza",
+            "otorga_titulo": true
         },
         {
-            "id": 6,
-            "nombre": "noelia cazon",
-            "curso": "2do 1ra",
-            "foto": "candidata_6.png"
+            "id": "elegancia",
+            "nombre": "Elegancia",
+            "otorga_titulo": true
+        },
+        {
+            "id": "simpatia",
+            "nombre": "Simpatía",
+            "otorga_titulo": true
+        },
+        {
+            "id": "postura",
+            "nombre": "Postura",
+            "otorga_titulo": true
+        },
+        {
+            "id": "sonrisa",
+            "nombre": "Sonrisa",
+            "otorga_titulo": true
         }
     ],
     "jurados": [
         {
             "id": 1,
-            "nombre": "Franco",
-            "usuario": "Franco98",
+            "nombre": "Lucia",
+            "usuario": "jurado1",
             "password": "1234",
-            "ha_votado": false
-        },
-        {
-            "id": 2,
-            "nombre": "Cesar Casio",
-            "usuario": "Cesar10",
-            "password": "1234",
-            "ha_votado": false
-        },
-        {
-            "id": 3,
-            "nombre": "Emilio Fernandez",
-            "usuario": "Emi20",
-            "password": "1234",
-            "ha_votado": false
-        },
-        {
-            "id": 4,
-            "nombre": "lucia",
-            "usuario": "lucia",
-            "password": "lucia",
             "ha_votado": true
         },
         {
-            "id": 5,
-            "nombre": "noe",
-            "usuario": "noe",
-            "password": "noe",
-            "ha_votado": false
+            "id": 2,
+            "nombre": "brenda",
+            "usuario": "jurado2",
+            "password": "1234",
+            "ha_votado": true
+        },
+        {
+            "id": 3,
+            "nombre": "franco",
+            "usuario": "jurado3",
+            "password": "1234",
+            "ha_votado": true
+        },
+        {
+            "id": 4,
+            "nombre": "luciano",
+            "usuario": "jurado4",
+            "password": "1234",
+            "ha_votado": true
         }
     ],
     "votos_jurados": [
         {
-            "jurado_id": 4,
-            "jurado": "lucia",
+            "jurado_id": 1,
+            "jurado": "Lucia",
             "puntuaciones": {
                 "1": {
-                    "belleza": 5,
-                    "elegancia": 5,
-                    "simpatia": 5,
-                    "postura": 5,
-                    "total": 20
+                    "belleza": 7,
+                    "elegancia": 6,
+                    "simpatia": 6,
+                    "postura": 7,
+                    "sonrisa": 9,
+                    "total": 35
                 },
                 "2": {
-                    "belleza": 5,
-                    "elegancia": 5,
-                    "simpatia": 5,
-                    "postura": 5,
-                    "total": 20
+                    "belleza": 6,
+                    "elegancia": 6,
+                    "simpatia": 6,
+                    "postura": 6,
+                    "sonrisa": 9,
+                    "total": 33
+                },
+                "3": {
+                    "belleza": 8,
+                    "elegancia": 7,
+                    "simpatia": 7,
+                    "postura": 6,
+                    "sonrisa": 8,
+                    "total": 36
+                },
+                "4": {
+                    "belleza": 8,
+                    "elegancia": 6,
+                    "simpatia": 6,
+                    "postura": 7,
+                    "sonrisa": 10,
+                    "total": 37
+                },
+                "5": {
+                    "belleza": 7,
+                    "elegancia": 7,
+                    "simpatia": 7,
+                    "postura": 6,
+                    "sonrisa": 9,
+                    "total": 36
+                }
+            }
+        },
+        {
+            "jurado_id": 3,
+            "jurado": "franco",
+            "puntuaciones": {
+                "1": {
+                    "belleza": 7,
+                    "elegancia": 8,
+                    "simpatia": 9,
+                    "postura": 9,
+                    "sonrisa": 8,
+                    "total": 41
+                },
+                "2": {
+                    "belleza": 7,
+                    "elegancia": 8,
+                    "simpatia": 7,
+                    "postura": 10,
+                    "sonrisa": 9,
+                    "total": 41
                 },
                 "3": {
                     "belleza": 5,
-                    "elegancia": 5,
-                    "simpatia": 5,
-                    "postura": 5,
-                    "total": 20
+                    "elegancia": 8,
+                    "simpatia": 9,
+                    "postura": 9,
+                    "sonrisa": 9,
+                    "total": 40
                 },
                 "4": {
-                    "belleza": 5,
-                    "elegancia": 5,
-                    "simpatia": 5,
-                    "postura": 5,
-                    "total": 20
+                    "belleza": 8,
+                    "elegancia": 9,
+                    "simpatia": 9,
+                    "postura": 10,
+                    "sonrisa": 9,
+                    "total": 45
                 },
                 "5": {
                     "belleza": 5,
                     "elegancia": 5,
                     "simpatia": 5,
                     "postura": 5,
-                    "total": 20
-                },
-                "6": {
+                    "sonrisa": 5,
+                    "total": 25
+                }
+            }
+        },
+        {
+            "jurado_id": 2,
+            "jurado": "brenda",
+            "puntuaciones": {
+                "1": {
                     "belleza": 5,
-                    "elegancia": 9,
+                    "elegancia": 5,
                     "simpatia": 5,
                     "postura": 5,
-                    "total": 24
+                    "sonrisa": 5,
+                    "total": 25
+                },
+                "2": {
+                    "belleza": 6,
+                    "elegancia": 6,
+                    "simpatia": 6,
+                    "postura": 10,
+                    "sonrisa": 9,
+                    "total": 37
+                },
+                "3": {
+                    "belleza": 7,
+                    "elegancia": 8,
+                    "simpatia": 6,
+                    "postura": 9,
+                    "sonrisa": 8,
+                    "total": 38
+                },
+                "4": {
+                    "belleza": 5,
+                    "elegancia": 8,
+                    "simpatia": 8,
+                    "postura": 8,
+                    "sonrisa": 7,
+                    "total": 36
+                },
+                "5": {
+                    "belleza": 9,
+                    "elegancia": 9,
+                    "simpatia": 5,
+                    "postura": 6,
+                    "sonrisa": 7,
+                    "total": 36
+                }
+            }
+        },
+        {
+            "jurado_id": 4,
+            "jurado": "luciano",
+            "puntuaciones": {
+                "1": {
+                    "belleza": 7,
+                    "elegancia": 8,
+                    "simpatia": 6,
+                    "postura": 7,
+                    "sonrisa": 7,
+                    "total": 35
+                },
+                "2": {
+                    "belleza": 5,
+                    "elegancia": 7,
+                    "simpatia": 7,
+                    "postura": 7,
+                    "sonrisa": 8,
+                    "total": 34
+                },
+                "3": {
+                    "belleza": 9,
+                    "elegancia": 8,
+                    "simpatia": 7,
+                    "postura": 6,
+                    "sonrisa": 9,
+                    "total": 39
+                },
+                "4": {
+                    "belleza": 5,
+                    "elegancia": 7,
+                    "simpatia": 6,
+                    "postura": 5,
+                    "sonrisa": 5,
+                    "total": 28
+                },
+                "5": {
+                    "belleza": 8,
+                    "elegancia": 10,
+                    "simpatia": 9,
+                    "postura": 10,
+                    "sonrisa": 10,
+                    "total": 47
                 }
             }
         }
