@@ -3,235 +3,1827 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Evaluación - Secundario N° 59</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.min.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/tailwind.min.css') }}">
+
     <style>
+
+        /* =========================================================
+           PALETA GENERAL
+        ========================================================= */
+
+        :root {
+            --crema: #F5EFE6;
+            --blanco: #FFFDFC;
+            --blanco-suave: #FBF8F3;
+
+            --marron: #4A2118;
+            --marron-hover: #35150F;
+
+            --dorado: #C5973E;
+            --dorado-claro: #E4D0A4;
+            --dorado-suave: #F5EBDD;
+
+            --texto: #43231B;
+            --texto-secundario: #7B655D;
+
+            --verde: #8FDCC7;
+            --verde-hover: #78CDB7;
+
+            --borde: #E5D9C7;
+            --sombra: 0 8px 25px rgba(74, 33, 24, 0.08);
+        }
+
+
+        /* =========================================================
+           BASE
+        ========================================================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            background: var(--crema);
+
+            color: var(--texto);
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+        }
+
+
+        /* =========================================================
+           CONTENEDOR PRINCIPAL
+        ========================================================= */
+
+        .contenedor-principal {
+            width: 100%;
+            max-width: 1000px;
+
+            margin: 0 auto;
+
+            padding:
+                28px 22px
+                35px;
+        }
+
+
+        /* =========================================================
+           TARJETAS
+        ========================================================= */
+
+        .tarjeta {
+            background: var(--blanco);
+
+            border: 1px solid rgba(197, 151, 62, 0.18);
+
+            border-radius: 18px;
+
+            box-shadow: var(--sombra);
+        }
+
+
+        /* =========================================================
+           ENCABEZADO DE SESIÓN
+           SIN LOGOS
+           SIN FLORES
+           SIN "ELECCIÓN REINA"
+        ========================================================= */
+
+        .encabezado-sesion {
+            min-height: 150px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            position: relative;
+
+            margin-bottom: 18px;
+
+            padding: 24px 35px;
+        }
+
+        .encabezado-contenido {
+            text-align: center;
+        }
+
+        .iconos-jurado {
+            color: var(--dorado);
+
+            font-size: 24px;
+
+            letter-spacing: 5px;
+
+            line-height: 1;
+
+            margin-bottom: 7px;
+        }
+
+        .titulo-sesion {
+            margin: 0;
+
+            font-family: Georgia, "Times New Roman", serif;
+
+            color: var(--marron);
+
+            font-size: 28px;
+
+            font-weight: 500;
+
+            letter-spacing: 0.5px;
+        }
+
+        .jurado-activo {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            margin-top: 10px;
+
+            padding: 7px 22px;
+
+            border-radius: 999px;
+
+            background: #F4EEE7;
+
+            color: var(--marron);
+
+            font-family: Georgia, "Times New Roman", serif;
+
+            font-size: 15px;
+
+            font-weight: 600;
+        }
+
+        .jurado-activo svg {
+            width: 16px;
+            height: 16px;
+
+            color: var(--dorado);
+        }
+
+        .subtitulo-sesion {
+            margin-top: 8px;
+
+            color: var(--texto-secundario);
+
+            font-family: Georgia, "Times New Roman", serif;
+
+            font-size: 11px;
+
+            letter-spacing: 3px;
+
+            text-transform: uppercase;
+        }
+
+        /* candidato 3 de 12 */
+        .contador-superior {
+            position: absolute;
+
+            right: 35px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            min-width: 130px;
+
+            padding-left: 28px;
+
+            border-left: 1px solid var(--borde);
+
+            text-align: center;
+        }
+
+        .contador-superior-titulo {
+            color: var(--marron);
+
+            font-family: Georgia, "Times New Roman", serif;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+        }
+
+        .contador-superior-numero {
+            margin-top: 5px;
+
+            color: var(--marron);
+
+            font-family: Georgia, "Times New Roman", serif;
+
+            font-size: 22px;
+        }
+
+        .contador-linea {
+            width: 75px;
+
+            height: 1px;
+
+            background: var(--dorado);
+
+            margin: 7px auto 0;
+
+            position: relative;
+        }
+
+        .contador-linea::after {
+            content: "";
+
+            position: absolute;
+
+            width: 5px;
+            height: 5px;
+
+            background: var(--dorado);
+
+            border-radius: 50%;
+
+            left: 50%;
+            top: 50%;
+
+            transform: translate(-50%, -50%);
+        }
+
+
+        /* =========================================================
+           TARJETA DE CANDIDATA
+        ========================================================= */
+
+        .candidata-card {
+            background: var(--blanco);
+
+            border: 1px solid rgba(197, 151, 62, 0.18);
+
+            border-radius: 18px;
+
+            box-shadow: var(--sombra);
+
+            padding: 30px 34px 22px;
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+
+        /* =========================================================
+           CABECERA DE CANDIDATA
+        ========================================================= */
+
+        .cabecera-candidata {
+            display: grid;
+
+            grid-template-columns: 1fr 1.4fr;
+
+            gap: 35px;
+
+            align-items: end;
+
+            margin-bottom: 16px;
+        }
+
+        .titulo-candidata {
+            text-align: center;
+        }
+
+        .numero-candidata {
+            display: block;
+
+            color: var(--dorado);
+
+            font-family: Georgia, "Times New Roman", serif;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 4px;
+        }
+
+        .nombre-candidata {
+            margin: 0;
+
+            color: var(--marron);
+
+            font-family: Georgia, "Times New Roman", serif;
+
+            font-size: 30px;
+
+            font-weight: 500;
+        }
+        .curso-candidata {
+            display: inline-block;
+
+            margin-top: 7px; 
+            padding: 4px 13px;
+
+            background: #F5EBDD;
+
+            border: 1px solid #E4D0A4;
+
+            border-radius: 999px;
+
+            color: #7B5A27;
+
+            font-family: Georgia, "Times New Roman", serif;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .decoracion-titulo {
+            width: 105px;
+
+            height: 1px;
+
+            background: var(--dorado);
+
+            margin: 10px auto 0;
+
+            position: relative;
+        }
+
+        .decoracion-titulo::after {
+            content: "";
+
+            position: absolute;
+
+            width: 7px;
+            height: 7px;
+
+            background: var(--dorado);
+
+            transform: rotate(45deg);
+
+            left: 50%;
+            top: 50%;
+
+            margin-left: -3px;
+            margin-top: -3px;
+        }
+
+        .titulo-categorias {
+            color: var(--dorado);
+
+            font-family: Georgia, "Times New Roman", serif;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+
+            text-align: center;
+        }
+
+        .titulo-categorias-linea {
+            width: 125px;
+
+            height: 1px;
+
+            background: var(--dorado-claro);
+
+            margin: 9px auto 0;
+
+            position: relative;
+        }
+
+        .titulo-categorias-linea::after {
+            content: "";
+
+            position: absolute;
+
+            width: 6px;
+            height: 6px;
+
+            background: var(--dorado);
+
+            transform: rotate(45deg);
+
+            left: 50%;
+            top: 50%;
+
+            margin-left: -3px;
+            margin-top: -3px;
+        }
+
+
+        /* =========================================================
+           ZONA PRINCIPAL
+        ========================================================= */
+
+        .zona-evaluacion {
+            display: grid;
+
+            grid-template-columns: 40% 60%;
+
+            gap: 30px;
+
+            align-items: center;
+        }
+
+
+        /* =========================================================
+           FOTO
+        ========================================================= */
+
+        .contenedor-foto {
+            width: 100%;
+
+            height: 300px;
+
+            background: #F7F3ED;
+
+            border: 3px solid var(--dorado);
+
+            border-radius: 16px;
+
+            overflow: hidden;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            box-shadow:
+                0 5px 15px rgba(74, 33, 24, 0.08);
+        }
+
+        .contenedor-foto img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            display: block;
+        }
+
+
+        /* =========================================================
+           CATEGORÍAS
+        ========================================================= */
+
+        .categorias {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 8px;
+        }
+
+        .fila-categoria {
+            min-height: 64px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding: 9px 14px;
+
+            background: var(--blanco-suave);
+
+            border: 1px solid var(--borde);
+
+            border-radius: 12px;
+        }
+
+        .nombre-categoria {
+            min-width: 125px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            color: var(--marron);
+
+            font-family: Georgia, "Times New Roman", serif;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            text-transform: uppercase;
+        }
+
+        .icono-categoria {
+            width: 27px;
+
+            color: var(--dorado);
+
+            font-size: 21px;
+
+            text-align: center;
+        }
+
+
+        /* =========================================================
+           BOTONES DE PUNTAJE
+        ========================================================= */
+
+        .botones-puntaje {
+            display: flex;
+
+            align-items: center;
+
+            gap: 2px;
+        }
+
+        .btn-puntaje {
+            width: 42px;
+            height: 40px;
+
+            border: 1px solid var(--dorado-claro);
+
+            background: #FFFCF8;
+
+            color: var(--marron);
+
+            font-family: Georgia, "Times New Roman", serif;
+
+            font-size: 15px;
+
+            cursor: pointer;
+
+            transition:
+                background 0.18s ease,
+                color 0.18s ease,
+                transform 0.18s ease,
+                box-shadow 0.18s ease;
+        }
+
+        .btn-puntaje:first-child {
+            border-radius: 9px 2px 2px 9px;
+        }
+
+        .btn-puntaje:last-child {
+            border-radius: 2px 9px 9px 2px;
+        }
+
+        .btn-puntaje:hover {
+            background: var(--dorado-suave);
+
+            transform: translateY(-1px);
+        }
+
+        .btn-puntaje.seleccionado {
+            background: var(--marron);
+
+            color: white;
+
+            border-color: var(--marron);
+
+            box-shadow:
+                0 3px 7px rgba(74, 33, 24, 0.22);
+
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================================================
+           NAVEGACIÓN
+        ========================================================= */
+
+        .navegacion-candidata {
+            display: grid;
+
+            grid-template-columns: 1fr auto 1fr;
+
+            align-items: center;
+
+            margin-top: 20px;
+
+            padding-top: 18px;
+
+            border-top: 1px solid #EEE4D7;
+        }
+
+        .btn-anterior,
+        .btn-siguiente {
+            height: 44px;
+
+            padding: 0 25px;
+
+            border-radius: 11px;
+
+            font-family: Georgia, "Times New Roman", serif;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+        .btn-anterior {
+            justify-self: start;
+
+            background: var(--blanco);
+
+            color: var(--marron);
+
+            border: 1px solid var(--dorado-claro);
+        }
+
+        .btn-anterior:hover:not(:disabled) {
+            background: var(--dorado-suave);
+        }
+
+        .btn-anterior:disabled {
+            opacity: 0.35;
+
+            cursor: not-allowed;
+        }
+
+        .btn-siguiente {
+            justify-self: end;
+
+            background: var(--marron);
+
+            color: white;
+
+            border: none;
+
+            box-shadow:
+                0 4px 10px rgba(74, 33, 24, 0.15);
+        }
+
+        .btn-siguiente:hover {
+            background: var(--marron-hover);
+
+            transform: translateY(-1px);
+        }
+
+        .indicador-carrusel {
+            color: var(--marron);
+
+            font-family: Georgia, "Times New Roman", serif;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+
+            text-align: center;
+        }
+
+
+        /* =========================================================
+           BARRA INFERIOR
+        ========================================================= */
+
+        .barra-final {
+            margin-top: 16px;
+
+            min-height: 65px;
+
+            padding: 10px 18px;
+
+            background: var(--blanco);
+
+            border: 1px solid rgba(197, 151, 62, 0.18);
+
+            border-radius: 15px;
+
+            box-shadow: var(--sombra);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+        }
+
+        .volver-inicio {
+            color: var(--marron);
+
+            font-family: Georgia, "Times New Roman", serif;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            text-decoration: none;
+
+            padding: 9px 18px;
+
+            border: 1px solid var(--dorado-claro);
+
+            border-radius: 9px;
+
+            transition: 0.2s ease;
+        }
+
+        .volver-inicio:hover {
+            background: var(--dorado-suave);
+        }
+
+        .btn-guardar {
+            height: 44px;
+
+            padding: 0 25px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: var(--verde);
+
+            color: white;
+
+            font-family: Georgia, "Times New Roman", serif;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+        .btn-guardar:not(:disabled):hover {
+            background: var(--verde-hover);
+
+            transform: translateY(-1px);
+        }
+
+        .btn-guardar:disabled {
+            opacity: 0.45;
+
+            cursor: not-allowed;
+        }
+
+
+        /* =========================================================
+           RESUMEN
+        ========================================================= */
+
+        .tarjeta-resumen {
+            background: var(--blanco);
+
+            border: 1px solid var(--dorado-claro);
+
+            border-radius: 18px;
+
+            padding: 30px;
+
+            box-shadow: var(--sombra);
+        }
+
+        .titulo-resumen {
+            color: var(--marron);
+
+            font-family: Georgia, "Times New Roman", serif;
+
+            font-size: 24px;
+
+            margin: 0 0 5px;
+        }
+
+        .subtitulo-resumen {
+            color: var(--texto-secundario);
+
+            font-size: 13px;
+
+            margin-bottom: 20px;
+        }
+
+
+        /* =========================================================
+           OCULTAR
+        ========================================================= */
+
         .tarjeta-oculta {
             display: none !important;
         }
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 850px) {
+
+            .contenedor-principal {
+                padding: 18px 14px 25px;
+            }
+
+            .encabezado-sesion {
+                padding: 20px;
+
+                min-height: 135px;
+            }
+
+            .contador-superior {
+                position: static;
+
+                transform: none;
+
+                margin-top: 12px;
+
+                padding-left: 0;
+
+                border-left: none;
+            }
+
+            .encabezado-sesion {
+                flex-direction: column;
+            }
+
+            .zona-evaluacion {
+                grid-template-columns: 1fr;
+            }
+
+            .cabecera-candidata {
+                grid-template-columns: 1fr;
+
+                gap: 12px;
+            }
+
+            .contenedor-foto {
+                max-width: 350px;
+
+                margin: 0 auto;
+
+                height: 340px;
+            }
+
+            .categorias {
+                width: 100%;
+            }
+
+            .nombre-categoria {
+                min-width: 120px;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .titulo-sesion {
+                font-size: 23px;
+            }
+
+            .candidata-card {
+                padding: 22px 15px 18px;
+            }
+
+            .nombre-candidata {
+                font-size: 26px;
+            }
+
+            .contenedor-foto {
+                height: 300px;
+            }
+
+            .fila-categoria {
+                flex-direction: column;
+
+                align-items: stretch;
+
+                gap: 8px;
+            }
+
+            .nombre-categoria {
+                width: 100%;
+            }
+
+            .botones-puntaje {
+                width: 100%;
+
+                display: grid;
+
+                grid-template-columns:
+                    repeat(6, 1fr);
+
+                gap: 3px;
+            }
+
+            .btn-puntaje {
+                width: 100%;
+
+                border-radius: 7px !important;
+            }
+
+            .navegacion-candidata {
+                grid-template-columns: 1fr 1fr;
+
+                gap: 10px;
+            }
+
+            .indicador-carrusel {
+                grid-column: 1 / -1;
+
+                grid-row: 1;
+
+                margin-bottom: 4px;
+            }
+
+            .btn-anterior {
+                grid-column: 1;
+
+                grid-row: 2;
+
+                width: 100%;
+            }
+
+            .btn-siguiente {
+                grid-column: 2;
+
+                grid-row: 2;
+
+                width: 100%;
+            }
+
+            .barra-final {
+                flex-direction: column;
+
+                gap: 10px;
+
+                padding: 14px;
+            }
+
+            .volver-inicio,
+            .btn-guardar {
+                width: 100%;
+
+                text-align: center;
+            }
+        }
+
     </style>
 </head>
-<body class="min-h-screen p-4 md:p-8 relative overflow-x-hidden"
-      style="background: linear-gradient(to top right, #efebde 100% );">
-       
-    <div class="fixed top-0 left-0 text-sky-300 opacity-10 text-7xl p-4 select-none pointer-events-none" style="opacity: 0.15; font-size: 5rem;">🌸</div>
-    <div class="fixed bottom-0 right-0 text-sky-300 opacity-10 text-7xl p-4 select-none pointer-events-none" style="opacity: 0.15; font-size: 5rem;">🌸</div>
-    <div class="absolute top-6 right-6 select-none pointer-events-none">
-        <img src="{{ url_for('static', filename='fotos/logo_evento.png') }}"
-             alt="Logo Evento" class="w-48 opacity-100">
-    </div>
 
-    <div class="max-w-2xl mx-auto relative z-10">
-        
-        <header class="bg-white shadow-md rounded-2xl py-3 px-6 mb-2 border border-blue-100 flex flex-col sm:flex-row items-center justify-center gap-8 text-center sm:text-left" style="border-radius: 1rem;">
----------            <div class="flex-shrink-0">
-                <img src="{{ url_for('static', filename='fotos/escudo.png') }}"
-                    alt="Escudo" class="mx-auto sm:mx-0 w-20 opacity-90">
-            </div>  
-             
-            <div class="flex flex-col items-center sm:items-start">
-                <h1 class="text-2xl font-bold text-gray-800">Planilla de Calificación</h1>
-                <div class="mt-1.5 flex items-center gap-2 bg-blue-100 text-blue-800 text-sm font-semibold px-4 py-1 rounded-full select-none" style="border-radius: 9999px;">
-                    <!-- Icono de Persona Minimalista -->
-                    <svg class="w-3.5 h-3.5 text-blue-700 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                    </svg>
-                    <span>Evaluador Activo: <span class="text-blue-900 font-bold">{{ nombre_jurado }}</span></span>
-                </div>
+
+<body>
+
+<div class="contenedor-principal">
+
+    <!-- =========================================================
+         ENCABEZADO
+         ========================================================= -->
+
+    <header class="tarjeta encabezado-sesion">
+
+        <div class="encabezado-contenido">
+
+            <div class="iconos-jurado">
+                ♟ ♟ ♟
             </div>
-        </header>
 
-        <form action="/guardar_votos" method="POST" class="space-y-6">
-            <input type="hidden" name="nombre_jurado" value="{{ nombre_jurado }}">
-            <input type="hidden" name="jurado_id" value="{{ jurado_id }}">
+            <h1 class="titulo-sesion">
+                SESIÓN DE EVALUACIÓN
+            </h1>
 
-            
-               <div id="contenedor-carrusel">
-                {% for c in candidatas %}
-                <div class="candidata-card bg-white shadow-lg rounded-2xl p-6 border border-blue-100 transition-all relative overflow-hidden flex flex-col justify-between {% if not loop.first %}tarjeta-oculta{% endif %}" style="border-radius: 1rem;" data-index="{{ loop.index0 }}" data-nombre="{{ c.nombre }}" data-id="{{ c.id }}" data-foto="{{ c.foto }}">
-                    
-                    <div class="absolute -top-2 -right-2 text-blue-100 text-4xl opacity-40 select-none pointer-events-none"></div>
+            <div class="jurado-activo">
+
+                <svg fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+
+                <span>
+                    JURADO {{ jurado_id }}
+                </span>
+
+            </div>
+
+            <div class="subtitulo-sesion">
+                Planilla Oficial
+            </div>
+
+        </div>
+
+
+        <div class="contador-superior">
+
+            <div class="contador-superior-titulo">
+                Candidata
+            </div>
+
+            <div class="contador-superior-numero">
+                <span id="contador-numero">1</span>
+                de {{ candidatas|length }}
+            </div>
+
+            <div class="contador-linea"></div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================================
+         FORMULARIO
+         ========================================================= -->
+
+    <form action="/guardar_votos" method="POST">
+
+        <input type="hidden"
+               name="nombre_jurado"
+               value="{{ nombre_jurado }}">
+
+        <input type="hidden"
+               name="jurado_id"
+               value="{{ jurado_id }}">
+
+
+        <!-- =====================================================
+             CARRUSEL
+             ===================================================== -->
+
+        <div id="contenedor-carrusel">
+
+
+            {% for c in candidatas %}
+
+            <div
+                class="candidata-card {% if not loop.first %}tarjeta-oculta{% endif %}"
+                data-index="{{ loop.index0 }}"
+                data-nombre="{{ c.nombre }}"
+                data-id="{{ c.id }}"
+                data-foto="{{ c.foto }}"
+            >
+
+
+                <!-- CABECERA -->
+
+                <div class="cabecera-candidata">
+
+                    <div class="titulo-candidata">
+
+                        <span class="numero-candidata">
+                            Candidata N.º {{ loop.index }}
+                        </span>
+
+                        <h2 class="nombre-candidata">
+                               {{ c.nombre }}
+                        </h2>
+
+                    <div class="curso-candidata">
+                            {{ c.curso }}
+                 </div>
+
+                    <div class="decoracion-titulo"></div>
+
+                    </div>
+
 
                     <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <div>
-                                <span class="text-xs font-bold uppercase tracking-wider text-blue-400 block">Postulante Nº {{ loop.index }}</span>
-                                <h3 class="text-xl font-bold text-gray-800 mt-0.5">{{ c.nombre }}</h3>
-                            </div>
-                            <span class="bg-gray-100 text-gray-700 text-xs font-medium px-2.5 py-1 rounded-lg" style="border-radius: 0.5rem; white-space: nowrap;">
-                                {{ c.curso }}
-                            </span>
+
+                        <div class="titulo-categorias">
+                            Categorías de evaluación
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-4 items-center">
-                            
-                            <div class="w-full h-80 bg-gray-50 rounded-xl overflow-hidden border border-blue-100 flex items-center justify-center shadow-inner" style="border-radius: 0.75rem;">
-                                {% if c.foto %}
-                                    <img src="{{ url_for('static', filename='fotos/' + c.foto) }}" 
-                                         alt="Foto de {{ c.nombre }}" 
-                                         class="w-full h-full object-cover"
-                                         onerror="this.parentElement.innerHTML='<div class=\'text-center p-4\'><span class=\'text-3xl block mb-1\'>📸</span><span class=\'text-xs text-gray-400 font-medium\'>Sin foto cargada</span></div>';">
-                                {% else %}
-                                    <div class="text-center p-4">
-                                        <span class="text-3xl block mb-1">📸</span>
-                                        <span class="text-xs text-gray-400 font-medium">Sin foto cargada</span>
-                                    </div>
-                                {% endif %}
+                        <div class="titulo-categorias-linea"></div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ZONA FOTO + CATEGORÍAS -->
+
+                <div class="zona-evaluacion">
+
+
+                    <!-- FOTO -->
+
+                    <div>
+
+                        <div class="contenedor-foto">
+
+                            {% if c.foto %}
+
+                            <img
+                                src="{{ url_for('static', filename='fotos/' + c.foto) }}"
+                                alt="Foto de {{ c.nombre }}"
+
+                                onerror="
+                                this.parentElement.innerHTML =
+                                '<div style=&quot;text-align:center;color:#7B655D;font-size:13px;&quot;>📸<br>Sin foto cargada</div>';
+                                "
+                            >
+
+                            {% else %}
+
+                            <div style="
+                                text-align:center;
+                                color:#7B655D;
+                                font-size:13px;
+                            ">
+                                📸
+                                <br>
+                                Sin foto cargada
                             </div>
 
-                            <div class="space-y-4 flex flex-col justify-center" style="display: flex; flex-direction: column; gap: 1rem;">
-    {% for cat in categorias %}
-    <div class="flex items-center justify-between bg-blue-50/30 p-2 rounded-lg border border-gray-50">
-        <label class="text-sm font-medium text-gray-700">{{ cat.nombre }}</label>
-        <select name="{{ cat.id }}_{{ c.id }}" required
-                class="select-puntaje bg-blue-50 border border-blue-200 rounded-lg p-2 text-sm font-semibold text-blue-900 w-24"
-                style="width: 6rem; border-radius: 0.5rem; text-align: center;">
-            {% for n in range(5, 11) %}
-                <option value="{{ n }}">{{ n }} pts</option>
-            {% endfor %}
-        </select>
-    </div>
-    {% endfor %}
-</div>
+                            {% endif %}
+
                         </div>
 
                     </div>
+
+
+                    <!-- CATEGORÍAS -->
+
+                    <div class="categorias">
+
+
+                        {% for cat in categorias %}
+
+                        <div class="fila-categoria">
+
+
+                            <label class="nombre-categoria">
+
+                                <span class="icono-categoria">
+
+                                    {% if loop.index == 1 %}
+                                        ♟
+                                    {% elif loop.index == 2 %}
+                                        ♥
+                                    {% elif loop.index == 3 %}
+                                        ★
+                                    {% elif loop.index == 4 %}
+                                        ♛
+                                    {% else %}
+                                        ◆
+                                    {% endif %}
+
+                                </span>
+
+                                {{ cat.nombre }}
+
+                            </label>
+
+
+                            <!--
+                                Este input conserva el nombre que
+                                necesita Flask.
+                            -->
+
+                            <input
+                                type="hidden"
+                                name="{{ cat.id }}_{{ c.id }}"
+                                class="valor-puntaje"
+                                value="5"
+                                required
+                            >
+
+
+                            <!-- BOTONES 5 - 10 -->
+
+                            <div class="botones-puntaje">
+
+                                {% for n in range(5, 11) %}
+
+                                <button
+                                    type="button"
+                                    class="btn-puntaje {% if n == 5 %}seleccionado{% endif %}"
+                                    data-valor="{{ n }}"
+                                    data-input="{{ cat.id }}_{{ c.id }}"
+                                >
+                                    {{ n }}
+                                </button>
+
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+                        {% endfor %}
+
+
+                    </div>
+
                 </div>
-                {% endfor %}
 
-                <div id="tarjeta-resumen" class="bg-white shadow-lg rounded-2xl p-6 border border-green-200 transition-all relative overflow-hidden tarjeta-oculta" style="border-radius: 1rem;">
-                    <div class="absolute -top-2 -right-2 text-green-100 text-4xl opacity-40 select-none pointer-events-none"></div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-1">Resumen General de Calificaciones</h3>
-                    <p class="text-xs text-gray-500 mb-4">Verifica los puntos asignados antes de enviar la planilla.</p>
-                    <div id="lista-resumen" class="space-y-4 max-h-96 overflow-y-auto pr-1"></div>
+
+                <!-- NAVEGACIÓN -->
+
+                <div class="navegacion-candidata">
+
+                    <button
+                        type="button"
+                        id="btn-anterior"
+                        class="btn-anterior"
+                    >
+                        ← &nbsp; ANTERIOR
+                    </button>
+
+
+                    <span
+                        id="indicador-carrusel"
+                        class="indicador-carrusel"
+                    >
+                        Candidata 1 de {{ candidatas|length }}
+                    </span>
+
+
+                    <button
+                        type="button"
+                        id="btn-siguiente"
+                        class="btn-siguiente"
+                    >
+                        SIGUIENTE &nbsp; →
+                    </button>
+
                 </div>
-            </div>
-            </div>
 
-           <div class="max-w-2xl mx-auto bg-white p-3 shadow-md rounded-b-2xl border border-blue-100 border-t-0 flex justify-between items-center w-full relative z-20" style="border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; margin-top: -1rem;">
-                <button type="button" id="btn-anterior" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-xl shadow-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed" style="border-radius: 0.75rem; border: none;">
-                    ⬅️ Anterior
-                </button>
-                <span id="indicador-carrusel" class="text-sm font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
-                    Candidata 1 de {{ candidatas|length }}
-                </span>
-                <button type="button" id="btn-siguiente" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-xl shadow-sm transition-all" style="border-radius: 0.75rem; border: none;">
-                    Siguiente ➡️
-                </button>
             </div>
 
-            <div class="bg-white py-2 px-4 shadow-lg rounded-2xl border border-blue-100 flex justify-between items-center mt-4" style="border-radius: 1rem;">
-                <a href="/" class="text-sm text-gray-500 hover:text-gray-700 font-medium" style="text-decoration: none;"> Volver al Inicio</a>
-                <button type="submit" id="btn-guardar" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-xl shadow-md transition-all cursor-pointer opacity-40 cursor-not-allowed" style="border-radius: 0.75rem; background-color: #10b981; color: white; border: none;" disabled>
-                    Finalizar y Guardar Votos ✔️
-                </button>
+            {% endfor %}
+
+
+            <!-- =================================================
+                 RESUMEN FINAL
+                 ================================================= -->
+
+            <div
+                id="tarjeta-resumen"
+                class="tarjeta-resumen tarjeta-oculta"
+            >
+
+                <h3 class="titulo-resumen">
+                    Resumen General de Calificaciones
+                </h3>
+
+                <p class="subtitulo-resumen">
+                    Verifica los puntos asignados antes de enviar la planilla.
+                </p>
+
+                <div
+                    id="lista-resumen"
+                    style="
+                        display:flex;
+                        flex-direction:column;
+                        gap:10px;
+                        max-height:400px;
+                        overflow-y:auto;
+                    "
+                ></div>
+
             </div>
-        </form>
-    </div>
-    <script id="categorias-data" type="application/json">{{ categorias | tojson }}</script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            let indexActual = 0;
-            const tarjetas = document.querySelectorAll('.candidata-card');
-            const total = tarjetas.length;
-            
-            const tarjetaResumen = document.getElementById('tarjeta-resumen');
-            const listaResumen = document.getElementById('lista-resumen');
-            
-            const btnAnterior = document.getElementById('btn-anterior');
-            const btnSiguiente = document.getElementById('btn-siguiente');
-            const btnGuardar = document.getElementById('btn-guardar');
-            const indicador = document.getElementById('indicador-carrusel');
+        </div>
 
-            const categorias = JSON.parse(document.getElementById('categorias-data').textContent);
 
-function generarResumen() {
-    listaResumen.innerHTML = '';
+        <!-- =====================================================
+             BARRA FINAL
+             ===================================================== -->
 
-    tarjetas.forEach((tarjeta) => {
-        const nombre = tarjeta.getAttribute('data-nombre');
-        const id = tarjeta.getAttribute('data-id');
-        const foto = tarjeta.getAttribute('data-foto');
+        <div class="barra-final">
 
-        let totalPuntos = 0;
-        let detalleHtml = '';
-        categorias.forEach(cat => {
-            const valor = parseInt(tarjeta.querySelector(`[name="${cat.id}_${id}"]`).value);
-            totalPuntos += valor;
-            detalleHtml += `<span>${cat.nombre}: <b>${valor}</b></span> `;
-        });
+            <a href="/" class="volver-inicio">
+                ← &nbsp; VOLVER AL INICIO
+            </a>
 
-        const fotoHtml = foto
-            ? `<img src="/static/fotos/${foto}" class="w-12 h-12 rounded-full object-cover border border-gray-200 flex-shrink-0" onerror="this.outerHTML='<div class=\\'w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-sm flex-shrink-0\\'>📸</div>';">`
-            : `<div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-sm flex-shrink-0">📸</div>`;
 
-        const fila = document.createElement('div');
-        fila.className = "bg-gray-50 p-3 rounded-xl border border-gray-100 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2";
-        fila.innerHTML = `
-            <div class="flex items-center gap-3">
-                ${fotoHtml}
-                <div>
-                    <h4 class="font-bold text-gray-800 text-sm">${nombre}</h4>
-                    <div class="text-xs text-gray-500 mt-0.5 space-x-2">${detalleHtml}</div>
-                </div>
-            </div>
-            <div class="text-right">
-                <span class="inline-block bg-blue-100 text-blue-800 font-bold text-xs px-2.5 py-1 rounded-md">Total: ${totalPuntos} pts</span>
-            </div>
-        `;
-        listaResumen.appendChild(fila);
-    });
-}
+            <button
+                type="submit"
+                id="btn-guardar"
+                class="btn-guardar"
+                disabled
+            >
+                FINALIZAR Y GUARDAR VOTOS &nbsp; ✓
+            </button>
 
-            function actualizarVista() {
-                if (indexActual === total) {
-                    tarjetas.forEach(t => t.classList.add('tarjeta-oculta'));
-                    tarjetaResumen.classList.remove('tarjeta-oculta');
-                    
-                    generarResumen();
+        </div>
 
-                    indicador.textContent = "Revisión Final ";
-                    btnSiguiente.classList.add('tarjeta-oculta');
-                    
-                    btnGuardar.disabled = false;
-                    btnGuardar.classList.remove('opacity-40', 'cursor-not-allowed');
-                } else {
-                    tarjetas.forEach((tarjeta, idx) => {
-                        if (idx === indexActual) {
-                            tarjeta.classList.remove('tarjeta-oculta');
-                        } else {
-                            tarjeta.classList.add('tarjeta-oculta');
-                        }
-                    });
-                    tarjetaResumen.classList.add('tarjeta-oculta');
-                    
-                    indicador.textContent = `Candidata ${indexActual + 1} de ${total}`;
-                    btnSiguiente.classList.remove('tarjeta-oculta');
-                    
-                    btnGuardar.disabled = true;
-                    btnGuardar.classList.add('opacity-40', 'cursor-not-allowed');
+    </form>
+
+</div>
+
+
+<!-- =============================================================
+     DATOS DE CATEGORÍAS PARA JAVASCRIPT
+     ============================================================= -->
+
+<script id="categorias-data" type="application/json">
+    {{ categorias | tojson }}
+</script>
+
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+
+
+    /* =========================================================
+       VARIABLES
+    ========================================================= */
+
+    let indexActual = 0;
+
+    const tarjetas =
+        document.querySelectorAll('.candidata-card');
+
+    const total =
+        tarjetas.length;
+
+
+    const tarjetaResumen =
+        document.getElementById('tarjeta-resumen');
+
+    const listaResumen =
+        document.getElementById('lista-resumen');
+
+
+    const btnGuardar =
+        document.getElementById('btn-guardar');
+
+
+    const indicador =
+        document.getElementById('indicador-carrusel');
+
+
+    const contadorNumero =
+        document.getElementById('contador-numero');
+
+
+    const categorias =
+        JSON.parse(
+            document.getElementById('categorias-data').textContent
+        );
+
+
+    /* =========================================================
+       BOTONES DE PUNTAJE
+    ========================================================= */
+
+    document.querySelectorAll('.btn-puntaje')
+        .forEach(function (boton) {
+
+            boton.addEventListener('click', function () {
+
+                const valor =
+                    this.dataset.valor;
+
+                const nombreInput =
+                    this.dataset.input;
+
+
+                /*
+                 * Buscar el input dentro de la misma
+                 * categoría.
+                 */
+
+                const fila =
+                    this.closest('.fila-categoria');
+
+                const input =
+                    fila.querySelector(
+                        `input[name="${nombreInput}"]`
+                    );
+
+
+                if (input) {
+                    input.value = valor;
                 }
 
-                btnAnterior.disabled = (indexActual === 0);
+
+                /*
+                 * Quitar selección anterior.
+                 */
+
+                fila.querySelectorAll('.btn-puntaje')
+                    .forEach(function (btn) {
+
+                        btn.classList.remove(
+                            'seleccionado'
+                        );
+
+                    });
+
+
+                /*
+                 * Marcar botón seleccionado.
+                 */
+
+                this.classList.add(
+                    'seleccionado'
+                );
+
+            });
+
+        });
+
+
+    /* =========================================================
+       RESUMEN
+    ========================================================= */
+
+    function generarResumen() {
+
+        listaResumen.innerHTML = '';
+
+
+        tarjetas.forEach(function (tarjeta) {
+
+            const nombre =
+                tarjeta.getAttribute('data-nombre');
+
+            const id =
+                tarjeta.getAttribute('data-id');
+
+            const foto =
+                tarjeta.getAttribute('data-foto');
+
+
+            let totalPuntos = 0;
+
+            let detalleHtml = '';
+
+
+            categorias.forEach(function (cat) {
+
+                const input =
+                    tarjeta.querySelector(
+                        `[name="${cat.id}_${id}"]`
+                    );
+
+
+                const valor =
+                    input
+                        ? parseInt(input.value)
+                        : 5;
+
+
+                totalPuntos += valor;
+
+
+                detalleHtml += `
+                    <span style="
+                        margin-right:12px;
+                    ">
+                        ${cat.nombre}: 
+                        <b>${valor}</b>
+                    </span>
+                `;
+
+            });
+
+
+            let fotoHtml;
+
+
+            if (foto) {
+
+                fotoHtml = `
+                    <img
+                        src="/static/fotos/${foto}"
+                        style="
+                            width:55px;
+                            height:55px;
+                            border-radius:50%;
+                            object-fit:cover;
+                            border:2px solid #C5973E;
+                            flex-shrink:0;
+                        "
+                    >
+                `;
+
+            } else {
+
+                fotoHtml = `
+                    <div style="
+                        width:55px;
+                        height:55px;
+                        border-radius:50%;
+                        background:#F5EFE6;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        flex-shrink:0;
+                    ">
+                        📸
+                    </div>
+                `;
+
             }
 
-            btnAnterior.addEventListener('click', function() {
-                if (indexActual > 0) {
-                    indexActual--;
-                    actualizarVista();
-                }
-            });
 
-            btnSiguiente.addEventListener('click', function() {
-                if (indexActual < total) {
-                    indexActual++;
-                    actualizarVista();
-                }
-            });
+            const fila =
+                document.createElement('div');
 
-            actualizarVista();
+
+            fila.style.cssText = `
+                background:#FBF8F3;
+                padding:14px;
+                border-radius:12px;
+                border:1px solid #E5D9C7;
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                gap:15px;
+            `;
+
+
+            fila.innerHTML = `
+
+                <div style="
+                    display:flex;
+                    align-items:center;
+                    gap:12px;
+                ">
+
+                    ${fotoHtml}
+
+                    <div>
+
+                        <h4 style="
+                            margin:0;
+                            color:#4A2118;
+                            font-family:Georgia,serif;
+                            font-size:16px;
+                        ">
+                            ${nombre}
+                        </h4>
+
+                        <div style="
+                            color:#7B655D;
+                            font-size:11px;
+                            margin-top:4px;
+                        ">
+                            ${detalleHtml}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div style="
+                    color:#4A2118;
+                    font-family:Georgia,serif;
+                    font-weight:bold;
+                    white-space:nowrap;
+                ">
+                    Total: ${totalPuntos} pts
+                </div>
+
+            `;
+
+
+            listaResumen.appendChild(fila);
+
         });
-    </script>
+
+    }
+
+
+    /* =========================================================
+       ACTUALIZAR VISTA
+    ========================================================= */
+
+    function actualizarVista() {
+
+
+        /* =====================================================
+           REVISIÓN FINAL
+        ===================================================== */
+
+        if (indexActual === total) {
+
+
+            tarjetas.forEach(function (tarjeta) {
+
+                tarjeta.classList.add(
+                    'tarjeta-oculta'
+                );
+
+            });
+
+
+            tarjetaResumen.classList.remove(
+                'tarjeta-oculta'
+            );
+
+
+            generarResumen();
+
+
+            indicador.textContent =
+                'REVISIÓN FINAL';
+
+
+            btnGuardar.disabled =
+                false;
+
+
+            btnGuardar.style.opacity =
+                '1';
+
+
+            return;
+        }
+
+
+        /* =====================================================
+           CANDIDATA ACTUAL
+        ===================================================== */
+
+        tarjetas.forEach(function (tarjeta, idx) {
+
+            if (idx === indexActual) {
+
+                tarjeta.classList.remove(
+                    'tarjeta-oculta'
+                );
+
+            } else {
+
+                tarjeta.classList.add(
+                    'tarjeta-oculta'
+                );
+
+            }
+
+        });
+
+
+        tarjetaResumen.classList.add(
+            'tarjeta-oculta'
+        );
+
+
+        indicador.textContent =
+            `CANDIDATA ${indexActual + 1} DE ${total}`;
+
+
+        contadorNumero.textContent =
+            indexActual + 1;
+
+
+        /*
+         * Buscar botones de navegación de la tarjeta actual.
+         */
+
+        const tarjetaActual =
+            tarjetas[indexActual];
+
+
+        const btnAnterior =
+            tarjetaActual.querySelector(
+                '.btn-anterior'
+            );
+
+
+        const btnSiguiente =
+            tarjetaActual.querySelector(
+                '.btn-siguiente'
+            );
+
+
+        btnAnterior.disabled =
+            indexActual === 0;
+
+
+        /*
+         * Si es la última candidata,
+         * el botón siguiente pasa a revisión.
+         */
+
+        if (indexActual === total - 1) {
+
+            btnSiguiente.textContent =
+                'REVISAR →';
+
+        } else {
+
+            btnSiguiente.textContent =
+                'SIGUIENTE →';
+
+        }
+
+
+        /*
+         * Mientras no se llegue a la revisión,
+         * guardar permanece bloqueado.
+         */
+
+        btnGuardar.disabled =
+            true;
+
+        btnGuardar.style.opacity =
+            '0.45';
+
+    }
+
+
+    /* =========================================================
+       EVENTOS DE ANTERIOR / SIGUIENTE
+    ========================================================= */
+
+    document.addEventListener(
+        'click',
+        function (event) {
+
+
+            /* ANTERIOR */
+
+            if (
+                event.target.closest(
+                    '.btn-anterior'
+                )
+            ) {
+
+                if (indexActual > 0) {
+
+                    indexActual--;
+
+                    actualizarVista();
+
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+
+                }
+
+            }
+
+
+            /* SIGUIENTE */
+
+            if (
+                event.target.closest(
+                    '.btn-siguiente'
+                )
+            ) {
+
+                if (indexActual < total) {
+
+                    indexActual++;
+
+                    actualizarVista();
+
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+
+                }
+
+            }
+
+        }
+    );
+
+
+    /* =========================================================
+       INICIO
+    ========================================================= */
+
+    actualizarVista();
+
+});
+
+</script>
+
 </body>
 </html>

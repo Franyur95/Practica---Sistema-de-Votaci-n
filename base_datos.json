@@ -78,17 +78,7 @@
         {
             "id": "primera_princesa",
             "nombre": "primera princesa",
-            "otorga_titulo": true
-        },
-        {
-            "id": "segunda_princesa",
-            "nombre": "segunda princesa",
-            "otorga_titulo": true
-        },
-        {
-            "id": "reina",
-            "nombre": "reina",
-            "otorga_titulo": true
+            "otorga_titulo": false
         },
         {
             "id": "simpatia",
