@@ -3,60 +3,684 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Panel de Administrador</title>
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.min.css') }}">
+
+    <style>
+        :root {
+            --cream: #f7f0df;
+            --cream-light: #fbf8ef;
+            --cream-card: #fffdf7;
+            --brown: #54241e;
+            --brown-dark: #3f1814;
+            --gold: #c79a4b;
+            --gold-light: #dfc07b;
+            --gold-soft: #eadbb8;
+            --text: #4b332d;
+            --muted: #8c766d;
+            --border: #dccdb1;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 0;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 50% 20%, rgba(255,255,255,.65), transparent 38%),
+                linear-gradient(135deg, #f5edda 0%, #fbf7eb 48%, #f3ead5 100%);
+            font-family: Georgia, "Times New Roman", serif;
+        }
+
+        /* ---------- Encabezado decorativo ---------- */
+
+        .page-decoration {
+            width: min(1100px, calc(100% - 48px));
+            margin: 0 auto;
+            padding-top: 15px;
+        }
+
+        .top-line {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .top-line::before,
+        .top-line::after {
+            content: "";
+            height: 1px;
+            flex: 1;
+            background: linear-gradient(
+                to right,
+                transparent,
+                var(--gold),
+                var(--gold)
+            );
+        }
+
+        .top-line::after {
+            background: linear-gradient(
+                to left,
+                transparent,
+                var(--gold),
+                var(--gold)
+            );
+        }
+
+        .diamond {
+            width: 9px;
+            height: 9px;
+            background: var(--gold);
+            transform: rotate(45deg);
+            flex-shrink: 0;
+        }
+
+        .school-title {
+            text-align: center;
+            margin: 12px 0 0;
+            color: var(--brown);
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        /* ---------- Contenedor principal ---------- */
+
+        .admin-wrapper {
+            width: min(900px, calc(100% - 32px));
+            margin: 48px auto 40px;
+        }
+
+        .admin-card {
+            position: relative;
+            background: rgba(255, 253, 247, 0.88);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 38px 42px 32px;
+            box-shadow:
+                0 16px 45px rgba(84, 36, 30, 0.08),
+                0 3px 10px rgba(84, 36, 30, 0.04);
+        }
+
+        /* ---------- Cabecera ---------- */
+
+        .admin-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .admin-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+            font-size: 34px;
+        }
+
+        .admin-header h1 {
+            margin: 0;
+            color: var(--brown);
+            font-size: 30px;
+            line-height: 1.2;
+            font-weight: bold;
+        }
+
+        .admin-subtitle {
+            margin: 8px 0 18px;
+            color: var(--muted);
+            font-size: 15px;
+            letter-spacing: .4px;
+        }
+
+        .ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 280px;
+            max-width: 80%;
+            margin: 0 auto;
+        }
+
+        .ornament-line {
+            height: 1px;
+            flex: 1;
+            background: var(--gold-soft);
+        }
+
+        .ornament-diamond {
+            width: 8px;
+            height: 8px;
+            background: var(--gold);
+            transform: rotate(45deg);
+        }
+
+        /* ---------- Sesión ---------- */
+
+        .logout {
+            position: absolute;
+            top: 28px;
+            right: 32px;
+            color: #9c6258;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 13px;
+            text-decoration: none;
+            transition: color .2s ease;
+        }
+
+        .logout:hover {
+            color: var(--brown);
+            text-decoration: underline;
+        }
+
+        /* ---------- Mensajes ---------- */
+
+        .flash-message {
+            margin-bottom: 22px;
+            padding: 13px 17px;
+            border: 1px solid #c9b47c;
+            border-left: 4px solid var(--gold);
+            border-radius: 10px;
+            background: #faf4e3;
+            color: #6e542c;
+            font-size: 14px;
+        }
+
+        /* ---------- Estadísticas ---------- */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 26px;
+        }
+
+        .stat-card {
+            position: relative;
+            padding: 20px 15px 17px;
+            text-align: center;
+            background: var(--cream-card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(84, 36, 30, .035);
+        }
+
+        .stat-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 25%;
+            right: 25%;
+            height: 2px;
+            background: var(--gold);
+            opacity: .7;
+        }
+
+        .stat-number {
+            margin: 0;
+            color: var(--brown);
+            font-size: 29px;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .stat-label {
+            margin: 8px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+            letter-spacing: .5px;
+            text-transform: uppercase;
+        }
+
+        /* ---------- Acciones ---------- */
+
+        .actions-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 25px 0 15px;
+            color: var(--brown);
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .actions-title::before,
+        .actions-title::after {
+            content: "";
+            height: 1px;
+            flex: 1;
+            background: var(--gold-soft);
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 13px;
+        }
+
+        .action-card {
+            display: block;
+            position: relative;
+            padding: 20px 21px;
+            background: rgba(255, 253, 247, .9);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            text-decoration: none;
+            box-shadow: 0 3px 10px rgba(84, 36, 30, .025);
+            transition:
+                transform .2s ease,
+                box-shadow .2s ease,
+                border-color .2s ease,
+                background .2s ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--gold);
+            background: #fffdf8;
+            box-shadow: 0 8px 20px rgba(84, 36, 30, .09);
+        }
+
+        .action-card h2 {
+            margin: 0;
+            color: var(--brown);
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .action-card p {
+            margin: 6px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .action-symbol {
+            float: left;
+            width: 29px;
+            height: 29px;
+            margin: -2px 12px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--gold-soft);
+            border-radius: 50%;
+            color: var(--gold);
+            font-size: 14px;
+        }
+
+        /* ---------- Reiniciar ---------- */
+
+        .danger-card {
+            border-color: #dec6bd;
+        }
+
+        .danger-card:hover {
+            border-color: #b86e5e;
+            background: #fffaf7;
+        }
+
+        .danger-card h2 {
+            color: #a84e3e;
+        }
+
+        .danger-card .action-symbol {
+            color: #a84e3e;
+            border-color: #e2c4bb;
+        }
+
+        /* ---------- Pie ---------- */
+
+        .back-home {
+            display: block;
+            width: fit-content;
+            margin: 28px auto 0;
+            color: #9b877f;
+            font-size: 13px;
+            text-decoration: none;
+            transition: color .2s ease;
+        }
+
+        .back-home:hover {
+            color: var(--brown);
+        }
+
+        .bottom-ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            width: 270px;
+            max-width: 75%;
+            margin: 28px auto 0;
+        }
+
+        .bottom-ornament span:not(.bottom-diamond) {
+            height: 1px;
+            flex: 1;
+            background: var(--gold-soft);
+        }
+
+        .bottom-diamond {
+            width: 8px;
+            height: 8px;
+            background: var(--gold);
+            transform: rotate(45deg);
+        }
+
+        /* ---------- Responsive ---------- */
+
+        @media (max-width: 700px) {
+
+            .page-decoration {
+                width: calc(100% - 28px);
+            }
+
+            .school-title {
+                font-size: 10px;
+                letter-spacing: 2px;
+            }
+
+            .admin-wrapper {
+                width: calc(100% - 22px);
+                margin-top: 30px;
+            }
+
+            .admin-card {
+                padding: 30px 20px 25px;
+                border-radius: 18px;
+            }
+
+            .admin-header h1 {
+                font-size: 25px;
+            }
+
+            .admin-subtitle {
+                font-size: 13px;
+            }
+
+            .logout {
+                position: static;
+                display: block;
+                text-align: right;
+                margin-bottom: 15px;
+            }
+
+            .stats-grid {
+                gap: 8px;
+            }
+
+            .stat-card {
+                padding: 16px 8px;
+            }
+
+            .stat-number {
+                font-size: 24px;
+            }
+
+            .stat-label {
+                font-size: 9px;
+            }
+
+            .actions-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 400px) {
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-card {
+                padding: 15px;
+            }
+
+            .stat-label {
+                font-size: 10px;
+            }
+        }
+    </style>
 </head>
-<body class="bg-slate-50 min-h-screen p-6">
-    <div class="max-w-3xl mx-auto">
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-bold text-slate-800">Panel de Administrador</h1>
-            <a href="/admin/logout" class="text-sm text-red-500 hover:underline">Cerrar sesión</a>
+
+<body>
+
+    <!-- Decoración superior -->
+    <div class="page-decoration">
+
+        <div class="top-line">
+            <span class="diamond"></span>
         </div>
 
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}{% for message in messages %}
-            <div class="mb-4 p-3 bg-emerald-50 border-l-4 border-emerald-400 text-emerald-700 text-sm rounded-r-xl">✅ {{ message }}</div>
-          {% endfor %}{% endif %}
-        {% endwith %}
-
-        <div class="grid grid-cols-3 gap-4 mb-8">
-            <div class="bg-white rounded-2xl p-4 text-center shadow border border-slate-100">
-                <p class="text-2xl font-bold text-slate-800">{{ total_candidatas }}</p>
-                <p class="text-xs text-slate-500">Candidatas</p>
-            </div>
-            <div class="bg-white rounded-2xl p-4 text-center shadow border border-slate-100">
-                <p class="text-2xl font-bold text-slate-800">{{ total_jurados }}</p>
-                <p class="text-xs text-slate-500">Jurados</p>
-            </div>
-            <div class="bg-white rounded-2xl p-4 text-center shadow border border-slate-100">
-                <p class="text-2xl font-bold text-slate-800">{{ total_votos }}</p>
-                <p class="text-xs text-slate-500">Votos cargados</p>
-            </div>
+        <div class="school-title">
+            Colegio N.º 59 • Olga Márquez de Aredez
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <a href="/admin/candidatas" class="bg-white p-5 rounded-2xl shadow border border-slate-100 hover:shadow-md transition">
-                <h2 class="font-bold text-slate-800"> Candidatas</h2>
-                <p class="text-xs text-slate-500 mt-1">Agregar o eliminar participantes</p>
-            </a>
-            <a href="/admin/jurados" class="bg-white p-5 rounded-2xl shadow border border-slate-100 hover:shadow-md transition">
-                <h2 class="font-bold text-slate-800">Jurados</h2>
-                <p class="text-xs text-slate-500 mt-1">Agregar jurados y contraseñas</p>
-            </a>
-            <a href="/admin/categorias" class="bg-white p-5 rounded-2xl shadow border border-slate-100 hover:shadow-md transition">
-                <h2 class="font-bold text-slate-800">Categorías</h2>
-                <p class="text-xs text-slate-500 mt-1">Definir qué se evalúa y qué otorga título</p>
-            </a>
-            <a href="/resultados" class="bg-white p-5 rounded-2xl shadow border border-slate-100 hover:shadow-md transition">
-                <h2 class="font-bold text-slate-800"> Ver resultados</h2>
-            </a>
-            <a href="/admin/reiniciar" onclick="return confirm('¿Reiniciar toda la votación? Esto borra los votos actuales.');"
-               class="bg-white p-5 rounded-2xl shadow border border-red-100 hover:shadow-md transition">
-                <h2 class="font-bold text-red-500"> Reiniciar votación</h2>
-            </a>
-        </div>
-
-        <a href="/" class="block text-center text-sm text-slate-400 hover:text-slate-600 mt-8">← Volver al inicio</a>
     </div>
+
+
+    <main class="admin-wrapper">
+
+        <section class="admin-card">
+
+            <!-- Cerrar sesión -->
+            <a href="/admin/logout" class="logout">
+                Cerrar sesión
+            </a>
+
+
+            <!-- Cabecera -->
+            <header class="admin-header">
+
+                <div class="admin-icon">
+                    ♕
+                </div>
+
+                <h1>
+                    Panel de Administrador
+                </h1>
+
+                <p class="admin-subtitle">
+                    Secundario N.º 59 “Olga Márquez de Aredez”
+                </p>
+
+                <div class="ornament">
+                    <span class="ornament-line"></span>
+                    <span class="ornament-diamond"></span>
+                    <span class="ornament-line"></span>
+                </div>
+
+            </header>
+
+
+            <!-- Mensajes de Flask -->
+            {% with messages = get_flashed_messages() %}
+
+                {% if messages %}
+
+                    {% for message in messages %}
+
+                        <div class="flash-message">
+                            ✓ {{ message }}
+                        </div>
+
+                    {% endfor %}
+
+                {% endif %}
+
+            {% endwith %}
+
+
+            <!-- Estadísticas -->
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <p class="stat-number">
+                        {{ total_candidatas }}
+                    </p>
+
+                    <p class="stat-label">
+                        Candidatas
+                    </p>
+                </div>
+
+
+                <div class="stat-card">
+                    <p class="stat-number">
+                        {{ total_jurados }}
+                    </p>
+
+                    <p class="stat-label">
+                        Jurados
+                    </p>
+                </div>
+
+
+                <div class="stat-card">
+                    <p class="stat-number">
+                        {{ total_votos }}
+                    </p>
+
+                    <p class="stat-label">
+                        Votos cargados
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- Título de acciones -->
+            <div class="actions-title">
+                Administración
+            </div>
+
+
+            <!-- Acciones -->
+            <div class="actions-grid">
+
+                <a href="/admin/candidatas" class="action-card">
+
+                    <span class="action-symbol">
+                        ♕
+                    </span>
+
+                    <h2>
+                        Candidatas
+                    </h2>
+
+                    <p>
+                        Agregar o eliminar participantes
+                    </p>
+
+                </a>
+
+
+                <a href="/admin/jurados" class="action-card">
+
+                    <span class="action-symbol">
+                        ♙
+                    </span>
+
+                    <h2>
+                        Jurados
+                    </h2>
+
+                    <p>
+                        Agregar jurados y contraseñas
+                    </p>
+
+                </a>
+
+
+                <a href="/admin/categorias" class="action-card">
+
+                    <span class="action-symbol">
+                        ✦
+                    </span>
+
+                    <h2>
+                        Categorías
+                    </h2>
+
+                    <p>
+                        Definir qué se evalúa y qué otorga título
+                    </p>
+
+                </a>
+
+
+                <a href="/resultados" class="action-card">
+
+                    <span class="action-symbol">
+                        ✧
+                    </span>
+
+                    <h2>
+                        Ver resultados
+                    </h2>
+
+                    <p>
+                        Consultar los resultados de la votación
+                    </p>
+
+                </a>
+
+
+                <a
+                    href="/admin/reiniciar"
+                    onclick="return confirm('¿Reiniciar toda la votación? Esto borra los votos actuales.');"
+                    class="action-card danger-card"
+                >
+
+                    <span class="action-symbol">
+                        ↻
+                    </span>
+
+                    <h2>
+                        Reiniciar votación
+                    </h2>
+
+                    <p>
+                        Borrar los votos actuales y comenzar nuevamente
+                    </p>
+
+                </a>
+
+            </div>
+
+
+            <!-- Ornamentación inferior -->
+            <div class="bottom-ornament">
+
+                <span></span>
+
+                <span class="bottom-diamond"></span>
+
+                <span></span>
+
+            </div>
+
+
+            <!-- Volver -->
+            <a href="/" class="back-home">
+                ← Volver al inicio
+            </a>
+
+        </section>
+
+    </main>
+
 </body>
 </html>
