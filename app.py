@@ -1,4 +1,6 @@
+from PIL import Image
 from flask import Flask, render_template, request, redirect, url_for, flash, send_file, session
+from flask_compress import Compress
 import json
 import os
 import io
@@ -11,14 +13,21 @@ from reportlab.platypus import Table, TableStyle
 from reportlab.lib import colors
 
 app = Flask(__name__)
+app.config['COMPRESS_MIMETYPES'] = ['text/html', 'text/css', 'text/xml', 'application/json', 'application/javascript']
+Compress(app)
 app.secret_key = 'clave_secreta_olga_marquez'
 
 CARPETA_ACTUAL = os.path.dirname(os.path.abspath(__file__))
 DB_FILE = os.path.join(CARPETA_ACTUAL, 'base_datos.json')
-lock_datos = threading.Lock()
+lock_datos = threading.RLock()
+
+# Cache en memoria: evita leer y parsear el JSON del disco en cada clic.
+_datos_cache = None
+_mtime_cache = None
 
 CARPETA_FOTOS = os.path.join(CARPETA_ACTUAL, 'static', 'fotos')
 EXTENSIONES_PERMITIDAS = {'png', 'jpg', 'jpeg', 'webp'}
+ANCHO_MAXIMO_FOTO = 900
 
 CATEGORIAS_POR_DEFECTO = [
     {"id": "belleza", "nombre": "Belleza", "otorga_titulo": False},
@@ -41,40 +50,73 @@ def slugify(texto):
 
 
 def cargar_datos():
-    if not os.path.exists(DB_FILE):
-        datos_iniciales = {
-            "candidatas": [],
-            "jurados": [],
-            "votos_jurados": [],
-            "categorias": CATEGORIAS_POR_DEFECTO,
-            "admin": {"usuario": "admin", "password": "1234"}
-        }
-        guardar_datos(datos_iniciales)
-        return datos_iniciales
+    global _datos_cache, _mtime_cache
 
-    with open(DB_FILE, 'r', encoding='utf-8') as f:
-        datos = json.load(f)
+    with lock_datos:
+        if not os.path.exists(DB_FILE):
+            datos_iniciales = {
+                "candidatas": [],
+                "jurados": [],
+                "votos_jurados": [],
+                "categorias": CATEGORIAS_POR_DEFECTO,
+                "admin": {"usuario": "admin", "password": "1234"}
+            }
+            guardar_datos(datos_iniciales)
+            return _datos_cache
 
-    # Migraciones para bases de datos viejas
-    datos.setdefault('jurados', [])
-    datos.setdefault('admin', {"usuario": "admin", "password": "olga2026"})
-    datos.setdefault('categorias', CATEGORIAS_POR_DEFECTO)
+        mtime_actual = os.path.getmtime(DB_FILE)
 
-    cambio = False
-    for i, c in enumerate(datos.get('candidatas', []), start=1):
-        if 'numero' not in c or not c['numero']:
-            c['numero'] = i
-            cambio = True
-    if cambio:
-        guardar_datos(datos)
+        if _datos_cache is not None and _mtime_cache == mtime_actual:
+            return _datos_cache
 
-    return datos
+        with open(DB_FILE, 'r', encoding='utf-8') as f:
+            datos = json.load(f)
+
+        datos.setdefault('jurados', [])
+        datos.setdefault('admin', {"usuario": "admin", "password": "olga2026"})
+        datos.setdefault('categorias', CATEGORIAS_POR_DEFECTO)
+
+        cambio = False
+        for i, c in enumerate(datos.get('candidatas', []), start=1):
+            if 'numero' not in c or not c['numero']:
+                c['numero'] = i
+                cambio = True
+
+        _datos_cache = datos
+        _mtime_cache = mtime_actual
+
+        if cambio:
+            guardar_datos(datos)
+
+        return _datos_cache
 
 
 def guardar_datos(datos):
+    global _datos_cache, _mtime_cache
     with lock_datos:
         with open(DB_FILE, 'w', encoding='utf-8') as f:
             json.dump(datos, f, indent=4, ensure_ascii=False)
+        _datos_cache = datos
+        _mtime_cache = os.path.getmtime(DB_FILE)
+
+
+def guardar_foto_optimizada(archivo, ruta_destino):
+    """Redimensiona y comprime la foto antes de guardarla, para que la
+    página cargue rápido en las demás PCs conectadas por LAN/WiFi."""
+    extension = ruta_destino.rsplit('.', 1)[1].lower()
+    imagen = Image.open(archivo)
+
+    if imagen.width > ANCHO_MAXIMO_FOTO:
+        proporcion = ANCHO_MAXIMO_FOTO / float(imagen.width)
+        nuevo_alto = int(imagen.height * proporcion)
+        imagen = imagen.resize((ANCHO_MAXIMO_FOTO, nuevo_alto), Image.LANCZOS)
+
+    if extension in ('jpg', 'jpeg'):
+        if imagen.mode in ("RGBA", "P"):
+            imagen = imagen.convert("RGB")
+        imagen.save(ruta_destino, "JPEG", quality=82, optimize=True)
+    else:
+        imagen.save(ruta_destino, optimize=True)
 
 
 def admin_requerido(f):
@@ -452,7 +494,7 @@ def admin_candidatas():
                 extension = archivo.filename.rsplit('.', 1)[1].lower()
                 nombre_foto = f"candidata_{nuevo_id}.{extension}"
                 os.makedirs(CARPETA_FOTOS, exist_ok=True)
-                archivo.save(os.path.join(CARPETA_FOTOS, nombre_foto))
+                guardar_foto_optimizada(archivo, os.path.join(CARPETA_FOTOS, nombre_foto))
             else:
                 flash('Formato de imagen no permitido (usá jpg, jpeg, png o webp).')
                 return redirect(url_for('admin_candidatas'))
@@ -636,4 +678,11 @@ def reiniciar():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    try:
+        from waitress import serve
+        print("Servidor iniciado en http://0.0.0.0:5000 (modo producción, varios jurados a la vez)")
+        serve(app, host='0.0.0.0', port=5000, threads=8)
+    except ImportError:
+        print("AVISO: instalá 'waitress' para mejor rendimiento (ver instrucciones).")
+        print("Usando el servidor de desarrollo de Flask mientras tanto...")
+        app.run(host='0.0.0.0', port=5000, threaded=True, debug=False)
