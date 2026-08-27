@@ -42,31 +42,200 @@
             "nombre": "Lucia",
             "usuario": "jurado1",
             "password": "1234",
-            "ha_votado": false
+            "ha_votado": true
         },
         {
             "id": 2,
             "nombre": "brenda",
             "usuario": "jurado2",
             "password": "1234",
-            "ha_votado": false
+            "ha_votado": true
         },
         {
             "id": 3,
             "nombre": "franco",
             "usuario": "jurado3",
             "password": "1234",
-            "ha_votado": false
+            "ha_votado": true
         },
         {
             "id": 4,
             "nombre": "luciano",
             "usuario": "jurado4",
             "password": "1234",
-            "ha_votado": false
+            "ha_votado": true
         }
     ],
-    "votos_jurados": [],
+    "votos_jurados": [
+        {
+            "jurado_id": 1,
+            "jurado": "Lucia",
+            "fecha_hora": "26/08/2026 11:52:51",
+            "puntuaciones": {
+                "1": {
+                    "primera_princesa": 6,
+                    "segunda_princesa": 8,
+                    "reina": 5,
+                    "simpatia": 10,
+                    "total": 29
+                },
+                "2": {
+                    "primera_princesa": 5,
+                    "segunda_princesa": 5,
+                    "reina": 5,
+                    "simpatia": 5,
+                    "total": 20
+                },
+                "3": {
+                    "primera_princesa": 5,
+                    "segunda_princesa": 5,
+                    "reina": 5,
+                    "simpatia": 5,
+                    "total": 20
+                },
+                "4": {
+                    "primera_princesa": 5,
+                    "segunda_princesa": 5,
+                    "reina": 5,
+                    "simpatia": 5,
+                    "total": 20
+                },
+                "5": {
+                    "primera_princesa": 5,
+                    "segunda_princesa": 5,
+                    "reina": 5,
+                    "simpatia": 5,
+                    "total": 20
+                }
+            }
+        },
+        {
+            "jurado_id": 2,
+            "jurado": "brenda",
+            "fecha_hora": "26/08/2026 11:53:09",
+            "puntuaciones": {
+                "1": {
+                    "primera_princesa": 8,
+                    "segunda_princesa": 9,
+                    "reina": 8,
+                    "simpatia": 6,
+                    "total": 31
+                },
+                "2": {
+                    "primera_princesa": 5,
+                    "segunda_princesa": 5,
+                    "reina": 5,
+                    "simpatia": 5,
+                    "total": 20
+                },
+                "3": {
+                    "primera_princesa": 5,
+                    "segunda_princesa": 5,
+                    "reina": 5,
+                    "simpatia": 5,
+                    "total": 20
+                },
+                "4": {
+                    "primera_princesa": 5,
+                    "segunda_princesa": 5,
+                    "reina": 5,
+                    "simpatia": 5,
+                    "total": 20
+                },
+                "5": {
+                    "primera_princesa": 5,
+                    "segunda_princesa": 6,
+                    "reina": 5,
+                    "simpatia": 5,
+                    "total": 21
+                }
+            }
+        },
+        {
+            "jurado_id": 3,
+            "jurado": "franco",
+            "fecha_hora": "26/08/2026 11:53:26",
+            "puntuaciones": {
+                "1": {
+                    "primera_princesa": 8,
+                    "segunda_princesa": 7,
+                    "reina": 6,
+                    "simpatia": 7,
+                    "total": 28
+                },
+                "2": {
+                    "primera_princesa": 5,
+                    "segunda_princesa": 8,
+                    "reina": 5,
+                    "simpatia": 5,
+                    "total": 23
+                },
+                "3": {
+                    "primera_princesa": 5,
+                    "segunda_princesa": 5,
+                    "reina": 7,
+                    "simpatia": 5,
+                    "total": 22
+                },
+                "4": {
+                    "primera_princesa": 5,
+                    "segunda_princesa": 6,
+                    "reina": 5,
+                    "simpatia": 5,
+                    "total": 21
+                },
+                "5": {
+                    "primera_princesa": 5,
+                    "segunda_princesa": 5,
+                    "reina": 5,
+                    "simpatia": 9,
+                    "total": 24
+                }
+            }
+        },
+        {
+            "jurado_id": 4,
+            "jurado": "luciano",
+            "fecha_hora": "26/08/2026 11:53:35",
+            "puntuaciones": {
+                "1": {
+                    "primera_princesa": 5,
+                    "segunda_princesa": 5,
+                    "reina": 5,
+                    "simpatia": 5,
+                    "total": 20
+                },
+                "2": {
+                    "primera_princesa": 5,
+                    "segunda_princesa": 5,
+                    "reina": 5,
+                    "simpatia": 5,
+                    "total": 20
+                },
+                "3": {
+                    "primera_princesa": 5,
+                    "segunda_princesa": 5,
+                    "reina": 5,
+                    "simpatia": 5,
+                    "total": 20
+                },
+                "4": {
+                    "primera_princesa": 5,
+                    "segunda_princesa": 5,
+                    "reina": 5,
+                    "simpatia": 5,
+                    "total": 20
+                },
+                "5": {
+                    "primera_princesa": 5,
+                    "segunda_princesa": 5,
+                    "reina": 5,
+                    "simpatia": 5,
+                    "total": 20
+                }
+            }
+        }
+    ],
     "categorias": [
         {
             "id": "primera_princesa",
