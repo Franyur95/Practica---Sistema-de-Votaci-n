@@ -17,6 +17,7 @@
         }
 
 body {
+    zoom: 80%;
     font-family: 'Segoe UI', sans-serif;
     background: linear-gradient(135deg, var(--crema-claro), var(--crema));
     color: var(--texto);
