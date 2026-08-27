@@ -13,6 +13,7 @@ from reportlab.platypus import Table, TableStyle
 from reportlab.lib import colors
 
 app = Flask(__name__)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 60 * 60 * 24  # 1 día de caché en el navegador
 app.config['COMPRESS_MIMETYPES'] = ['text/html', 'text/css', 'text/xml', 'application/json', 'application/javascript']
 Compress(app)
 app.secret_key = 'clave_secreta_olga_marquez'
