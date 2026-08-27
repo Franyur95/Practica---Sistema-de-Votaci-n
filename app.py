@@ -4,6 +4,7 @@ import os
 import io
 import threading
 from functools import wraps
+from datetime import datetime
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from reportlab.platypus import Table, TableStyle
@@ -241,7 +242,12 @@ def guardar_votos():
         flash('Este jurado ya había votado.')
         return redirect(url_for('home'))
 
-    planilla_jurado = {"jurado_id": jurado['id'], "jurado": nombre_jurado, "puntuaciones": {}}
+    planilla_jurado = {
+        "jurado_id": jurado['id'],
+        "jurado": nombre_jurado,
+        "fecha_hora": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+        "puntuaciones": {}
+    }
 
     for c in datos['candidatas']:
         id_c = str(c['id'])
@@ -316,6 +322,10 @@ def descargar_pdf():
 
         c.setFont("Helvetica-Bold", 12)
         c.drawString(margen, y, f"Jurado: {v['jurado']}")
+        y -= 16
+
+        c.setFont("Helvetica", 10)
+        c.drawString(margen, y, f"Fecha y hora: {v.get('fecha_hora', 'No registrada')}")
         y -= 20
 
         data = [["Candidata"] + nombres_categorias + ["Total"]]
@@ -334,7 +344,7 @@ def descargar_pdf():
         ancho_tabla = n_cols * ancho_col
         x_centrado = (ancho_pagina - ancho_tabla) / 2
         table.wrapOn(c, x_centrado, y)
-        table.drawOn(c, x_centrado, y - 200)
+        table.drawOn(c, x_centrado, y - 120)
 
         c.rect(x_centrado, y - 250, 200, 40)
         c.drawString(x_centrado + 5, y - 240, "Firma del Jurado")
@@ -350,12 +360,14 @@ def descargar_pdf():
 
     encabezado = ["Candidata"] + nombres_categorias + ["Promedio general"]
     data_resumen = [encabezado]
+
     for f in detalle:
         fila = [f['nombre']] + [f['promedio'].get(cat['id'], 0) for cat in categorias] + [f['promedio_general']]
         data_resumen.append(fila)
 
     n_cols_resumen = len(categorias) + 2
     col_widths = [100] + [55] * (n_cols_resumen - 2) + [70]
+
     table_resumen = Table(data_resumen, colWidths=col_widths)
     table_resumen.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
@@ -366,16 +378,19 @@ def descargar_pdf():
 
     ancho_tabla = sum(col_widths)
     x_centrado = (ancho_pagina - ancho_tabla) / 2
-    table_resumen.wrapOn(c, x_centrado, alto_pagina - 100)
-    table_resumen.drawOn(c, x_centrado, alto_pagina - 500)
+    ancho, alto = table_resumen.wrap(ancho_pagina, alto_pagina)
 
-    c.showPage()
+    y_tabla = alto_pagina - 80 - alto
+    table_resumen.drawOn(c, x_centrado, y_tabla)
+
+    y_firma = y_tabla - 70
     c.setFont("Helvetica-Bold", 12)
-    c.drawString(margen, 120, "Firma Director/a")
-    c.rect(margen, 100, 200, 40)
 
-    c.drawString(ancho_pagina / 2, 120, "Firma Vicedirector/a")
-    c.rect(ancho_pagina / 2, 100, 200, 40)
+    c.drawString(margen, y_firma, "Firma Director/a")
+    c.rect(margen, y_firma - 40, 200, 40)
+
+    c.drawString(ancho_pagina / 2, y_firma, "Firma Vicedirector/a")
+    c.rect(ancho_pagina / 2, y_firma - 40, 200, 40)
 
     c.save()
     buffer.seek(0)
