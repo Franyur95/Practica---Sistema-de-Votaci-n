@@ -5,6 +5,7 @@ import json
 import os
 import io
 import threading
+import uuid
 from functools import wraps
 from datetime import datetime
 from reportlab.lib.pagesizes import letter
@@ -13,6 +14,7 @@ from reportlab.platypus import Table, TableStyle
 from reportlab.lib import colors
 
 app = Flask(__name__)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 60 * 60 * 24  # 1 día de caché en el navegador
 app.config['COMPRESS_MIMETYPES'] = ['text/html', 'text/css', 'text/xml', 'application/json', 'application/javascript']
 Compress(app)
 app.secret_key = 'clave_secreta_olga_marquez'
@@ -266,10 +268,20 @@ def evaluacion():
         flash('Este jurado ya registró su planilla.')
         return redirect(url_for('home'))
 
+    if jurado.get('token'):
+        flash('Este jurado ya está en sesión.')
+        return redirect(url_for('home'))
+        
     if not datos['candidatas']:
         flash('Todavía no hay candidatas cargadas. Contactá al administrador.')
         return redirect(url_for('home'))
-
+    # Generar token único y marcar sesión activa
+    token = str(uuid.uuid4())
+    jurado['token'] = token
+    guardar_datos(datos)
+    session['jurado_token'] = token
+    session['jurado_id'] = jurado['id']
+    
     candidatas_ordenadas = sorted(datos['candidatas'], key=lambda c: c.get('numero', 0))
 
     return render_template('votar.html',
@@ -282,48 +294,54 @@ def evaluacion():
 @app.route('/guardar_votos', methods=['POST'])
 def guardar_votos():
     datos = cargar_datos()
-    nombre_jurado = request.form.get('nombre_jurado')
-    jurado_id = request.form.get('jurado_id')
-    categorias = datos['categorias']
+    jurado_id = session.get('jurado_id')
+    jurado_token = session.get('jurado_token')
 
     jurado = next((j for j in datos['jurados'] if str(j['id']) == str(jurado_id)), None)
     if not jurado:
         flash('Jurado no válido.')
         return redirect(url_for('home'))
+
+    # Validar token de sesión
+    if jurado_token != jurado.get('token'):
+        flash('Sesión inválida o duplicada.')
+        return redirect(url_for('home'))
+
     if jurado.get('ha_votado'):
         flash('Este jurado ya había votado.')
         return redirect(url_for('home'))
 
     planilla_jurado = {
         "jurado_id": jurado['id'],
-        "jurado": nombre_jurado,
+        "jurado": jurado['nombre'],
         "fecha_hora": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
         "puntuaciones": {}
     }
 
+    categorias = datos['categorias']
     for c in datos['candidatas']:
         id_c = str(c['id'])
-        try:
-            notas = {}
-            total = 0
-            for cat in categorias:
-                valor = int(request.form.get(f"{cat['id']}_{id_c}", 0))
-                notas[cat['id']] = valor
-                total += valor
-            notas['total'] = total
-            planilla_jurado["puntuaciones"][id_c] = notas
-        except (TypeError, ValueError):
-            flash("Error en los datos ingresados.")
-            return redirect(url_for('home'))
+        notas = {}
+        total = 0
+        for cat in categorias:
+            valor = int(request.form.get(f"{cat['id']}_{id_c}", 0))
+            notas[cat['id']] = valor
+            total += valor
+        notas['total'] = total
+        planilla_jurado["puntuaciones"][id_c] = notas
 
     datos['votos_jurados'].append(planilla_jurado)
     jurado['ha_votado'] = True
+    jurado['token'] = None  # invalidar token al finalizar
     guardar_datos(datos)
 
-    flash(f'¡Planilla del {nombre_jurado} guardada con éxito!')
+    # limpiar sesión
+    session.pop('jurado_token', None)
+    session.pop('jurado_id', None)
+
+    flash(f'¡Planilla del {jurado["nombre"]} guardada con éxito!')
     return redirect(url_for('home'))
-
-
+    
 @app.route('/resultados')
 def resultados():
     datos = cargar_datos()
@@ -407,18 +425,22 @@ def descargar_pdf():
     c.setFont("Helvetica-Bold", 14)
     c.drawCentredString(ancho_pagina / 2, alto_pagina - 50, "Tabla Resumen Final")
 
-    _, detalle = calcular_resultados(datos)
+    podio, detalle = calcular_resultados(datos)
     detalle.sort(key=lambda x: x['promedio_general'], reverse=True)
 
-    encabezado = ["Candidata"] + nombres_categorias + ["Promedio general"]
+    encabezado = ["Candidata", "Título"] + nombres_categorias + ["Promedio general"]
     data_resumen = [encabezado]
 
+    # Crear un diccionario rápido para mapear títulos por candidata
+    titulos_por_id = {str(p['id']): p.get('titulo', '') for p in podio}
+
     for f in detalle:
-        fila = [f['nombre']] + [f['promedio'].get(cat['id'], 0) for cat in categorias] + [f['promedio_general']]
+        titulo = titulos_por_id.get(str(f['id']), "")
+        fila = [f['nombre'], titulo] + [f['promedio'].get(cat['id'], 0) for cat in categorias] + [f['promedio_general']]
         data_resumen.append(fila)
 
-    n_cols_resumen = len(categorias) + 2
-    col_widths = [100] + [55] * (n_cols_resumen - 2) + [70]
+    n_cols_resumen = len(categorias) + 3  # ahora hay una columna extra
+    col_widths = [100, 90] + [55] * (n_cols_resumen - 3) + [70]
 
     table_resumen = Table(data_resumen, colWidths=col_widths)
     table_resumen.setStyle(TableStyle([

@@ -3,208 +3,489 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administrar Candidatas</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.min.css') }}">
+    <title>Candidatas - Panel de Administrador</title>
+
+    <style>
+        :root {
+            --cream: #f7f0df;
+            --cream-light: #fbf8ef;
+            --cream-card: #fffdf7;
+            --brown: #54241e;
+            --brown-dark: #3f1814;
+            --gold: #c79a4b;
+            --gold-light: #dfc07b;
+            --gold-soft: #eadbb8;
+            --text: #4b332d;
+            --muted: #8c766d;
+            --border: #dccdb1;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 0;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 50% 20%, rgba(255,255,255,.65), transparent 38%),
+                linear-gradient(135deg, #f5edda 0%, #fbf7eb 48%, #f3ead5 100%);
+            font-family: Georgia, "Times New Roman", serif;
+        }
+
+        .page-decoration {
+            width: min(1100px, calc(100% - 48px));
+            margin: 0 auto;
+            padding-top: 15px;
+        }
+
+        .top-line {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .top-line::before, .top-line::after {
+            content: "";
+            height: 1px;
+            flex: 1;
+            background: linear-gradient(to right, transparent, var(--gold), var(--gold));
+        }
+
+        .top-line::after {
+            background: linear-gradient(to left, transparent, var(--gold), var(--gold));
+        }
+
+        .diamond {
+            width: 9px;
+            height: 9px;
+            background: var(--gold);
+            transform: rotate(45deg);
+            flex-shrink: 0;
+        }
+
+        .school-title {
+            text-align: center;
+            margin: 12px 0 0;
+            color: var(--brown);
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .admin-wrapper {
+            width: min(820px, calc(100% - 32px));
+            margin: 48px auto 40px;
+        }
+
+        .admin-card {
+            position: relative;
+            background: rgba(255, 253, 247, 0.88);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 38px 42px 32px;
+            box-shadow: 0 16px 45px rgba(84, 36, 30, 0.08), 0 3px 10px rgba(84, 36, 30, 0.04);
+        }
+
+        .back-link {
+            display: inline-block;
+            color: var(--muted);
+            font-size: 13px;
+            text-decoration: none;
+            margin-bottom: 18px;
+            transition: color .2s ease;
+        }
+
+        .back-link:hover { color: var(--brown); }
+
+        .admin-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .admin-icon {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+            font-size: 30px;
+        }
+
+        .admin-header h1 {
+            margin: 0;
+            color: var(--brown);
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 240px;
+            max-width: 80%;
+            margin: 14px auto 0;
+        }
+
+        .ornament-line { height: 1px; flex: 1; background: var(--gold-soft); }
+        .ornament-diamond { width: 8px; height: 8px; background: var(--gold); transform: rotate(45deg); }
+
+        .flash-message {
+            margin-bottom: 18px;
+            padding: 13px 17px;
+            border: 1px solid #c9b47c;
+            border-left: 4px solid var(--gold);
+            border-radius: 10px;
+            background: #faf4e3;
+            color: #6e542c;
+            font-size: 14px;
+        }
+
+        /* ---------- Formulario agregar ---------- */
+
+        .form-card {
+            background: var(--cream-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px 24px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(84, 36, 30, .035);
+        }
+
+        .form-card h2 {
+            margin: 0 0 16px;
+            color: var(--brown);
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-card h2::before {
+            content: "";
+            width: 5px;
+            height: 5px;
+            background: var(--gold);
+            transform: rotate(45deg);
+        }
+
+        .campos-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .campo-full { grid-column: 1 / -1; }
+
+        .form-card label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--brown);
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: .5px;
+        }
+
+        .form-card input[type="text"],
+        .form-card input[type="file"] {
+            width: 100%;
+            padding: 10px 13px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: #fffefb;
+            color: var(--text);
+            font-family: Georgia, serif;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-card input[type="text"]:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(199, 154, 75, .12);
+        }
+
+        .btn-dorado {
+            margin-top: 16px;
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(180deg, var(--brown) 0%, var(--brown-dark) 100%);
+            color: #fdf6e8;
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+            font-family: Georgia, serif;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all .2s ease;
+        }
+
+        .btn-dorado:hover {
+            background: linear-gradient(180deg, #63302a 0%, var(--brown-dark) 100%);
+            transform: translateY(-1px);
+        }
+
+        /* ---------- Lista ---------- */
+
+        .lista-titulo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 8px 0 14px;
+            color: var(--brown);
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .lista-titulo::before, .lista-titulo::after {
+            content: "";
+            height: 1px;
+            flex: 1;
+            background: var(--gold-soft);
+        }
+
+        .lista-card {
+            background: var(--cream-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .item {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .item:last-child { border-bottom: none; }
+
+        .item-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .item-info { display: flex; align-items: center; gap: 14px; }
+
+        .foto-circulo {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: var(--cream);
+            border: 2px solid var(--gold-soft);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .foto-circulo img { width: 100%; height: 100%; object-fit: cover; }
+
+        .item-nombre { margin: 0; color: var(--brown); font-size: 16px; font-weight: bold; }
+        .item-detalle { margin: 3px 0 0; color: var(--muted); font-size: 12px; }
+
+        .item-acciones { display: flex; gap: 16px; align-items: center; }
+
+        .link-editar {
+            color: #8a6a2f;
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .link-editar:hover { text-decoration: underline; }
+
+        .link-eliminar {
+            color: #a84e3e;
+            font-size: 13px;
+            font-weight: bold;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: Georgia, serif;
+        }
+
+        .link-eliminar:hover { text-decoration: underline; }
+
+        details summary { list-style: none; }
+        details summary::-webkit-details-marker { display: none; }
+
+        .form-editar {
+            margin-top: 14px;
+            padding: 14px;
+            background: var(--cream);
+            border-radius: 12px;
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 8px;
+        }
+
+        .form-editar input {
+            padding: 7px 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: Georgia, serif;
+            font-size: 13px;
+            background: #fffefb;
+        }
+
+        .form-editar input[type="file"] { grid-column: 1 / -1; font-size: 12px; }
+
+        .btn-guardar-mini {
+            grid-column: 1 / -1;
+            padding: 8px;
+            background: var(--brown);
+            color: #fdf6e8;
+            border: none;
+            border-radius: 8px;
+            font-family: Georgia, serif;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-guardar-mini:hover { background: var(--brown-dark); }
+
+        .vacio {
+            padding: 30px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .bottom-ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            width: 270px;
+            max-width: 75%;
+            margin: 30px auto 0;
+        }
+
+        .bottom-ornament span:not(.bottom-diamond) { height: 1px; flex: 1; background: var(--gold-soft); }
+        .bottom-diamond { width: 8px; height: 8px; background: var(--gold); transform: rotate(45deg); }
+
+        @media (max-width: 700px) {
+            .admin-wrapper { width: calc(100% - 22px); margin-top: 30px; }
+            .admin-card { padding: 28px 18px 24px; border-radius: 18px; }
+            .campos-grid { grid-template-columns: 1fr; }
+            .form-editar { grid-template-columns: 1fr; }
+            .item-top { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
 </head>
 
-<body class="bg-slate-50 min-h-screen p-6">
+<body>
 
-    <div class="max-w-2xl mx-auto">
-
-        <!-- Volver al panel -->
-        <a href="/admin/panel"
-           class="text-sm text-slate-400 hover:text-slate-600">
-            ← Panel de administrador
-        </a>
-
-        <h1 class="text-2xl font-bold text-slate-800 mt-2 mb-6">
-            Candidatas
-        </h1>
-
-        <!-- Mensajes -->
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="mb-4 p-3 bg-amber-50 border-l-4 border-amber-400 text-amber-700 text-sm rounded-r-xl">
-                        ⚠️ {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-
-
-        <!-- ==========================================================
-             FORMULARIO PARA AGREGAR CANDIDATA
-        =========================================================== -->
-
-        <form action="/admin/candidatas"
-              method="POST"
-              enctype="multipart/form-data"
-              class="bg-white p-5 rounded-2xl shadow border border-slate-100 mb-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
-
-            <input type="text"
-                   name="nombre"
-                   placeholder="Nombre completo"
-                   required
-                   class="border border-slate-300 rounded-xl px-3 py-2 sm:col-span-1">
-
-            <input type="text"
-                   name="curso"
-                   placeholder="Curso (ej: 5to Año 1ra)"
-                   required
-                   class="border border-slate-300 rounded-xl px-3 py-2 sm:col-span-1">
-
-            <div class="sm:col-span-1">
-                <input type="file"
-                       name="foto_archivo"
-                       accept="image/png, image/jpeg, image/webp"
-                       class="w-full text-sm border border-slate-300 rounded-xl px-2 py-2">
-            </div>
-
-            <button type="submit"
-                    class="sm:col-span-3 bg-slate-800 hover:bg-slate-900 text-white font-semibold py-2 rounded-xl">
-                + Agregar candidata
-            </button>
-
-        </form>
-
-
-        <!-- ==========================================================
-             LISTA DE CANDIDATAS
-        =========================================================== -->
-
-        <div class="bg-white rounded-2xl shadow border border-slate-100 divide-y">
-
-            {% for c in candidatas %}
-
-            <div class="p-4">
-
-                <!-- INFORMACIÓN PRINCIPAL -->
-
-                <div class="flex justify-between items-center">
-
-                    <div class="flex items-center gap-3">
-
-                        <!-- Foto -->
-                        <div class="w-12 h-12 rounded-full overflow-hidden bg-slate-100 border border-slate-200 flex items-center justify-center flex-shrink-0">
-
-                            {% if c.foto %}
-
-                                <img src="{{ url_for('static', filename='fotos/' + c.foto) }}"
-                                     class="w-full h-full object-cover"
-                                     alt="{{ c.nombre }}">
-
-                            {% else %}
-
-                                <span class="text-lg">📸</span>
-
-                            {% endif %}
-
-                        </div>
-
-
-                        <!-- Datos -->
-                        <div>
-
-                            <p class="font-bold text-slate-800">
-                                Nº {{ c.numero }} — {{ c.nombre }}
-                            </p>
-
-                            <p class="text-xs text-slate-500">
-                                {{ c.curso }}
-                                —
-                                {{ "foto cargada" if c.foto else "sin foto" }}
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- BOTONES -->
-
-                    <div class="flex gap-3 items-center">
-
-                        <!-- Editar -->
-                        <details>
-                            <summary class="text-blue-600 text-sm hover:underline cursor-pointer list-none">
-                                editar
-                            </summary>
-
-                            <!-- FORMULARIO DE EDICIÓN -->
-
-                            <form action="/admin/candidatas/editar/{{ c.id }}"
-                                  method="POST"
-                                  enctype="multipart/form-data"
-                                  class="grid grid-cols-1 sm:grid-cols-4 gap-2 mt-3 bg-slate-50 p-3 rounded-xl">
-
-                                <!-- Número -->
-                                <input type="number"
-                                       name="numero"
-                                       value="{{ c.numero }}"
-                                       placeholder="Número"
-                                       class="border border-slate-300 rounded-lg px-2 py-1 text-sm">
-
-                                <!-- Nombre -->
-                                <input type="text"
-                                       name="nombre"
-                                       value="{{ c.nombre }}"
-                                       placeholder="Nombre"
-                                       class="border border-slate-300 rounded-lg px-2 py-1 text-sm sm:col-span-2">
-
-                                <!-- Curso -->
-                                <input type="text"
-                                       name="curso"
-                                       value="{{ c.curso }}"
-                                       placeholder="Curso"
-                                       class="border border-slate-300 rounded-lg px-2 py-1 text-sm">
-
-                                <!-- Nueva foto -->
-                                <input type="file"
-                                       name="foto_archivo"
-                                       accept="image/png, image/jpeg, image/webp"
-                                       class="text-xs sm:col-span-3">
-
-                                <!-- Guardar -->
-                                <button type="submit"
-                                        class="bg-slate-800 hover:bg-slate-900 text-white text-sm font-semibold py-1.5 rounded-lg">
-                                    Guardar cambios
-                                </button>
-
-                            </form>
-
-                        </details>
-
-
-                        <!-- Eliminar -->
-                        <form action="/admin/candidatas/eliminar/{{ c.id }}"
-                              method="POST"
-                              onclick="return confirm('¿Eliminar a {{ c.nombre }}?');">
-
-                            <button type="submit"
-                                    class="text-red-500 text-sm hover:underline">
-                                Eliminar
-                            </button>
-
-                        </form>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            {% else %}
-
-                <p class="p-4 text-sm text-slate-400">
-                    Todavía no hay candidatas cargadas.
-                </p>
-
-            {% endfor %}
-
-        </div>
-
+    <div class="page-decoration">
+        <div class="top-line"><span class="diamond"></span></div>
+        <div class="school-title">Colegio N.º 59 • Olga Márquez de Aredez</div>
     </div>
+
+    <main class="admin-wrapper">
+        <section class="admin-card">
+
+            <a href="/admin/panel" class="back-link">← Panel de administrador</a>
+
+            <header class="admin-header">
+                <div class="admin-icon">♕</div>
+                <h1>Candidatas</h1>
+                <div class="ornament">
+                    <span class="ornament-line"></span>
+                    <span class="ornament-diamond"></span>
+                    <span class="ornament-line"></span>
+                </div>
+            </header>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="flash-message">✓ {{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <!-- FORMULARIO AGREGAR -->
+            <form action="/admin/candidatas" method="POST" enctype="multipart/form-data" class="form-card">
+                <h2>Agregar nueva candidata</h2>
+                <div class="campos-grid">
+                    <div>
+                        <label>Nombre completo</label>
+                        <input type="text" name="nombre" placeholder="Nombre y apellido" required>
+                    </div>
+                    <div>
+                        <label>Curso</label>
+                        <input type="text" name="curso" placeholder="Ej: 5to 1ra" required>
+                    </div>
+                    <div class="campo-full">
+                        <label>Foto de la candidata</label>
+                        <input type="file" name="foto_archivo" accept="image/png, image/jpeg, image/webp">
+                    </div>
+                </div>
+                <button type="submit" class="btn-dorado">+ Agregar candidata</button>
+            </form>
+
+            <!-- LISTA -->
+            <div class="lista-titulo">Candidatas cargadas</div>
+
+            <div class="lista-card">
+                {% for c in candidatas %}
+                <div class="item">
+                    <div class="item-top">
+                        <div class="item-info">
+                            <div class="foto-circulo">
+                                {% if c.foto %}
+                                    <img src="{{ url_for('static', filename='fotos/' + c.foto) }}" alt="{{ c.nombre }}">
+                                {% else %}
+                                    <span>📸</span>
+                                {% endif %}
+                            </div>
+                            <div>
+                                <p class="item-nombre">Nº {{ c.numero }} — {{ c.nombre }}</p>
+                                <p class="item-detalle">{{ c.curso }} — {{ "foto cargada" if c.foto else "sin foto" }}</p>
+                            </div>
+                        </div>
+                        <div class="item-acciones">
+                            <details>
+                                <summary class="link-editar">Editar</summary>
+                                <form action="/admin/candidatas/editar/{{ c.id }}" method="POST" enctype="multipart/form-data" class="form-editar">
+                                    <input type="number" name="numero" value="{{ c.numero }}" placeholder="Número">
+                                    <input type="text" name="nombre" value="{{ c.nombre }}" placeholder="Nombre">
+                                    <input type="text" name="curso" value="{{ c.curso }}" placeholder="Curso">
+                                    <input type="file" name="foto_archivo" accept="image/png, image/jpeg, image/webp">
+                                    <button type="submit" class="btn-guardar-mini">Guardar cambios</button>
+                                </form>
+                            </details>
+                            <form action="/admin/candidatas/eliminar/{{ c.id }}" method="POST"
+                                  onsubmit="return confirm('¿Eliminar a {{ c.nombre }}?');">
+                                <button type="submit" class="link-eliminar">Eliminar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <p class="vacio">Todavía no hay candidatas cargadas.</p>
+                {% endfor %}
+            </div>
+
+            <div class="bottom-ornament">
+                <span></span>
+                <span class="bottom-diamond"></span>
+                <span></span>
+            </div>
+
+        </section>
+    </main>
 
 </body>
 </html>
