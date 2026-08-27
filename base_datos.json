@@ -5,35 +5,40 @@
             "nombre": "Maria Martinez",
             "curso": "5to 1ra",
             "foto": "candidata_1.jpg",
-            "numero": 1
+            "numero": 1,
+            "promedio_desempate": 8.5
         },
         {
             "id": 2,
             "nombre": "Guada Perez",
             "curso": "3ra 2da",
             "foto": "candidata_2.jpg",
-            "numero": 2
+            "numero": 2,
+            "promedio_desempate": 9.2
         },
         {
             "id": 3,
             "nombre": "Lucia Rueda",
             "curso": "2da 3ra",
             "foto": "candidata_3.jpg",
-            "numero": 3
+            "numero": 3,
+            "promedio_desempate": 7.8
         },
         {
             "id": 4,
             "nombre": "Brenda Cazon",
             "curso": "3ra 3ra",
             "foto": "candidata_4.jpg",
-            "numero": 4
+            "numero": 4,
+            "promedio_desempate": 8.9
         },
         {
             "id": 5,
             "nombre": "Noelia Paredes",
             "curso": "4ta 2da",
             "foto": "candidata_5.jpg",
-            "numero": 5
+            "numero": 5,
+            "promedio_desempate": 9.5
         }
     ],
     "jurados": [
@@ -42,14 +47,16 @@
             "nombre": "Lucia",
             "usuario": "jurado1",
             "password": "1234",
-            "ha_votado": false
+            "ha_votado": true,
+            "token": null
         },
         {
             "id": 2,
             "nombre": "brenda",
             "usuario": "jurado2",
             "password": "1234",
-            "ha_votado": false
+            "ha_votado": true,
+            "token": null
         },
         {
             "id": 3,
@@ -66,7 +73,92 @@
             "ha_votado": false
         }
     ],
-    "votos_jurados": [],
+    "votos_jurados": [
+        {
+            "jurado_id": 1,
+            "jurado": "Lucia",
+            "fecha_hora": "27/08/2026 10:51:26",
+            "puntuaciones": {
+                "1": {
+                    "primera_princesa": 5,
+                    "segunda_princesa": 5,
+                    "reina": 5,
+                    "simpatia": 5,
+                    "total": 20
+                },
+                "2": {
+                    "primera_princesa": 5,
+                    "segunda_princesa": 5,
+                    "reina": 5,
+                    "simpatia": 5,
+                    "total": 20
+                },
+                "3": {
+                    "primera_princesa": 9,
+                    "segunda_princesa": 5,
+                    "reina": 5,
+                    "simpatia": 5,
+                    "total": 24
+                },
+                "4": {
+                    "primera_princesa": 5,
+                    "segunda_princesa": 5,
+                    "reina": 5,
+                    "simpatia": 10,
+                    "total": 25
+                },
+                "5": {
+                    "primera_princesa": 5,
+                    "segunda_princesa": 5,
+                    "reina": 8,
+                    "simpatia": 5,
+                    "total": 23
+                }
+            }
+        },
+        {
+            "jurado_id": 2,
+            "jurado": "brenda",
+            "fecha_hora": "27/08/2026 10:52:08",
+            "puntuaciones": {
+                "1": {
+                    "primera_princesa": 5,
+                    "segunda_princesa": 5,
+                    "reina": 5,
+                    "simpatia": 5,
+                    "total": 20
+                },
+                "2": {
+                    "primera_princesa": 5,
+                    "segunda_princesa": 5,
+                    "reina": 5,
+                    "simpatia": 5,
+                    "total": 20
+                },
+                "3": {
+                    "primera_princesa": 6,
+                    "segunda_princesa": 10,
+                    "reina": 10,
+                    "simpatia": 5,
+                    "total": 31
+                },
+                "4": {
+                    "primera_princesa": 10,
+                    "segunda_princesa": 10,
+                    "reina": 6,
+                    "simpatia": 7,
+                    "total": 33
+                },
+                "5": {
+                    "primera_princesa": 6,
+                    "segunda_princesa": 6,
+                    "reina": 7,
+                    "simpatia": 9,
+                    "total": 28
+                }
+            }
+        }
+    ],
     "categorias": [
         {
             "id": "primera_princesa",

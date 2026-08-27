@@ -147,7 +147,7 @@ def calcular_resultados(datos):
         texto = unicodedata.normalize('NFD', texto or '')
         return ''.join(c for c in texto if unicodedata.category(c) != 'Mn').lower()
 
-    # 1. Identificar IDs de categorías para la cascada de desempate
+    # 1. Identificar IDs de categorías para desempate
     cat_ids = {'belleza': None, 'elegancia': None, 'simpatia': None, 'postura': None}
     for cat in categorias:
         nombre_norm = normalizar(cat.get('nombre', ''))
@@ -171,12 +171,12 @@ def calcular_resultados(datos):
             'curso': c['curso'],
             'numero': c.get('numero', 0),
             'foto': c.get('foto', ''),
-            'promedio_historial': c.get('promedio_historial', 0),
+            'promedio_desempate': c.get('promedio_desempate', 0), # Oculto en BD
             'acumulado': {cat['id']: 0 for cat in categorias},
             'acumulado_total': 0,
         }
 
-    # 3. Sumar votos recibidos de los jurados
+    # 3. Sumar votos recibidos
     for v in votos:
         for id_c, notas in v.get('puntuaciones', {}).items():
             id_str = str(id_c)
@@ -187,12 +187,10 @@ def calcular_resultados(datos):
 
     lista = list(resultados.values())
 
-    # 4. Calcular PROMEDIOS reales por categoría y promedio general
+    # 4. Calcular promedios
     for f in lista:
         if n_votos > 0:
-            # Promedio de cada categoría entre el total de jurados
             f['promedio'] = {cid: round(val / n_votos, 2) for cid, val in f['acumulado'].items()}
-            # Promedio general normalizado de 1 a 10
             f['promedio_general'] = round((f['acumulado_total'] / n_votos) / n_categorias, 2)
             f['_promedio_exacto'] = (f['acumulado_total'] / n_votos) / n_categorias
         else:
@@ -200,26 +198,24 @@ def calcular_resultados(datos):
             f['promedio_general'] = 0
             f['_promedio_exacto'] = 0
 
-    # 5. Criterio de orden y desempate en cascada
+    # 5. Criterio de desempate en estricto orden solicitado
     def clave_desempate(fila):
         return (
-            fila['promedio_general'],
-            fila['_promedio_exacto'],
-            fila['promedio'].get(cat_ids['belleza'], 0) if cat_ids['belleza'] else 0,
-            fila['promedio'].get(cat_ids['elegancia'], 0) if cat_ids['elegancia'] else 0,
-            fila['promedio'].get(cat_ids['simpatia'], 0) if cat_ids['simpatia'] else 0,
-            fila['promedio'].get(cat_ids['postura'], 0) if cat_ids['postura'] else 0,
-            fila.get('promedio_historial', 0),
-            -(fila['numero'] or 0)
+            fila['promedio_general'],                                                      # 1° Promedio general redondeado
+            fila['_promedio_exacto'],                                                      # 2° Promedio exacto decimal
+            fila['promedio'].get(cat_ids['belleza'], 0) if cat_ids['belleza'] else 0,      # 3° PRIORIDAD: Belleza
+            fila['promedio'].get(cat_ids['elegancia'], 0) if cat_ids['elegancia'] else 0,  # 4° PRIORIDAD: Elegancia
+            fila['promedio'].get(cat_ids['simpatia'], 0) if cat_ids['simpatia'] else 0,    # 5° PRIORIDAD: Simpatía
+            fila['promedio'].get(cat_ids['postura'], 0) if cat_ids['postura'] else 0,      # 6° PRIORIDAD: Postura
+            fila.get('promedio_desempate', 0),                                             # 7° Desempate por Promedio BD (oculto)
+            -(fila['numero'] or 0)                                                         # 8° Menor número de candidata
         )
 
     podio = []
 
     if n_votos > 0 and lista:
-        # Ordenar a todas las candidatas de mayor a menor según su promedio general y desempates
         orden_general = sorted(lista, key=clave_desempate, reverse=True)
 
-        # Títulos fijos a entregar en orden descendente del ranking
         titulos_podio = [
             {"titulo": "Reina Escolar", "emoji": "👑"},
             {"titulo": "1ra Princesa", "emoji": "👑"},
@@ -228,7 +224,6 @@ def calcular_resultados(datos):
             {"titulo": "Miss Simpatía", "emoji": "✨"}
         ]
 
-        # Asignar cada posición del ranking al título correspondiente
         for i, candidata in enumerate(orden_general):
             if i < len(titulos_podio):
                 item_podio = dict(candidata)
@@ -236,6 +231,15 @@ def calcular_resultados(datos):
                 item_podio['emoji'] = titulos_podio[i]['emoji']
                 item_podio['score_mostrar'] = f"{candidata['promedio_general']} / 10 (Promedio General)"
                 podio.append(item_podio)
+
+    # 6. Ocultar del retorno los promedios privados/de desempate
+    for item in lista:
+        item.pop('_promedio_exacto', None)
+        item.pop('promedio_desempate', None)
+
+    for item in podio:
+        item.pop('_promedio_exacto', None)
+        item.pop('promedio_desempate', None)
 
     return podio, lista
 
