@@ -132,100 +132,110 @@ def admin_requerido(f):
 # ==========================================================================
 #  CÁLCULO DE RESULTADOS (nuevo método, explicado en el informe)
 # ==========================================================================
+import unicodedata
 
 def calcular_resultados(datos):
-    """
-    Devuelve (podio, detalle_completo).
-
-    MÉTODO DE CÁLCULO (ver informe adjunto en el chat):
-    1. Para cada candidata y cada categoría se calcula el PROMEDIO
-       (no la suma) de los puntos que le dieron los jurados.
-       Esto deja a todas las categorías en la misma escala (0 a 10).
-    2. El "promedio general" de una candidata es el promedio de sus
-       promedios de categoría (también queda en escala 0 a 10).
-    3. Reina Escolar = mayor promedio general.
-    4. Cada categoría marcada como "otorga_titulo" corona a la candidata
-       (entre las que quedan disponibles) con mayor promedio en ESA
-       categoría puntual.
-    5. Desempates: no se declara "empate técnico". Se desempata en
-       cascada: primero por promedio general, luego por cada categoría
-       en el orden en que fueron creadas, y si TODO es exactamente
-       igual, gana quien tenga el número de postulante más bajo.
-    """
-    candidatas = datos['candidatas']
-    votos = datos['votos_jurados']
-    categorias = datos['categorias']
+    candidatas = datos.get('candidatas', [])
+    votos = datos.get('votos_jurados', [])
+    categorias = datos.get('categorias', [])
     n_categorias = len(categorias) or 1
     n_votos = len(votos)
 
+    def normalizar(texto):
+        texto = unicodedata.normalize('NFD', texto or '')
+        return ''.join(c for c in texto if unicodedata.category(c) != 'Mn').lower()
+
+    # 1. Identificar IDs de categorías para la cascada de desempate
+    cat_ids = {'belleza': None, 'elegancia': None, 'simpatia': None, 'postura': None}
+    for cat in categorias:
+        nombre_norm = normalizar(cat.get('nombre', ''))
+        cid = cat['id']
+        if 'belleza' in nombre_norm:
+            cat_ids['belleza'] = cid
+        elif 'elegancia' in nombre_norm:
+            cat_ids['elegancia'] = cid
+        elif 'simpatia' in nombre_norm:
+            cat_ids['simpatia'] = cid
+        elif 'postura' in nombre_norm:
+            cat_ids['postura'] = cid
+
+    # 2. Estructurar acumuladores por candidata
     resultados = {}
     for c in candidatas:
-        resultados[c['id']] = {
+        cid_str = str(c['id'])
+        resultados[cid_str] = {
             'id': c['id'],
             'nombre': c['nombre'],
             'curso': c['curso'],
             'numero': c.get('numero', 0),
             'foto': c.get('foto', ''),
+            'promedio_historial': c.get('promedio_historial', 0),
             'acumulado': {cat['id']: 0 for cat in categorias},
             'acumulado_total': 0,
         }
 
+    # 3. Sumar votos recibidos de los jurados
     for v in votos:
-        for id_c, notas in v['puntuaciones'].items():
-            id_int = int(id_c)
-            if id_int in resultados:
+        for id_c, notas in v.get('puntuaciones', {}).items():
+            id_str = str(id_c)
+            if id_str in resultados:
                 for cat in categorias:
-                    resultados[id_int]['acumulado'][cat['id']] += notas.get(cat['id'], 0)
-                resultados[id_int]['acumulado_total'] += notas.get('total', 0)
+                    resultados[id_str]['acumulado'][cat['id']] += notas.get(cat['id'], 0)
+                resultados[id_str]['acumulado_total'] += notas.get('total', 0)
 
     lista = list(resultados.values())
+
+    # 4. Calcular PROMEDIOS reales por categoría y promedio general
     for f in lista:
         if n_votos > 0:
+            # Promedio de cada categoría entre el total de jurados
             f['promedio'] = {cid: round(val / n_votos, 2) for cid, val in f['acumulado'].items()}
+            # Promedio general normalizado de 1 a 10
             f['promedio_general'] = round((f['acumulado_total'] / n_votos) / n_categorias, 2)
+            f['_promedio_exacto'] = (f['acumulado_total'] / n_votos) / n_categorias
         else:
             f['promedio'] = {cat['id']: 0 for cat in categorias}
             f['promedio_general'] = 0
+            f['_promedio_exacto'] = 0
 
-    def clave_general(fila):
-        claves = [fila['promedio_general']]
-        for cat in categorias:
-            claves.append(fila['promedio'].get(cat['id'], 0))
-        claves.append(-(fila['numero'] or 0))
-        return tuple(claves)
+    # 5. Criterio de orden y desempate en cascada
+    def clave_desempate(fila):
+        return (
+            fila['promedio_general'],
+            fila['_promedio_exacto'],
+            fila['promedio'].get(cat_ids['belleza'], 0) if cat_ids['belleza'] else 0,
+            fila['promedio'].get(cat_ids['elegancia'], 0) if cat_ids['elegancia'] else 0,
+            fila['promedio'].get(cat_ids['simpatia'], 0) if cat_ids['simpatia'] else 0,
+            fila['promedio'].get(cat_ids['postura'], 0) if cat_ids['postura'] else 0,
+            fila.get('promedio_historial', 0),
+            -(fila['numero'] or 0)
+        )
 
     podio = []
-    disponibles = list(lista)
 
-    if n_votos > 0 and disponibles:
-        disponibles.sort(key=clave_general, reverse=True)
-        reina = disponibles.pop(0)
-        reina['titulo'] = "Reina Escolar"
-        reina['emoji'] = "👑"
-        reina['score_mostrar'] = f"{reina['promedio_general']} / 10 (promedio general)"
-        podio.append(reina)
+    if n_votos > 0 and lista:
+        # Ordenar a todas las candidatas de mayor a menor según su promedio general y desempates
+        orden_general = sorted(lista, key=clave_desempate, reverse=True)
 
-        for cat in categorias:
-            if not cat.get('otorga_titulo') or not disponibles:
-                continue
+        # Títulos fijos a entregar en orden descendente del ranking
+        titulos_podio = [
+            {"titulo": "Reina Escolar", "emoji": "👑"},
+            {"titulo": "1ra Princesa", "emoji": "👑"},
+            {"titulo": "2da Princesa", "emoji": "👑"},
+            {"titulo": "Miss Elegancia", "emoji": "✨"},
+            {"titulo": "Miss Simpatía", "emoji": "✨"}
+        ]
 
-            def clave_categoria(fila, cat_id=cat['id']):
-                claves = [fila['promedio'].get(cat_id, 0), fila['promedio_general']]
-                for otra in categorias:
-                    if otra['id'] != cat_id:
-                        claves.append(fila['promedio'].get(otra['id'], 0))
-                claves.append(-(fila['numero'] or 0))
-                return tuple(claves)
-
-            disponibles.sort(key=clave_categoria, reverse=True)
-            ganadora = disponibles.pop(0)
-            ganadora['titulo'] = f"Miss {cat['nombre']}"
-            ganadora['emoji'] = "✨"
-            ganadora['score_mostrar'] = f"{ganadora['promedio'].get(cat['id'], 0)} / 10 en {cat['nombre']}"
-            podio.append(ganadora)
+        # Asignar cada posición del ranking al título correspondiente
+        for i, candidata in enumerate(orden_general):
+            if i < len(titulos_podio):
+                item_podio = dict(candidata)
+                item_podio['titulo'] = titulos_podio[i]['titulo']
+                item_podio['emoji'] = titulos_podio[i]['emoji']
+                item_podio['score_mostrar'] = f"{candidata['promedio_general']} / 10 (Promedio General)"
+                podio.append(item_podio)
 
     return podio, lista
-
 
 # ---------------------- PANEL DE JURADOS ----------------------
 

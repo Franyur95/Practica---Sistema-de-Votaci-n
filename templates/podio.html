@@ -1392,333 +1392,127 @@
         <!-- =================================================
              ESCRUTINIO FINAL
         ================================================== -->
+<!-- =================================================
+     ESCRUTINIO FINAL
+================================================== -->
+<header class="card results-header">
+    <h1 class="results-title">
+        ESCRUTINIO FINAL
+    </h1>
+    <div class="processed">
+        <span class="processed-icon">▥</span>
+        <span>
+            Planillas procesadas:
+            <strong>
+                {{ total_jurados }} / {{ total_registrados }}
+            </strong>
+        </span>
+    </div>
+</header>
 
-        <header class="card results-header">
+<!-- =================================================
+     SI HAY VOTOS
+================================================== -->
+{% if total_jurados > 0 %}
 
-
-            <h1 class="results-title">
-                ESCRUTINIO FINAL
-            </h1>
-            <div class="processed">
-
-                <span class="processed-icon">
-                    ▥
-                </span>
-
-                <span>
-                    Planillas procesadas:
-                    <strong>
-                        {{ total_jurados }} / {{ total_registrados }}
-                    </strong>
-                </span>
-
-            </div>
-
-        </header>
-
-
-        <!-- =================================================
-             SI HAY VOTOS
-        ================================================== -->
-
-        {% if total_jurados > 0 %}
-
-
-            <div class="podium-grid">
-
-
-                {% for electa in podio %}
-
-
-                    {% if loop.first %}
-
-
-                        <!-- =================================
-                             REINA
-                        ================================== -->
-
-                        <div class="candidate-card winner">
-
-
-                            <div class="candidate-photo">
-
-                                {% if electa.foto %}
-
-                                    <img
-                                        src="{{ url_for('static', filename='fotos/' + electa.foto) }}"
-                                        alt="{{ electa.nombre }}"
-                                    >
-
-                                {% else %}
-
-                                    <span>
-                                        📸
-                                    </span>
-
-                                {% endif %}
-
-                            </div>
-
-
-                            <div class="candidate-emoji">
-                                {{ electa.emoji }}
-                            </div>
-
-
-                            <span class="candidate-title">
-                                {{ electa.titulo }}
-                            </span>
-
-
-                            <h3 class="candidate-name">
-                                {{ electa.nombre }}
-                            </h3>
-
-
-                            <p class="candidate-course">
-                                {{ electa.curso }}
-                            </p>
-
-
-                            <div class="candidate-score">
-                                {{ electa.score_mostrar }}
-                            </div>
-
-
-                        </div>
-
-
+    <div class="podium-grid">
+        {% for electa in podio %}
+            <div class="candidate-card {% if loop.first %}winner{% endif %}">
+                <div class="candidate-photo">
+                    {% if electa.foto %}
+                        <img src="{{ url_for('static', filename='fotos/' + electa.foto) }}" alt="{{ electa.nombre }}">
                     {% else %}
-
-
-                        <!-- =================================
-                             TÍTULO ADICIONAL
-                        ================================== -->
-
-                        <div class="candidate-card">
-
-
-                            <div class="candidate-photo">
-
-                                {% if electa.foto %}
-
-                                    <img
-                                        src="{{ url_for('static', filename='fotos/' + electa.foto) }}"
-                                        alt="{{ electa.nombre }}"
-                                    >
-
-                                {% else %}
-
-                                    <span>
-                                        📸
-                                    </span>
-
-                                {% endif %}
-
-                            </div>
-
-
-                            <div class="candidate-emoji">
-                                {{ electa.emoji }}
-                            </div>
-
-
-                            <span class="candidate-title">
-                                {{ electa.titulo }}
-                            </span>
-
-
-                            <h3 class="candidate-name">
-                                {{ electa.nombre }}
-                            </h3>
-
-
-                            <p class="candidate-course">
-                                {{ electa.curso }}
-                            </p>
-
-
-                            <div class="candidate-score">
-                                {{ electa.score_mostrar }}
-                            </div>
-
-
-                        </div>
-
-
+                        <span>📸</span>
                     {% endif %}
-
-
-                {% endfor %}
-
-
-            </div>
-
-
-            <!-- =================================================
-                 EXPLICACIÓN
-            ================================================== -->
-
-            <details class="card calculation-card">
-
-                <summary>
-                    ¿Cómo se calculó este resultado?
-                </summary>
-
-
-                <ul>
-
-                    <li>
-                        Cada categoría se promedia entre todos los
-                        jurados (no se suma), quedando en escala de
-                        0 a 10.
-                    </li>
-
-                    <li>
-                        La <b>Reina Escolar</b> es la candidata con
-                        mayor <b>promedio general</b>.
-                    </li>
-
-                    <li>
-                        Cada título adicional se otorga a quien tenga
-                        mayor promedio en esa categoría entre las
-                        candidatas que aún no tienen título.
-                    </li>
-
-                    <li>
-                        Si hay empate, se desempata automáticamente:
-                        primero por promedio general, luego categoría
-                        por categoría y finalmente por número de
-                        postulante.
-                    </li>
-
-                </ul>
-
-            </details>
-
-
-        {% else %}
-
-
-            <!-- =================================================
-                 SIN VOTOS
-            ================================================== -->
-
-            <div class="card empty-card">
-
-
-                <div class="empty-content">
-
-
-                    <div class="info-icon">
-                        i
-                    </div>
-
-
-                    <div>
-
-                        <h2 class="empty-title">
-                            Todavía no hay votos registrados.
-                        </h2>
-
-
-                        <p class="empty-description">
-                            Las posiciones se generarán cuando vote
-                            al menos un jurado.
-                        </p>
-
-                    </div>
-
-
                 </div>
 
+                <div class="candidate-emoji">
+                    {{ electa.emoji }}
+                </div>
 
-            </div>
-
-
-        {% endif %}
-
-
-        <!-- =================================================
-             BOTONES INFERIORES
-        ================================================== -->
-
-        <div class="card navigation-card">
-
-
-            <!-- VOLVER AL PANEL PRINCIPAL -->
-
-            <a
-                href="/"
-                class="nav-button nav-button-primary"
-            >
-
-                <span class="nav-icon">
-                    ◀
+                <span class="candidate-title">
+                    {{ electa.titulo }}
                 </span>
 
-                <span>
-                    VOLVER AL PANEL PRINCIPAL
-                </span>
+                <h3 class="candidate-name">
+                    {{ electa.nombre }}
+                </h3>
 
-            </a>
+                <p class="candidate-course">
+                    {{ electa.curso }}
+                </p>
 
-
-            <!-- DESCARGAR PDF -->
-
-            <a
-                href="{{ url_for('descargar_pdf') }}"
-                class="nav-button nav-button-secondary"
-            >
-
-                <span class="nav-icon">
-                    📄
-                </span>
-
-                <span>
-                    DESCARGAR PDF
-                </span>
-
-            </a>
-
-
-        </div>
-
-
-        <!-- =================================================
-             DECORACIÓN INFERIOR
-        ================================================== -->
-
-        <div class="bottom-decoration">
-
-
-            <div class="bottom-line"></div>
-
-
-            <div class="bottom-diamond">
-                ◆
+                <div class="candidate-score">
+                    {{ electa.score_mostrar }}
+                </div>
             </div>
-
-
-            <div class="bottom-crown">
-                ♛
-            </div>
-
-
-            <div class="bottom-diamond">
-                ◆
-            </div>
-
-
-            <div class="bottom-line"></div>
-
-
-        </div>
-
-
+        {% endfor %}
     </div>
 
+    <!-- =================================================
+         EXPLICACIÓN DEL CÁLCULO
+================================================== -->
+    <details class="card calculation-card">
+        <summary>
+            ¿Cómo se calculó este resultado?
+        </summary>
 
-</body>
+        <ul>
+            <li>
+                Cada categoría se promedia entre todos los jurados (no se suma), quedando en escala de 0 a 10.
+            </li>
+            <li>
+                Las posiciones del podio (<b>Reina Escolar</b>, <b>1ra Princesa</b>, <b>2da Princesa</b>, <b>Miss Elegancia</b> y <b>Miss Simpatía</b>) se asignan en orden descendente según el <b>promedio general</b>.
+            </li>
+            <li>
+                Si hay empate en el promedio general, se desempata automáticamente en cascada: primero por promedio exacto, luego categoría por categoría (Belleza, Elegancia, Simpatía, Postura) y finalmente por el número de postulante.
+            </li>
+        </ul>
+    </details>
 
-</html>
+{% else %}
+
+    <!-- =================================================
+         SIN VOTOS
+================================================== -->
+    <div class="card empty-card">
+        <div class="empty-content">
+            <div class="info-icon">i</div>
+            <div>
+                <h2 class="empty-title">
+                    Todavía no hay votos registrados.
+                </h2>
+                <p class="empty-description">
+                    Las posiciones se generarán cuando vote al menos un jurado.
+                </p>
+            </div>
+        </div>
+    </div>
+
+{% endif %}
+
+<!-- =================================================
+     BOTONES INFERIORES
+================================================== -->
+<div class="card navigation-card">
+    <a href="/" class="nav-button nav-button-primary">
+        <span class="nav-icon">◀</span>
+        <span>VOLVER AL PANEL PRINCIPAL</span>
+    </a>
+
+    <a href="{{ url_for('descargar_pdf') }}" class="nav-button nav-button-secondary">
+        <span class="nav-icon">📄</span>
+        <span>DESCARGAR PDF</span>
+    </a>
+</div>
+
+<!-- =================================================
+     DECORACIÓN INFERIOR
+================================================== -->
+<div class="bottom-decoration">
+    <div class="bottom-line"></div>
+    <div class="bottom-diamond">◆</div>
+    <div class="bottom-crown">♛</div>
+    <div class="bottom-diamond">◆</div>
+    <div class="bottom-line"></div>
+</div>
