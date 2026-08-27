@@ -4,13 +4,11 @@
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <title>Elección Reina - Colegio N°59</title>
 
-    <!-- Tailwind CSS -->
-    
-    <!-- Fuentes -->
+    <!-- Fuentes locales (sin internet) -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/fuentes.css') }}">
 
     <style>
@@ -39,19 +37,21 @@
 
 
         /* =====================================================
-           GENERAL
+           RESET Y BASE
         ===================================================== */
 
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
+        html, body {
+            height: 100%;
+            overflow: hidden; /* <-- IMPORTANTE: SIN SCROLL */
+        }
 
         body {
-
-            margin: 0;
-
-            min-height: 100vh;
 
             font-family: "Montserrat", Arial, sans-serif;
 
@@ -73,14 +73,14 @@
 
 
         /* =====================================================
-           PANTALLA
+           PANTALLA COMPLETA
         ===================================================== */
 
         .pantalla-inicio {
 
             width: 100%;
-
-            min-height: 1vh;
+            height: 100vh; /* <-- OCUPA TODA LA PANTALLA */
+            overflow: hidden; /* <-- SIN SCROLL */
 
             display: flex;
 
@@ -88,7 +88,7 @@
 
             align-items: center;
 
-            padding: 35px 25px;
+            padding: 15px 20px;
         }
 
 
@@ -102,11 +102,13 @@
 
             width: 100%;
 
-            max-width: 2000px;
+            max-width: 1200px;
 
-            min-height: 101px;
+            height: 100%; /* <-- OCUPA TODA LA ALTURA DEL CONTENEDOR PADRE */
 
-            padding: 15px 50px 20px;
+            max-height: 700px; /* <-- ALTURA MÁXIMA PARA QUE NO SE VEA GIGANTE EN PANTALLAS GRANDES */
+
+            padding: 15px 40px 15px;
 
             overflow: hidden;
 
@@ -124,6 +126,10 @@
             box-shadow:
                 0 25px 70px rgba(72, 50, 34, 0.10),
                 0 5px 20px rgba(72, 50, 34, 0.05);
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
 
@@ -144,7 +150,7 @@
 
 
         /* =====================================================
-           LOGOS
+           LOGOS (más pequeños y ajustados)
         ===================================================== */
 
         .logo-evento,
@@ -152,11 +158,11 @@
 
             position: absolute;
 
-            top: 35px;
+            top: 15px;
 
-            width: 115px;
+            width: 70px;
 
-            height: 95px;
+            height: 60px;
 
             object-fit: contain;
 
@@ -165,17 +171,17 @@
 
 
         .logo-evento {
-            left: 55px;
+            left: 25px;
         }
 
 
         .logo-colegio {
-            right: 55px;
+            right: 25px;
         }
 
 
         /* =====================================================
-           ENCABEZADO
+           ENCABEZADO (más compacto)
         ===================================================== */
 
         .encabezado {
@@ -186,9 +192,8 @@
 
             text-align: center;
 
-            margin-top: 20px;
-
-            margin-bottom: 25px;
+            margin-bottom: 5px;
+            margin-top: -5px;
         }
 
 
@@ -196,11 +201,11 @@
 
             color: var(--dorado);
 
-            font-size: 25px;
+            font-size: 20px;
 
             line-height: 1;
 
-            margin-bottom: 3px;
+            margin-bottom: 0px;
         }
 
 
@@ -213,11 +218,11 @@
                 Georgia,
                 serif;
 
-            font-size: clamp(48px, 6vw, 74px);
+            font-size: clamp(32px, 4vw, 52px);
 
             font-weight: 600;
 
-            letter-spacing: 5px;
+            letter-spacing: 3px;
 
             line-height: 0.95;
 
@@ -229,13 +234,13 @@
 
             position: relative;
 
-            width: 58%;
+            width: 50%;
 
-            max-width: 650px;
+            max-width: 500px;
 
             height: 1px;
 
-            margin: 18px auto 13px;
+            margin: 10px auto 8px;
 
             background: var(--dorado);
         }
@@ -259,7 +264,7 @@
 
             color: var(--dorado);
 
-            font-size: 8px;
+            font-size: 6px;
         }
 
 
@@ -267,11 +272,11 @@
 
             margin: 0;
 
-            font-size: 12px;
+            font-size: 9px;
 
             font-weight: 600;
 
-            letter-spacing: 4px;
+            letter-spacing: 2px;
 
             color: var(--marron);
 
@@ -280,14 +285,14 @@
 
 
         /* =====================================================
-           RAMAS DECORATIVAS
+           RAMAS DECORATIVAS (más pequeñas y menos visibles)
         ===================================================== */
 
         .rama {
 
             position: absolute;
 
-            width: 500px;
+            width: 250px;
 
             height: auto;
 
@@ -295,96 +300,30 @@
 
             pointer-events: none;
 
-            opacity: 0.95;
+            opacity: 0.6;
         }
 
-
-        /* Rama izquierda */
 
         .rama-izquierda {
 
-            left: -55px;
+            left: -40px;
 
-            bottom: -35px;
+            bottom: -20px;
         }
 
 
-        /* Rama derecha */
-
         .rama-derecha {
 
-            right: -55px;
+            right: -40px;
 
-            bottom: -35px;
+            bottom: -20px;
 
             transform: scaleX(-1);
         }
 
 
         /* =====================================================
-           DETALLES DORADOS
-        ===================================================== */
-
-        .decoracion-dorada {
-
-            position: absolute;
-
-            width: 6px;
-
-            height: 6px;
-
-            border-radius: 50%;
-
-            background: var(--dorado);
-
-            opacity: 0.65;
-
-            z-index: 2;
-        }
-
-
-        .punto-1 {
-
-            left: 95px;
-
-            bottom: 210px;
-        }
-
-
-        .punto-2 {
-
-            left: 65px;
-
-            bottom: 175px;
-
-            width: 4px;
-
-            height: 4px;
-        }
-
-
-        .punto-3 {
-
-            right: 105px;
-
-            bottom: 180px;
-
-            width: 4px;
-
-            height: 4px;
-        }
-
-
-        .punto-4 {
-
-            right: 75px;
-
-            bottom: 210px;
-        }
-
-
-        /* =====================================================
-           PANEL JURADO
+           PANEL JURADO (más compacto y centrado)
         ===================================================== */
 
         .panel-jurado {
@@ -393,13 +332,13 @@
 
             z-index: 6;
 
-            width: 570px;
+            width: 100%;
 
-            max-width: 100%;
+            max-width: 480px;
 
-            margin: 35px auto 0;
+            margin: 0 auto;
 
-            padding: 34px 65px 30px;
+            padding: 20px 35px 18px;
 
             background: rgba(255, 253, 249, 0.94);
 
@@ -408,7 +347,7 @@
             border-radius: 23px;
 
             box-shadow:
-                0 15px 40px rgba(76, 55, 39, 0.10);
+                0 10px 30px rgba(76, 55, 39, 0.10);
 
             text-align: left;
         }
@@ -422,11 +361,9 @@
 
             position: relative;
 
-            width: 180px;
+            height: 22px;
 
-            height: 28px;
-
-            margin: -8px auto 10px;
+            margin: -5px auto 2px;
 
             text-align: center;
         }
@@ -438,7 +375,7 @@
 
             color: var(--dorado);
 
-            font-size: 40px;
+            font-size: 30px;
 
             line-height: 1;
         }
@@ -457,15 +394,15 @@
                 Georgia,
                 serif;
 
-            font-size: 27px;
+            font-size: 22px;
 
             font-weight: 600;
 
-            letter-spacing: 3px;
+            letter-spacing: 2px;
 
             color: var(--marron);
 
-            margin-bottom: 8px;
+            margin-bottom: 3px;
         }
 
 
@@ -475,23 +412,23 @@
 
             display: block;
 
-            width: 100px;
+            width: 80px;
 
             height: 1px;
 
             background: var(--dorado);
 
-            margin: 12px auto 22px;
+            margin: 8px auto 12px;
         }
 
 
         /* =====================================================
-           ESTADO DE PLANILLAS
+           ESTADO DE PLANILLAS (más compacto)
         ===================================================== */
 
         .estado-planillas {
 
-            height: 38px;
+            height: 30px;
 
             display: flex;
 
@@ -499,7 +436,7 @@
 
             justify-content: space-between;
 
-            padding: 0 16px;
+            padding: 0 14px;
 
             background: #faf7f1;
 
@@ -507,19 +444,19 @@
 
             border-radius: 7px;
 
-            font-size: 9px;
+            font-size: 8px;
 
-            letter-spacing: 1.3px;
+            letter-spacing: 1px;
 
             color: var(--texto-suave);
 
-            margin-bottom: 10px;
+            margin-bottom: 6px;
         }
 
 
         .estado-planillas strong {
 
-            font-size: 10px;
+            font-size: 9px;
 
             font-weight: 700;
 
@@ -528,16 +465,16 @@
 
 
         /* =====================================================
-           BARRA PROGRESO
+           BARRA PROGRESO (más delgada)
         ===================================================== */
 
         .barra-contenedor {
 
             width: 100%;
 
-            height: 3px;
+            height: 2px;
 
-            margin-bottom: 25px;
+            margin-bottom: 15px;
 
             background: #e7ded1;
 
@@ -558,12 +495,12 @@
 
 
         /* =====================================================
-           CAMPOS
+           CAMPOS (más compactos)
         ===================================================== */
 
         .campo {
 
-            margin-bottom: 18px;
+            margin-bottom: 12px;
         }
 
 
@@ -571,13 +508,13 @@
 
             display: block;
 
-            margin-bottom: 7px;
+            margin-bottom: 4px;
 
-            font-size: 10px;
+            font-size: 9px;
 
             font-weight: 700;
 
-            letter-spacing: 1.5px;
+            letter-spacing: 1.2px;
 
             color: var(--marron);
 
@@ -589,9 +526,9 @@
 
             width: 100%;
 
-            height: 47px;
+            height: 38px;
 
-            padding: 8px 14px;
+            padding: 6px 14px;
 
             background: #fffdfb;
 
@@ -603,7 +540,7 @@
 
             font-family: "Montserrat", sans-serif;
 
-            font-size: 13px;
+            font-size: 12px;
 
             color: var(--texto);
 
@@ -634,13 +571,13 @@
 
             display: block;
 
-            margin-top: -8px;
+            margin-top: -5px;
 
-            margin-bottom: 20px;
+            margin-bottom: 12px;
 
             color: #9b6d25;
 
-            font-size: 10px;
+            font-size: 9px;
 
             text-decoration: underline;
         }
@@ -653,14 +590,14 @@
 
 
         /* =====================================================
-           BOTÓN PRINCIPAL
+           BOTÓN PRINCIPAL (más compacto)
         ===================================================== */
 
         .boton-principal {
 
             width: 100%;
 
-            height: 52px;
+            height: 44px;
 
             border: none;
 
@@ -677,16 +614,16 @@
 
             font-family: "Montserrat", sans-serif;
 
-            font-size: 11px;
+            font-size: 10px;
 
             font-weight: 700;
 
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
 
             cursor: pointer;
 
             box-shadow:
-                0 8px 18px rgba(91, 64, 49, 0.18);
+                0 6px 14px rgba(91, 64, 49, 0.18);
 
             transition: all 0.25s ease;
         }
@@ -697,7 +634,7 @@
             transform: translateY(-2px);
 
             box-shadow:
-                0 12px 25px rgba(91, 64, 49, 0.25);
+                0 10px 20px rgba(91, 64, 49, 0.25);
         }
 
 
@@ -715,9 +652,9 @@
 
             width: 100%;
 
-            height: 50px;
+            height: 40px;
 
-            margin: 15px auto 0;
+            margin: 10px auto 0;
 
             background: transparent;
 
@@ -729,11 +666,11 @@
 
             font-family: "Montserrat", sans-serif;
 
-            font-size: 10px;
+            font-size: 9px;
 
             font-weight: 600;
 
-            letter-spacing: 1.7px;
+            letter-spacing: 1.2px;
 
             text-decoration: none;
 
@@ -757,9 +694,9 @@
 
             text-align: center;
 
-            margin-top: 23px;
+            margin-top: 12px;
 
-            padding-top: 18px;
+            padding-top: 10px;
 
             border-top: 1px dashed #d6c7b5;
         }
@@ -769,11 +706,11 @@
 
             color: var(--texto-suave);
 
-            font-size: 9px;
+            font-size: 8px;
 
             font-weight: 600;
 
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
 
             text-decoration: none;
 
@@ -788,14 +725,14 @@
 
 
         /* =====================================================
-           MENSAJES
+           MENSAJES (más compactos)
         ===================================================== */
 
         .mensaje {
 
-            padding: 13px;
+            padding: 8px 12px;
 
-            margin-bottom: 17px;
+            margin-bottom: 12px;
 
             border: 1px solid #d7c8b7;
 
@@ -805,11 +742,73 @@
 
             color: var(--texto);
 
-            font-size: 10px;
+            font-size: 9px;
 
-            line-height: 1.5;
+            line-height: 1.4;
 
             text-align: center;
+        }
+
+
+        /* =====================================================
+           DETALLES DORADOS (más pequeños)
+        ===================================================== */
+
+        .decoracion-dorada {
+
+            position: absolute;
+
+            width: 4px;
+
+            height: 4px;
+
+            border-radius: 50%;
+
+            background: var(--dorado);
+
+            opacity: 0.5;
+
+            z-index: 2;
+        }
+
+
+        .punto-1 {
+
+            left: 60px;
+
+            bottom: 120px;
+        }
+
+
+        .punto-2 {
+
+            left: 40px;
+
+            bottom: 90px;
+
+            width: 3px;
+
+            height: 3px;
+        }
+
+
+        .punto-3 {
+
+            right: 65px;
+
+            bottom: 95px;
+
+            width: 3px;
+
+            height: 3px;
+        }
+
+
+        .punto-4 {
+
+            right: 45px;
+
+            bottom: 120px;
         }
 
 
@@ -820,30 +819,32 @@
         @media (max-width: 900px) {
 
             .marco-principal {
-
-                padding-left: 35px;
-
-                padding-right: 35px;
+                padding: 15px 25px 15px;
+                max-height: 650px;
             }
-
 
             .logo-evento {
-
-                left: 30px;
+                left: 15px;
+                width: 55px;
+                height: 45px;
+                top: 12px;
             }
-
 
             .logo-colegio {
-
-                right: 30px;
+                right: 15px;
+                width: 55px;
+                height: 45px;
+                top: 12px;
             }
 
+            .panel-jurado {
+                padding: 16px 25px 14px;
+                max-width: 420px;
+            }
 
             .rama {
-
-                width: 250px;
-
-                opacity: 0.65;
+                width: 180px;
+                opacity: 0.4;
             }
         }
 
@@ -855,173 +856,178 @@
         @media (max-width: 700px) {
 
             .pantalla-inicio {
-
-                padding: 12px;
+                padding: 8px 10px;
             }
-
 
             .marco-principal {
-
-                min-height: 720px;
-
-                padding:
-                    20px
-                    18px
-                    35px;
-
-                border-radius: 20px;
+                padding: 10px 15px 10px;
+                border-radius: 16px;
+                max-height: 600px;
             }
-
 
             .marco-principal::before {
-
-                inset: 6px;
-
-                border-radius: 15px;
+                inset: 5px;
+                border-radius: 12px;
             }
-
 
             /* LOGOS */
-
             .logo-evento,
             .logo-colegio {
-
-                top: 22px;
-
-                width: 700px;
-
-                height: 600px;
+                top: 10px;
+                width: 40px;
+                height: 35px;
             }
-
 
             .logo-evento {
-
-                left: 18px;
+                left: 10px;
             }
-
 
             .logo-colegio {
-
-                right: 18px;
+                right: 10px;
             }
-
 
             /* TÍTULO */
-
             .encabezado {
-
-                margin-top: 45px;
-
-                margin-bottom: 25px;
+                margin-top: 0px;
+                margin-bottom: 2px;
             }
 
+            .corona {
+                font-size: 16px;
+            }
 
             .encabezado h1 {
-
-                font-size: 42px;
-
-                letter-spacing: 2px;
+                font-size: 28px;
+                letter-spacing: 1.5px;
             }
-
 
             .encabezado h2 {
-
-                font-size: 8px;
-
-                letter-spacing: 1.5px;
-
-                padding: 0 45px;
+                font-size: 7px;
+                letter-spacing: 1px;
+                padding: 0 30px;
             }
-
 
             .linea-titulo {
-
-                width: 70%;
+                width: 60%;
+                margin: 6px auto 4px;
             }
 
+            .linea-titulo::after {
+                font-size: 5px;
+                padding: 0 5px;
+            }
 
             /* PANEL */
-
             .panel-jurado {
-
-                width: 100%;
-
-                padding:
-                    28px
-                    22px
-                    25px;
-
-                border-radius: 18px;
-
-                margin-top: 20px;
+                padding: 14px 18px 12px;
+                border-radius: 14px;
+                max-width: 100%;
             }
-
 
             .titulo-sesion {
-
-                font-size: 23px;
-
-                letter-spacing: 2px;
+                font-size: 18px;
+                letter-spacing: 1px;
             }
 
+            .titulo-sesion::after {
+                width: 60px;
+                margin: 5px auto 8px;
+            }
+
+            .icono-persona {
+                height: 18px;
+            }
+
+            .icono-persona::before {
+                font-size: 24px;
+            }
 
             /* PLANILLAS */
-
             .estado-planillas {
-
+                height: 26px;
                 font-size: 7px;
-
                 padding: 0 10px;
             }
 
-
             .estado-planillas strong {
-
                 font-size: 8px;
             }
 
+            .barra-contenedor {
+                height: 2px;
+                margin-bottom: 10px;
+            }
+
+            /* CAMPOS */
+            .campo {
+                margin-bottom: 8px;
+            }
+
+            .campo label {
+                font-size: 8px;
+            }
+
+            .campo input {
+                height: 32px;
+                font-size: 11px;
+                padding: 4px 12px;
+            }
+
+            .recuperar {
+                font-size: 8px;
+                margin-bottom: 8px;
+            }
 
             /* BOTONES */
-
-            .boton-principal,
-            .boton-resultados {
-
-                font-size: 8px;
-
-                letter-spacing: 1.2px;
+            .boton-principal {
+                height: 38px;
+                font-size: 9px;
+                letter-spacing: 1px;
             }
 
+            .boton-resultados {
+                height: 34px;
+                font-size: 8px;
+                letter-spacing: 1px;
+                margin-top: 6px;
+            }
+
+            /* ADMIN */
+            .panel-admin {
+                margin-top: 8px;
+                padding-top: 8px;
+            }
+
+            .panel-admin a {
+                font-size: 7px;
+                letter-spacing: 1px;
+            }
+
+            /* MENSAJES */
+            .mensaje {
+                padding: 6px 10px;
+                margin-bottom: 8px;
+                font-size: 8px;
+            }
 
             /* RAMAS */
-
             .rama {
-
-                width: 190px;
-
-                opacity: 0.22;
+                width: 120px;
+                opacity: 0.25;
             }
-
 
             .rama-izquierda {
-
-                left: -70px;
-
-                bottom: -15px;
+                left: -40px;
+                bottom: -10px;
             }
-
 
             .rama-derecha {
-
-                right: -70px;
-
-                bottom: -15px;
+                right: -40px;
+                bottom: -10px;
             }
 
-
             /* PUNTOS */
-
             .decoracion-dorada {
-
                 display: none;
             }
         }
@@ -1033,38 +1039,46 @@
 
         @media (max-width: 420px) {
 
-            .encabezado h1 {
-
-                font-size: 35px;
+            .marco-principal {
+                max-height: 550px;
+                padding: 8px 10px 8px;
             }
 
+            .encabezado h1 {
+                font-size: 24px;
+                letter-spacing: 1px;
+            }
 
             .encabezado h2 {
-
-                font-size: 7px;
-
-                padding: 0 30px;
+                font-size: 6px;
+                padding: 0 20px;
             }
-
 
             .panel-jurado {
-
-                padding-left: 18px;
-
-                padding-right: 18px;
+                padding: 10px 12px 10px;
             }
 
-
-            .estado-planillas span {
-
-                font-size: 6px;
+            .titulo-sesion {
+                font-size: 16px;
             }
 
+            .campo input {
+                height: 28px;
+                font-size: 10px;
+            }
+
+            .boton-principal {
+                height: 34px;
+                font-size: 8px;
+            }
+
+            .boton-resultados {
+                height: 30px;
+                font-size: 7px;
+            }
 
             .rama {
-
-                width: 160px;
-
+                width: 90px;
                 opacity: 0.15;
             }
         }
@@ -1203,7 +1217,7 @@
 
 
                     <span>
-                        PLANILLAS CARGADAS OFICIALMENTE
+                        PLANILLAS CARGADAS
                     </span>
 
 
@@ -1338,7 +1352,7 @@
                         >
 
                             ▣ &nbsp;&nbsp;
-                            ABRIR PLANILLA DE EVALUACIÓN
+                            ABRIR PLANILLA
 
                         </button>
 
@@ -1383,7 +1397,7 @@
                 >
 
                     ♜ &nbsp;&nbsp;
-                    VER RESULTADOS FINALES (PODIO)
+                    VER RESULTADOS FINALES
 
                 </a>
 
