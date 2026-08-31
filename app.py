@@ -212,9 +212,9 @@ def calcular_resultados(datos):
         )
 
     podio = []
+    orden_general = sorted(lista, key=clave_desempate, reverse=True) if lista else []
 
-    if n_votos > 0 and lista:
-        orden_general = sorted(lista, key=clave_desempate, reverse=True)
+    if n_votos > 0 and orden_general:
 
         titulos_podio = [
             {"titulo": "Reina Escolar", "emoji": "👑"},
@@ -233,7 +233,7 @@ def calcular_resultados(datos):
                 podio.append(item_podio)
 
     # 6. Ocultar del retorno los promedios privados/de desempate
-    for item in lista:
+    for item in orden_general:
         item.pop('_promedio_exacto', None)
         item.pop('promedio_desempate', None)
 
@@ -241,7 +241,7 @@ def calcular_resultados(datos):
         item.pop('_promedio_exacto', None)
         item.pop('promedio_desempate', None)
 
-    return podio, lista
+    return podio, orden_general
 
 # ---------------------- PANEL DE JURADOS ----------------------
 
@@ -430,8 +430,7 @@ def descargar_pdf():
     c.drawCentredString(ancho_pagina / 2, alto_pagina - 50, "Tabla Resumen Final")
 
     podio, detalle = calcular_resultados(datos)
-    detalle.sort(key=lambda x: x['promedio_general'], reverse=True)
-
+    
     encabezado = ["Candidata", "Título"] + nombres_categorias + ["Promedio general"]
     data_resumen = [encabezado]
 
