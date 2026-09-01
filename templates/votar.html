@@ -1257,7 +1257,6 @@
 
 
                     <span
-                        id="indicador-carrusel"
                         class="indicador-carrusel"
                     >
                         Candidata 1 de {{ candidatas|length }}
@@ -1375,11 +1374,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const btnGuardar =
         document.getElementById('btn-guardar');
-
-
-    const indicador =
-        document.getElementById('indicador-carrusel');
-
 
     const contadorNumero =
         document.getElementById('contador-numero');
@@ -1647,8 +1641,10 @@ document.addEventListener('DOMContentLoaded', function () {
             generarResumen();
 
 
-            indicador.textContent =
-                'REVISIÓN FINAL';
+        document.querySelectorAll('.indicador-carrusel')
+            .forEach(function (el) {
+                el.textContent = 'REVISIÓN FINAL';
+            });
 
 
             btnGuardar.disabled =
@@ -1691,8 +1687,10 @@ document.addEventListener('DOMContentLoaded', function () {
         );
 
 
-        indicador.textContent =
-            `CANDIDATA ${indexActual + 1} DE ${total}`;
+        document.querySelectorAll('.indicador-carrusel')
+            .forEach(function (el) {
+                el.textContent = `CANDIDATA ${indexActual + 1} DE ${total}`;
+            });
 
 
         contadorNumero.textContent =
