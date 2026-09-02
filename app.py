@@ -8,13 +8,16 @@ import threading
 import uuid
 from functools import wraps
 from datetime import datetime
+from zoneinfo import ZoneInfo
+
+ZONA_HORARIA = ZoneInfo("America/Argentina/Jujuy")
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from reportlab.platypus import Table, TableStyle
 from reportlab.lib import colors
 
 app = Flask(__name__)
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 60 * 60 * 24  # 1 día de caché en el navegador
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0 # 1 día de caché en el navegador
 app.config['COMPRESS_MIMETYPES'] = ['text/html', 'text/css', 'text/xml', 'application/json', 'application/javascript']
 Compress(app)
 app.secret_key = 'clave_secreta_olga_marquez'
@@ -318,7 +321,7 @@ def guardar_votos():
     planilla_jurado = {
         "jurado_id": jurado['id'],
         "jurado": jurado['nombre'],
-        "fecha_hora": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+        "fecha_hora": datetime.now(ZONA_HORARIA).strftime("%d/%m/%Y %H:%M:%S"),
         "puntuaciones": {}
     }
 
@@ -472,7 +475,13 @@ def descargar_pdf():
     c.save()
     buffer.seek(0)
 
-    return send_file(buffer, as_attachment=True, download_name="resultados.pdf", mimetype="application/pdf")
+    return send_file(
+    buffer,
+    as_attachment=True,
+    download_name="resultados.pdf",
+    mimetype="application/pdf",
+    max_age=0
+)
 
 
 # ---------------------- PANEL DE ADMINISTRADOR ----------------------

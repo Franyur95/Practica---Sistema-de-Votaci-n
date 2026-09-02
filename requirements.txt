@@ -4,3 +4,4 @@ reportlab
 Pillow
 waitress
 Flask-Compress
+tzdata
